@@ -1,0 +1,79 @@
+# ==========================================
+# Operating System Junk Files
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Node.js & Backend API (.api/)
+# ==========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==========================================
+# Java & Swing Builds (.swing/)
+# ==========================================
+*.class
+*.jar
+*.war
+*.ear
+*.rar
+# Ignore compiled target directories
+swing/bin/
+swing/build/
+swing/out/
+swing/target/
+
+# ==========================================
+# VS Code & IDE Configuration Files
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+*.suo
+*.user
+*.userossc
+*.sln.docstates
+
+# Eclipse IDE
+.metadata
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# ==========================================
+# Database & Server Local Logs
+# ==========================================
+*.log
+*.sqlite
+*.sql.gz
+database/local_backups/
