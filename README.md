@@ -17,7 +17,7 @@ Our **Hotel Reservation System** is a dual-interface platform designed to stream
 ## ⭐ 2. Unique Selling Points (USPs)
 
 * **Hybrid Multi-Client Synchronization:** Dual-interface architecture where online web bookings update the front-desk Java Swing app instantly via a shared MySQL backend.
-* **Live Weather API Integration:** Embedded OpenWeather API widget provides real-time local weather forecasts directly within the guest booking workflow.
+* **Live Weather API Integration:** Embedded Open-Meteo API widget provides real-time local weather forecasts directly within the guest booking workflow.
 * **Role-Based Operational Security:** Strict separation of privileges distinguishing public web guests from authenticated front-desk staff and system administrators.
 * **Zero-Latency Inventory Management:** Automated room status transitions (`Available` ➔ `Pending` ➔ `Occupied` ➔ `Cleaning`) to prevent overbooking[cite: 8, 9].
 
