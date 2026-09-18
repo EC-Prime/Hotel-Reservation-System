@@ -9,7 +9,7 @@
 Our **Hotel Reservation System** is a dual-interface platform designed to streamline guest bookings while giving front-desk staff real-time administrative control over hotel operations. 
 
 * **The Vision:** Eliminate double-bookings, reduce manual front-desk errors, and provide a seamless end-to-end guest experience from initial web browsing to physical check-out.
-* **Web Portal Focus:** Provides guests with an online reservation portal featuring instant availability checks, live local weather updates via OpenWeather API, transparent room pricing, and automated booking confirmations.
+* **Web Portal Focus:** Provides guests with an online reservation portal featuring instant availability checks, live local weather updates via Open-Meteo API, transparent room pricing, and automated booking confirmations.
 * **Desktop App Focus:** Equips hotel receptionists with a Java Swing management tool to manage daily check-ins/check-outs, monitor room inventory statuses, and audit active bookings in real time.
 
 ---
