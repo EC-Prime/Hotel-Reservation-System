@@ -31,7 +31,7 @@ Our **Hotel Reservation System** is a dual-interface platform designed to stream
 | **Desktop App** | Java Swing (JDK 17+) | Admin desktop interface for front-desk operations & check-ins[cite: 8, 9]. |
 | **Backend API** | Node.js / Express.js | Asynchronous REST API routing client requests to the database[cite: 7, 8]. |
 | **Database** | MySQL (XAMPP Server / Workbench) | Relational database hosting room, user, and reservation tables. |
-| **External APIs** | OpenWeatherMap REST API | Live weather data integration for the web booking portal. |
+| **External APIs** | Open-Meteo REST API | Live weather data integration for the web booking portal. |
 | **IDE & Tooling** | VS Code, Git, Postman | Primary development workspace, version control, and API testing. |
 
 ---
@@ -52,7 +52,7 @@ hotel-reservation-system/
 │   │   └── style.css           # Global layout & component styling
 │   ├── js/
 │   │   ├── main.js             # Common navigation logic
-│   │   ├── weather.js          # OpenWeather API fetch logic[cite: 7, 8]
+│   │   ├── weather.js          # Open-Meteo API fetch logic[cite: 7, 8]
 │   │   └── booking.js          # Reservation validation & API dispatch[cite: 7, 8]
 │   ├── assets/                 # Images, room media & icons
 │   ├── index.html              # Home landing page[cite: 8, 9]
@@ -117,7 +117,7 @@ This document outlines the assigned roles, primary technical responsibilities, a
     * `web/css/style.css`
 
 * **Blessing & Terrence** — *Web JavaScript & API Developers (Logic & Fetch)*
-  * **Responsibilities:** Implement client-side form logic, write asynchronous JavaScript `fetch()` calls to route data to the Node.js API, and integrate live weather updates via OpenWeatherMap API.
+  * **Responsibilities:** Implement client-side form logic, write asynchronous JavaScript `fetch()` calls to route data to the Node.js API, and integrate live weather updates via Open-Meteo API.
   * **Deliverable Files:**
     * `web/booking.html`
     * `web/confirmation.html`
