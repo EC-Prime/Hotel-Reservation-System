@@ -28,7 +28,7 @@ Our **Hotel Reservation System** is a dual-interface platform designed to stream
 | Domain | Technology / Tool | Usage & Purpose |
 | :--- | :--- | :--- |
 | **Frontend Web** | HTML5, CSS3, JavaScript (ES6+) | Public guest portal, live weather widget, and reservation forms[cite: 8, 9]. |
-| **Desktop App** | Java Swing (JDK 17) | Admin desktop interface for front-desk operations & check-ins[cite: 8, 9]. |
+| **Desktop App** | Java Swing (JDK 17+) | Admin desktop interface for front-desk operations & check-ins[cite: 8, 9]. |
 | **Backend API** | Node.js / Express.js | Asynchronous REST API routing client requests to the database[cite: 7, 8]. |
 | **Database** | MySQL (XAMPP Server / Workbench) | Relational database hosting room, user, and reservation tables. |
 | **External APIs** | OpenWeatherMap REST API | Live weather data integration for the web booking portal. |
