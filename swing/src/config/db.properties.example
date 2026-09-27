@@ -1,0 +1,9 @@
+# "db.properties" itself must NEVER be committed — add it to .gitignore.
+
+db.host=your-aiven-host.aivencloud.com
+db.port=16659
+db.name=hotel_reservation_system
+db.user=avnadmin
+db.password=your-aiven-password
+db.truststore.path=certs/truststore.jks
+db.truststore.password=your-truststore-password
