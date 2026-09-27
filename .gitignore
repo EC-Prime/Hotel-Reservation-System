@@ -30,6 +30,7 @@ package-lock.json
 # ==========================================
 *.class
 *.jar
+!swing/lib/*.jar
 *.war
 *.ear
 *.rar
@@ -78,4 +79,5 @@ local.properties
 *.log
 *.sqlite
 *.sql.gz
+*db.properties
 database/local_backups/
