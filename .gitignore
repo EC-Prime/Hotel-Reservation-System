@@ -81,3 +81,6 @@ local.properties
 *.sql.gz
 *db.properties
 database/local_backups/
+/nbproject/private/
+/build/
+/dist/
