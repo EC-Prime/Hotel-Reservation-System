@@ -84,3 +84,8 @@ database/local_backups/
 /nbproject/private/
 /build/
 /dist/
+swing/src/config/db.properties
+swing/certs/
+api/.env
+api/certs/
+*.jks
