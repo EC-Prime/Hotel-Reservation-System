@@ -1,14 +1,15 @@
-// api/routes/apiRoutes.js
+// api/routes/apiRoutes.js  (v3)
 //
-// This file's job: map URLs to controller functions. Almost no logic here
-// on purpose — if you're writing real logic in this file, it belongs in a
-// controller or service instead.
+// Maps URLs to controller functions. No real logic belongs in this file.
 
 const express = require('express');
 const router = express.Router();
 
 const reservationController = require('../controllers/reservationController');
+const roomController = require('../controllers/roomController');
 
+router.get('/rooms', roomController.getRooms);
 router.post('/reservations', reservationController.createReservation);
+router.get('/reservations/:id', reservationController.getReservation);
 
 module.exports = router;
