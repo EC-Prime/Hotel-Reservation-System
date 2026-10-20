@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Builder Handover Brief: Home Landing Page</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 16mm 14mm 16mm 14mm;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #0B0E14;
+      color: #E2E8F0;
+      line-height: 1.55;
+      font-size: 13px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .doc-cover-header {
+      border-bottom: 2px solid #C5A869;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .brand-crest {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      color: #FFFFFF;
+      letter-spacing: 2px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-crest span {
+      color: #C5A869;
+      font-size: 9.5px;
+      letter-spacing: 2px;
+      display: block;
+    }
+
+    .doc-meta-badge {
+      font-size: 9px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #F3D995;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .doc-h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 23px;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin: 14px 0 12px;
+      border-left: 4px solid #C5A869;
+      padding-left: 10px;
+    }
+
+    .doc-h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      color: #F3D995;
+      margin: 20px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      page-break-after: avoid;
+    }
+
+    .doc-h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
+      color: #FFFFFF;
+      font-weight: 700;
+      margin: 12px 0 6px;
+      page-break-after: avoid;
+    }
+
+    .doc-p {
+      margin-bottom: 10px;
+      color: #94A3B8;
+      font-size: 12.5px;
+    }
+
+    .doc-p strong { color: #F8FAFC; }
+
+    .doc-quote {
+      background: #131A29;
+      border-left: 3px solid #C5A869;
+      padding: 10px 14px;
+      border-radius: 0 4px 4px 0;
+      margin: 12px 0;
+      font-size: 12px;
+      color: #CBD5E1;
+    }
+
+    .doc-hr {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 18px 0;
+    }
+
+    .code-block {
+      background: #06080D;
+      border: 1px solid #1E293B;
+      border-left: 3px solid #C5A869;
+      padding: 10px 12px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 10.5px;
+      color: #E2E8F0;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+      page-break-inside: avoid;
+    }
+
+    .inline-code {
+      background: rgba(255, 255, 255, 0.08);
+      color: #F3D995;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+    }
+
+    .reference-image-box {
+      margin: 16px 0;
+      background: #0D121D;
+      border: 1px solid #C5A869;
+      border-radius: 6px;
+      overflow: hidden;
+      page-break-inside: avoid;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .ref-badge {
+      background: #131A29;
+      padding: 6px 12px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #F8FAFC;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .target-screenshot-img {
+      width: 100%;
+      max-height: 340px;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    .lux-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 11px;
+      page-break-inside: avoid;
+    }
+
+    .lux-table th {
+      background: #131A29;
+      color: #F3D995;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid #1E293B;
+      font-weight: 700;
+    }
+
+    .lux-table td {
+      padding: 6px 8px;
+      border: 1px solid #1E293B;
+      color: #94A3B8;
+      background: #0E131E;
+    }
+
+    .lux-table tr:nth-child(even) td { background: #111724; }
+
+    .doc-list {
+      margin: 6px 0 10px 18px;
+      color: #94A3B8;
+      font-size: 12.5px;
+    }
+
+    .doc-list li { margin-bottom: 4px; }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #131A29;
+      border: 1px solid #1E293B;
+      border-radius: 4px;
+      padding: 6px 10px;
+      margin-bottom: 5px;
+      font-size: 12px;
+      color: #E2E8F0;
+      page-break-inside: avoid;
+    }
+
+    .check-box {
+      width: 14px;
+      height: 14px;
+      border: 1px solid #C5A869;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #0A0D14;
+      background: #C5A869;
+      font-weight: bold;
+    }
+
+    .doc-num-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      color: #CBD5E1;
+    }
+
+    .num-badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid #C5A869;
+      color: #F3D995;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .doc-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 24px;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: #64748B;
+      font-size: 9.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="doc-cover-header">
+    <div class="brand-crest">
+      ⚜ THE GRAND RESERVE
+      <span>BOUTIQUE & SPA • BUILDER HANDOVER BRIEF</span>
+    </div>
+    <div class="doc-meta-badge">CONFIDENTIAL MISSION</div>
+  </div>
+
+  <h1 class="doc-h1">🏛 Builder Handover Brief: Home Landing Page</h1>
+<blockquote class="doc-quote"><strong>Builder:</strong> Mission (Assigned to <code class="inline-code">web/index.html</code> & <code class="inline-code">web/css/home.css</code>)  </blockquote>
+<blockquote class="doc-quote"><strong>From:</strong> Emmanuel (Lead Architect & Database Developer)  </blockquote>
+<blockquote class="doc-quote"><strong>Visual Reference:</strong> [<code class="inline-code">docs/screenshots/home-reference.png</code>](../screenshots/home-reference.png)</blockquote>
+<hr class="doc-hr">
+<h2 class="doc-h2">1. Why I Chose You for the Home Page</h2>
+<p class="doc-p">Mission, I chose you specifically for the Home Page because you have a natural instinct for visual balance and first impressions. The home page is the grand lobby of our hotel. If a guest steps in and it feels cluttered or confusing, they leave. But if it feels calm, moody, and prestigious, they immediately want to book. </p>
+<p class="doc-p">I know you have the patience to get the typography looking crisp, the gold gradients feeling subtle rather than loud, and the layout feeling spacious. I trust you with this because you don't rush; you care about the small visual details that turn a good webpage into a five-star experience.</p>
+<p class="doc-p"><em>(Note: Don't worry at all about the Contact page—I am personally building <code class="inline-code">contact.html</code> and its styling myself, so your sole focus is making this home page extraordinary!)</em></p>
+<hr class="doc-hr">
+<h2 class="doc-h2">2. Your Visual Focal Point</h2>
+<p class="doc-p">Look closely at your reference screenshot in <code class="inline-code">docs/screenshots/home-reference.png</code>:</p>
+
+          <div class="reference-image-box">
+            <div class="ref-badge"><span style="color:#C5A869">★ TARGET BENCHMARK:</span> Rendered Reference Capture</div>
+            <img src="file:///c:/Users/Emmanuel Chuma/Desktop/Hotel-Reservation-System/docs/screenshots/home-reference.png" alt="Target Benchmark Screenshot" class="target-screenshot-img">
+          </div>
+        
+<h3 class="doc-h3">What Makes This Page Look Luxurious (Plain English):</h3>
+<div class="doc-num-item"><span class="num-badge">1</span> <span><strong>The Deep Obsidian Background:</strong> Notice that it's not pitch black—it's a deep midnight navy (<code class="inline-code">#0B0E14</code>). This allows our champagne gold buttons and crisp white headings to glow naturally without straining the eyes.</span></div>
+<div class="doc-num-item"><span class="num-badge">2</span> <span><strong>The Ambient Gold Hero Headline:</strong> The headline uses a serif font (<code class="inline-code">Cinzel</code>) where the text transitions smoothly from pure white into radiant gold.</span></div>
+<div class="doc-num-item"><span class="num-badge">3</span> <span><strong>The Compact Top Micro-Bar:</strong> A neat 30px bar at the very top showing the hotel's address, 24/7 concierge status, live local weather (<code class="inline-code">24°C</code>), live time, and a currency dropdown.</span></div>
+<div class="doc-num-item"><span class="num-badge">4</span> <span><strong>The Quick Booking Bar:</strong> A dark glassmorphic box resting right on the hero photo, letting guests pick check-in, check-out, guests, and suite tier in one click.</span></div>
+<div class="doc-num-item"><span class="num-badge">5</span> <span><strong>The Smooth Wave Transition:</strong> A subtle curved wave divider that flows smoothly from the hero photo into the About section below.</span></div>
+<hr class="doc-hr">
+<h2 class="doc-h2">3. Generous Starter: HTML Scaffold</h2>
+<p class="doc-p">Here is your starter skeleton. You don't need to write this from scratch—use this as your solid foundation and build each section out:</p>
+<pre class="code-block"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;The Grand Reserve | Luxury Boutique Hotel &amp; Spa&lt;/title&gt;
+  
+  &lt;!-- FontAwesome 6 Icons &amp; Google Fonts --&gt;
+  &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"&gt;
+  
+  &lt;!-- Shared Global Styles (DO NOT EDIT global.css) --&gt;
+  &lt;link rel="stylesheet" href="css/global.css"&gt;
+  
+  &lt;!-- Your Dedicated Page Stylesheet --&gt;
+  &lt;link rel="stylesheet" href="css/home.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- ========================================================
+       1. TOP MICRO-BAR (Address, Live Weather, Clock, Currency)
+       ======================================================== --&gt;
+  &lt;div class="top-microbar"&gt;
+    &lt;div class="top-microbar-container"&gt;
+      &lt;div class="top-bar-left"&gt;
+        &lt;span class="top-item"&gt;&lt;i class="fas fa-map-marker-alt"&gt;&lt;/i&gt; 104 Ocean View Blvd, Waterfront&lt;/span&gt;
+        &lt;span class="top-item"&gt;&lt;i class="fas fa-clock"&gt;&lt;/i&gt; Concierge: 24/7 Available&lt;/span&gt;
+        &lt;!-- Weather Badge: Hooked up automatically by weather.js --&gt;
+        &lt;span class="weather-badge" id="liveWeatherBadge"&gt;
+          &lt;i class="fas fa-sun" id="weatherIcon"&gt;&lt;/i&gt;
+          &lt;span id="weatherTemp"&gt;24°C&lt;/span&gt;
+          &lt;span id="weatherDesc" style="color: var(--text-secondary); margin-left: 4px;"&gt;Coastal Breeze&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="top-bar-right"&gt;
+        &lt;!-- Live Clock: Hooked up automatically by main.js --&gt;
+        &lt;span class="top-item"&gt;&lt;i class="fas fa-clock-rotate-left"&gt;&lt;/i&gt; &lt;span id="liveHotelClock"&gt;--:--&lt;/span&gt;&lt;/span&gt;
+        &lt;div class="top-item"&gt;
+          &lt;label for="currencySelector" style="font-size: 0.72rem; text-transform: uppercase; color: var(--gold-primary);"&gt;Currency:&lt;/label&gt;
+          &lt;select id="currencySelector" class="currency-select"&gt;
+            &lt;option value="USD"&gt;USD ($)&lt;/option&gt;
+            &lt;option value="EUR"&gt;EUR (€)&lt;/option&gt;
+            &lt;option value="GBP"&gt;GBP (£)&lt;/option&gt;
+            &lt;option value="ZAR"&gt;ZAR (R)&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+        &lt;a href="confirmation.html" class="top-cta-btn"&gt;&lt;i class="fas fa-key"&gt;&lt;/i&gt; Check In / Manage&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- ========================================================
+       2. PRIMARY HEADER &amp; NAVIGATION
+       ======================================================== --&gt;
+  &lt;header class="site-header"&gt;
+    &lt;div class="header-container"&gt;
+      &lt;a href="index.html" class="brand-logo"&gt;
+        &lt;div class="brand-emblem"&gt;&lt;i class="fas fa-moon"&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;div class="brand-text"&gt;
+          &lt;span class="brand-name"&gt;THE GRAND RESERVE&lt;/span&gt;
+          &lt;span class="brand-tagline"&gt;Boutique &amp; Spa&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/a&gt;
+
+      &lt;nav class="site-nav"&gt;
+        &lt;a href="index.html" class="nav-link active"&gt;Home&lt;/a&gt;
+        &lt;a href="rooms.html" class="nav-link"&gt;Rooms &amp; Suites&lt;/a&gt;
+        &lt;a href="rooms.html?type=suite" class="nav-link"&gt;Signature Penthouses&lt;/a&gt;
+        &lt;a href="#amenities" class="nav-link"&gt;Experiences&lt;/a&gt;
+        &lt;a href="contact.html" class="nav-link"&gt;Contact&lt;/a&gt;
+      &lt;/nav&gt;
+
+      &lt;div class="nav-cta-group"&gt;
+        &lt;a href="confirmation.html" class="btn-nav-outline"&gt;Manage Booking&lt;/a&gt;
+        &lt;a href="rooms.html" class="btn-nav-gold"&gt;Reserve Sanctuary&lt;/a&gt;
+        &lt;button class="mobile-menu-btn"&gt;&lt;i class="fas fa-bars"&gt;&lt;/i&gt;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- ========================================================
+       3. HERO SANCTUARY SECTION
+       ======================================================== --&gt;
+  &lt;section class="hero-section"&gt;
+    &lt;div class="hero-overlay-glow"&gt;&lt;/div&gt;
+    &lt;div class="hero-content"&gt;
+      
+      &lt;!-- Rating pill at top --&gt;
+      &lt;div class="hero-rating-pill"&gt;
+        &lt;span class="hero-rating-stars"&gt;★★★★★&lt;/span&gt;
+        &lt;span&gt;BEST LUXURY BOUTIQUE HOTEL • 20K+ REVIEWS&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Main Headline with gold gradient --&gt;
+      &lt;h1 class="hero-title"&gt;Stay in Our &lt;span&gt;Luxury Hotels &amp; Rooms&lt;/span&gt;&lt;/h1&gt;
+      &lt;p class="hero-subtitle"&gt;
+        Where architectural grandeur meets tranquil ocean horizons. Discover handcrafted suites, private butler care, and serene sanctuaries designed for the discerning traveler.
+      &lt;/p&gt;
+
+      &lt;!-- Booking Quick Search Bar (Form passes dates to rooms.html) --&gt;
+      &lt;form class="booking-search-bar" action="rooms.html" method="GET"&gt;
+        &lt;div class="search-field"&gt;
+          &lt;label class="search-label"&gt;&lt;i class="fas fa-calendar-check"&gt;&lt;/i&gt; Check-In&lt;/label&gt;
+          &lt;div class="search-input-wrap"&gt;
+            &lt;input type="date" name="checkIn" id="searchCheckIn" required&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="search-field"&gt;
+          &lt;label class="search-label"&gt;&lt;i class="fas fa-calendar-xmark"&gt;&lt;/i&gt; Check-Out&lt;/label&gt;
+          &lt;div class="search-input-wrap"&gt;
+            &lt;input type="date" name="checkOut" id="searchCheckOut" required&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="search-field"&gt;
+          &lt;label class="search-label"&gt;&lt;i class="fas fa-user-group"&gt;&lt;/i&gt; Guests&lt;/label&gt;
+          &lt;div class="search-input-wrap"&gt;
+            &lt;select name="guests" id="searchGuests"&gt;
+              &lt;option value="1"&gt;1 Adult&lt;/option&gt;
+              &lt;option value="2" selected&gt;2 Adults&lt;/option&gt;
+              &lt;option value="3"&gt;3 Guests&lt;/option&gt;
+              &lt;option value="4"&gt;4 Guests&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="search-field"&gt;
+          &lt;label class="search-label"&gt;&lt;i class="fas fa-layer-group"&gt;&lt;/i&gt; Sanctuary Tier&lt;/label&gt;
+          &lt;div class="search-input-wrap"&gt;
+            &lt;select name="type" id="searchType"&gt;
+              &lt;option value="all"&gt;All 20 Sanctuaries&lt;/option&gt;
+              &lt;option value="suite"&gt;Signature Suites&lt;/option&gt;
+              &lt;option value="deluxe"&gt;Deluxe Ocean Rooms&lt;/option&gt;
+              &lt;option value="double"&gt;Executive Double&lt;/option&gt;
+              &lt;option value="single"&gt;Classic Single&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;button type="submit" class="btn-primary btn-search-submit"&gt;
+          &lt;i class="fas fa-search"&gt;&lt;/i&gt; Reservation Now
+        &lt;/button&gt;
+      &lt;/form&gt;
+
+      &lt;!-- 3 Suite Preview Pills (01, 02, 03) --&gt;
+      &lt;div class="hero-pills-row"&gt;
+        &lt;!-- Add your 3 pill links here targeting rooms.html?roomId=9, 13, 15 --&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- ========================================================
+       4. CURVED WAVE DIVIDER
+       ======================================================== --&gt;
+  &lt;div class="curved-wave-divider"&gt;
+    &lt;svg viewBox="0 0 1200 120" preserveAspectRatio="none"&gt;
+      &lt;path d="M0,0 C150,90 350,-40 500,40 C650,120 900,20 1200,60 L1200,120 L0,120 Z" class="shape-fill"&gt;&lt;/path&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Build the About section and Curated Amenities grid next! --&gt;
+
+  &lt;!-- Scripts: Loaded in order --&gt;
+  &lt;script src="js/rooms-data.js"&gt;&lt;/script&gt;
+  &lt;script src="js/weather.js"&gt;&lt;/script&gt;
+  &lt;script src="js/main.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<hr class="doc-hr">
+<h2 class="doc-h2">4. Generous Starter: Key CSS Layout Rules (<code class="inline-code">home.css</code>)</h2>
+<p class="doc-p">Here are the key layout styles to get the hero and search bar aligned perfectly:</p>
+<pre class="code-block"><code>/* Hero background with dark overlay */
+.hero-section {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px 140px;
+  background: 
+    linear-gradient(180deg, rgba(11, 14, 20, 0.65) 0%, rgba(11, 14, 20, 0.85) 65%, #0B0E14 100%),
+    url('https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&amp;fit=crop&amp;w=2000&amp;q=85') center/cover no-repeat;
+  text-align: center;
+}
+
+/* Gold Gradient Headline */
+.hero-title span {
+  background: linear-gradient(135deg, #FFFFFF 30%, var(--gold-bright) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 4-column search bar */
+.booking-search-bar {
+  background: rgba(19, 26, 41, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  padding: 18px 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  max-width: 1140px;
+  margin: 0 auto;
+}</code></pre>
+<hr class="doc-hr">
+<h2 class="doc-h2">5. Heavy Assistance on JavaScript (I've Got Your Back)</h2>
+<p class="doc-p">You do <strong>not</strong> need to code the complex JavaScript for the weather or clock from scratch. I have already built the core scripts:</p>
+<ul class="doc-list">
+<li><strong><code class="inline-code">js/weather.js</code></strong>: Automatically contacts the Open-Meteo REST API, checks the temperature at Waterfront, and fills <code class="inline-code">#weatherTemp</code> and <code class="inline-code">#weatherIcon</code>. If offline, it provides a realistic sunny forecast so your page never breaks.</li>
+<li><strong><code class="inline-code">js/main.js</code></strong>: Automatically updates <code class="inline-code">#liveHotelClock</code> every 30 seconds and adds a dark blur effect to the navigation bar when the guest scrolls down.</li>
+</ul>
+<p class="doc-p">All you need to do is keep the exact element IDs (<code class="inline-code">liveWeatherBadge</code>, <code class="inline-code">weatherTemp</code>, <code class="inline-code">weatherIcon</code>, <code class="inline-code">liveHotelClock</code>) in your HTML, and the scripts will do all the heavy lifting for you!</p>
+<p class="doc-p">Mission, make our grand lobby unforgettable.</p>
+
+  <div class="doc-footer">
+    <span>The Grand Reserve Hotel System • Architecture Handover</span>
+    <span>Lead Architect: Emmanuel • October 2026</span>
+  </div>
+</body>
+</html>

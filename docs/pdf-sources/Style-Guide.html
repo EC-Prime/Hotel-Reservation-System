@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Design System & Style Guide</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 16mm 14mm 16mm 14mm;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #0B0E14;
+      color: #E2E8F0;
+      line-height: 1.55;
+      font-size: 13px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .doc-cover-header {
+      border-bottom: 2px solid #C5A869;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .brand-crest {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      color: #FFFFFF;
+      letter-spacing: 2px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-crest span {
+      color: #C5A869;
+      font-size: 9.5px;
+      letter-spacing: 2px;
+      display: block;
+    }
+
+    .doc-meta-badge {
+      font-size: 9px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #F3D995;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .doc-h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 23px;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin: 14px 0 12px;
+      border-left: 4px solid #C5A869;
+      padding-left: 10px;
+    }
+
+    .doc-h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      color: #F3D995;
+      margin: 20px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      page-break-after: avoid;
+    }
+
+    .doc-h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
+      color: #FFFFFF;
+      font-weight: 700;
+      margin: 12px 0 6px;
+      page-break-after: avoid;
+    }
+
+    .doc-p {
+      margin-bottom: 10px;
+      color: #94A3B8;
+      font-size: 12.5px;
+    }
+
+    .doc-p strong { color: #F8FAFC; }
+
+    .doc-quote {
+      background: #131A29;
+      border-left: 3px solid #C5A869;
+      padding: 10px 14px;
+      border-radius: 0 4px 4px 0;
+      margin: 12px 0;
+      font-size: 12px;
+      color: #CBD5E1;
+    }
+
+    .doc-hr {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 18px 0;
+    }
+
+    .code-block {
+      background: #06080D;
+      border: 1px solid #1E293B;
+      border-left: 3px solid #C5A869;
+      padding: 10px 12px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 10.5px;
+      color: #E2E8F0;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+      page-break-inside: avoid;
+    }
+
+    .inline-code {
+      background: rgba(255, 255, 255, 0.08);
+      color: #F3D995;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+    }
+
+    .reference-image-box {
+      margin: 16px 0;
+      background: #0D121D;
+      border: 1px solid #C5A869;
+      border-radius: 6px;
+      overflow: hidden;
+      page-break-inside: avoid;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .ref-badge {
+      background: #131A29;
+      padding: 6px 12px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #F8FAFC;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .target-screenshot-img {
+      width: 100%;
+      max-height: 340px;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    .lux-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 11px;
+      page-break-inside: avoid;
+    }
+
+    .lux-table th {
+      background: #131A29;
+      color: #F3D995;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid #1E293B;
+      font-weight: 700;
+    }
+
+    .lux-table td {
+      padding: 6px 8px;
+      border: 1px solid #1E293B;
+      color: #94A3B8;
+      background: #0E131E;
+    }
+
+    .lux-table tr:nth-child(even) td { background: #111724; }
+
+    .doc-list {
+      margin: 6px 0 10px 18px;
+      color: #94A3B8;
+      font-size: 12.5px;
+    }
+
+    .doc-list li { margin-bottom: 4px; }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #131A29;
+      border: 1px solid #1E293B;
+      border-radius: 4px;
+      padding: 6px 10px;
+      margin-bottom: 5px;
+      font-size: 12px;
+      color: #E2E8F0;
+      page-break-inside: avoid;
+    }
+
+    .check-box {
+      width: 14px;
+      height: 14px;
+      border: 1px solid #C5A869;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #0A0D14;
+      background: #C5A869;
+      font-weight: bold;
+    }
+
+    .doc-num-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      color: #CBD5E1;
+    }
+
+    .num-badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid #C5A869;
+      color: #F3D995;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .doc-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 24px;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: #64748B;
+      font-size: 9.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="doc-cover-header">
+    <div class="brand-crest">
+      ⚜ THE GRAND RESERVE
+      <span>BOUTIQUE & SPA • BUILDER HANDOVER BRIEF</span>
+    </div>
+    <div class="doc-meta-badge">CONFIDENTIAL MISSION</div>
+  </div>
+
+  <h1 class="doc-h1">🏛 The Grand Reserve Boutique & Spa — Official Design System & Style Guide</h1>
+<blockquote class="doc-quote"><strong>Document Version:</strong> 1.0.0  </blockquote>
+<blockquote class="doc-quote"><strong>Classification:</strong> Architectural Standards & Engineering Brief  </blockquote>
+<blockquote class="doc-quote"><strong>Brand Identity:</strong> Obsidian Black & Radiant Champagne Gold (<code class="inline-code">#0B0E14</code> & <code class="inline-code">#C5A869</code>)  </blockquote>
+<blockquote class="doc-quote"><strong>Target Platform:</strong> Hybrid Web Portal (HTML5, Modular CSS3, ES6 JavaScript)</blockquote>
+<hr class="doc-hr">
+<h2 class="doc-h2">1. Design Philosophy & Aesthetic Vision</h2>
+<p class="doc-p">The visual language of <strong>The Grand Reserve Boutique & Spa</strong> embodies an atmosphere of nocturnal intimacy, understated opulence, and architectural prestige. </p>
+<p class="doc-p">Every component is governed by three foundational tenets:</p>
+<div class="doc-num-item"><span class="num-badge">1</span> <span><strong>Nocturnal Intimacy (Obsidian & Deep Charcoal Navy):</strong> Rather than harsh pure blacks, the backgrounds leverage deep blue-black hues (<code class="inline-code">#0B0E14</code> and <code class="inline-code">#080B11</code>) that absorb light while creating exceptional contrast for gold accents and crisp typography.</span></div>
+<div class="doc-num-item"><span class="num-badge">2</span> <span><strong>Champagne Gold Brilliance:</strong> Gold is not applied gratuitously. It is reserved for high-value affordances: active badges, primary rates, reservation actions, and subtle borders with soft ambient drop-shadows.</span></div>
+<div class="doc-num-item"><span class="num-badge">3</span> <span><strong>Architectural Restraint:</strong> Thin 1px subtle borders (<code class="inline-code">rgba(255, 255, 255, 0.08)</code> or <code class="inline-code">rgba(212, 175, 55, 0.35)</code>), generous white space, and refined serif typography inspired by luxury heritage properties.</span></div>
+<hr class="doc-hr">
+<h2 class="doc-h2">2. Color Palette & Token Matrix</h2>
+<p class="doc-p">All values are declared as CSS Custom Properties in [<code class="inline-code">web/css/global.css</code>](../web/css/global.css).</p>
+<h3 class="doc-h3">2.1 Backgrounds & Surfaces</h3>
+<table class="lux-table">
+<thead><tr><th>Token Variable</th><th>Hex / RGBA</th><th>Role & Application</th><th>Contrast Target</th></tr></thead><tbody>
+<tr><td><code class="inline-code">--bg-deep</code></td><td><code class="inline-code">#080B11</code></td><td>Deepest root background, top micro-bar, copyright sub-footer</td><td>Baseline 0</td></tr>
+<tr><td><code class="inline-code">--bg-primary</code></td><td><code class="inline-code">#0B0E14</code></td><td>Primary viewport background across all 5 pages</td><td>Baseline 1</td></tr>
+<tr><td><code class="inline-code">--bg-secondary</code></td><td><code class="inline-code">#0F1420</code></td><td>Alternating section backgrounds (Amenities, Story)</td><td>Elevation +1</td></tr>
+<tr><td><code class="inline-code">--bg-card</code></td><td><code class="inline-code">#131A29</code></td><td>Room cards, trip summary sidebar, form containers</td><td>Elevation +2</td></tr>
+<tr><td><code class="inline-code">--bg-card-hover</code></td><td><code class="inline-code">#172134</code></td><td>Interactive state for hovered cards and pill tags</td><td>Elevation +3</td></tr>
+<tr><td><code class="inline-code">--bg-surface</code></td><td><code class="inline-code">#182236</code></td><td>Secondary button containers, input backgrounds</td><td>Form Fill</td></tr>
+<tr><td><code class="inline-code">--bg-glass</code></td><td><code class="inline-code">rgba(14, 18, 27, 0.85)</code></td><td>Sticky header blur (<code class="inline-code">backdrop-filter: blur(14px)</code>)</td><td>Translucent Layer</td></tr>
+</tbody></table>
+<h3 class="doc-h3">2.2 Gold Accents & Highlights</h3>
+<table class="lux-table">
+<thead><tr><th>Token Variable</th><th>Hex / RGBA</th><th>Role & Application</th><th>Usage Rule</th></tr></thead><tbody>
+<tr><td><code class="inline-code">--gold-primary</code></td><td><code class="inline-code">#C5A869</code></td><td>Refined champagne gold; icons, active borders, labels</td><td>Default accent</td></tr>
+<tr><td><code class="inline-code">--gold-bright</code></td><td><code class="inline-code">#D4AF37</code></td><td>Vibrant royal gold; live room rate amounts, active pills</td><td>High-emphasis</td></tr>
+<tr><td><code class="inline-code">--gold-amber</code></td><td><code class="inline-code">#E5A93C</code></td><td>Warm amber gradient endpoint in <code class="inline-code">.btn-primary</code></td><td>Gradient stops</td></tr>
+<tr><td><code class="inline-code">--gold-light</code></td><td><code class="inline-code">#F3D995</code></td><td>Soft champagne text on dark cards, breadcrumbs</td><td>Legibility text</td></tr>
+<tr><td><code class="inline-code">--gold-glow</code></td><td><code class="inline-code">rgba(212, 175, 55, 0.25)</code></td><td>Ambient box shadows for selected cards & buttons</td><td>Interactive glow</td></tr>
+<tr><td><code class="inline-code">--gold-subtle</code></td><td><code class="inline-code">rgba(212, 175, 55, 0.12)</code></td><td>Circular icon backgrounds, badge backdrops</td><td>Soft fills</td></tr>
+</tbody></table>
+<h3 class="doc-h3">2.3 Typography & Foreground</h3>
+<table class="lux-table">
+<thead><tr><th>Token Variable</th><th>Hex Code</th><th>Visual Hierarchy</th><th>Target Elements</th></tr></thead><tbody>
+<tr><td><code class="inline-code">--text-white</code></td><td><code class="inline-code">#FFFFFF</code></td><td>Primary Emphasis</td><td>Page titles, suite names, total pricing</td></tr>
+<tr><td><code class="inline-code">--text-primary</code></td><td><code class="inline-code">#F8FAFC</code></td><td>Standard Body</td><td>Content descriptions, input values</td></tr>
+<tr><td><code class="inline-code">--text-secondary</code></td><td><code class="inline-code">#94A3B8</code></td><td>Secondary Body</td><td>Room specs, subtitles, amenities</td></tr>
+<tr><td><code class="inline-code">--text-muted</code></td><td><code class="inline-code">#64748B</code></td><td>Tertiary / Dim</td><td>Legal notes, comparison rates, captions</td></tr>
+<tr><td><code class="inline-code">--text-gold</code></td><td><code class="inline-code">#D4AF37</code></td><td>Accent Emphasis</td><td>Live pricing, member perks</td></tr>
+</tbody></table>
+<h3 class="doc-h3">2.4 Status & Operational Badges</h3>
+<table class="lux-table">
+<thead><tr><th>Status Token</th><th>Background Fill</th><th>Foreground Text</th><th>Border Tone</th><th>Application</th></tr></thead><tbody>
+<tr><td><strong>Available</strong></td><td><code class="inline-code">rgba(34, 197, 94, 0.12)</code></td><td><code class="inline-code">#4ADE80</code> (Emerald)</td><td><code class="inline-code">rgba(34, 197, 94, 0.3)</code></td><td>Guaranteed live inventory</td></tr>
+<tr><td><strong>Occupied</strong></td><td><code class="inline-code">rgba(148, 163, 184, 0.12)</code></td><td><code class="inline-code">#94A3B8</code> (Slate)</td><td><code class="inline-code">rgba(148, 163, 184, 0.3)</code></td><td>Unavailable sanctuaries</td></tr>
+<tr><td><strong>Maintenance</strong></td><td><code class="inline-code">rgba(245, 158, 11, 0.12)</code></td><td><code class="inline-code">#FBBF24</code> (Amber)</td><td><code class="inline-code">rgba(245, 158, 11, 0.3)</code></td><td>Scheduled refurbishing</td></tr>
+<tr><td><strong>Urgent</strong></td><td><code class="inline-code">rgba(239, 68, 68, 0.16)</code></td><td><code class="inline-code">#F87171</code> (Crimson)</td><td><code class="inline-code">rgba(239, 68, 68, 0.35)</code></td><td>"Only 1 Left", "Only 2 Left"</td></tr>
+<tr><td><strong>Recommended</strong></td><td><code class="inline-code">rgba(212, 175, 55, 0.18)</code></td><td><code class="inline-code">#F3D995</code> (Gold)</td><td><code class="inline-code">rgba(212, 175, 55, 0.35)</code></td><td>Featured suite badges</td></tr>
+</tbody></table>
+<hr class="doc-hr">
+<h2 class="doc-h2">3. Typography Hierarchy & Font Scales</h2>
+<p class="doc-p">The site relies on three complementary typefaces:</p>
+<ul class="doc-list">
+<li><strong>Display Serif (<code class="inline-code">Cinzel</code>):</strong> For regal hotel brand names, hero headings, and key section titles.</li>
+<li><strong>Secondary Editorial Serif (<code class="inline-code">Playfair Display</code>):</strong> For room card titles, modal headings, and stat counters.</li>
+<li><strong>Modern Clean Sans (<code class="inline-code">Plus Jakarta Sans</code>):</strong> For all UI controls, body text, data points, and inputs.</li>
+</ul>
+<pre class="code-block"><code>--font-display: 'Cinzel', 'Playfair Display', Georgia, serif;
+--font-serif: 'Playfair Display', Georgia, serif;
+--font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;</code></pre>
+<h3 class="doc-h3">Scale & Spacing Matrix</h3>
+<table class="lux-table">
+<thead><tr><th>Semantic Tag</th><th>Font Family</th><th>Size (Desktop)</th><th>Weight</th><th>Letter Spacing</th><th>Line Height</th></tr></thead><tbody>
+<tr><td><strong>Hero Title (<code class="inline-code">H1</code>)</strong></td><td><code class="inline-code">Cinzel</code></td><td><code class="inline-code">clamp(2.4rem, 5vw, 4.2rem)</code></td><td>700 (Bold)</td><td><code class="inline-code">0.5px</code></td><td>1.15</td></tr>
+<tr><td><strong>Page Title (<code class="inline-code">H1</code>)</strong></td><td><code class="inline-code">Cinzel</code></td><td><code class="inline-code">clamp(2.2rem, 3.8vw, 3.2rem)</code></td><td>700 (Bold)</td><td><code class="inline-code">0.5px</code></td><td>1.20</td></tr>
+<tr><td><strong>Section Title (<code class="inline-code">H2</code>)</strong></td><td><code class="inline-code">Cinzel</code></td><td><code class="inline-code">clamp(2.0rem, 3.5vw, 2.8rem)</code></td><td>600 (SemiBold)</td><td><code class="inline-code">0px</code></td><td>1.25</td></tr>
+<tr><td><strong>Room Card Title (<code class="inline-code">H3</code>)</strong></td><td><code class="inline-code">Playfair Display</code></td><td><code class="inline-code">1.35rem</code> (21.6px)</td><td>600 (SemiBold)</td><td><code class="inline-code">0px</code></td><td>1.30</td></tr>
+<tr><td><strong>Card Header / Price (<code class="inline-code">H4</code>)</strong></td><td><code class="inline-code">Playfair Display</code></td><td><code class="inline-code">1.6rem - 1.8rem</code></td><td>700 (Bold)</td><td><code class="inline-code">0px</code></td><td>1.00</td></tr>
+<tr><td><strong>Micro-Label / Badges</strong></td><td><code class="inline-code">Plus Jakarta Sans</code></td><td><code class="inline-code">0.72rem - 0.78rem</code></td><td>700 (Bold)</td><td><code class="inline-code">1.0px - 2.0px</code></td><td>1.00</td></tr>
+<tr><td><strong>Body Regular</strong></td><td><code class="inline-code">Plus Jakarta Sans</code></td><td><code class="inline-code">0.875rem</code> (14px)</td><td>400 (Regular)</td><td><code class="inline-code">0px</code></td><td>1.60</td></tr>
+<tr><td><strong>Meta / Small</strong></td><td><code class="inline-code">Plus Jakarta Sans</code></td><td><code class="inline-code">0.775rem - 0.825rem</code></td><td>500 (Medium)</td><td><code class="inline-code">0.5px</code></td><td>1.40</td></tr>
+</tbody></table>
+<hr class="doc-hr">
+<h2 class="doc-h2">4. Iconography System (FontAwesome 6 Free)</h2>
+<p class="doc-p">All icons use FontAwesome 6 icons loaded via CDN:</p>
+<h3 class="doc-h3">Key Icons by Component</h3>
+<ul class="doc-list">
+<li><strong>Brand Emblem:</strong> <code class="inline-code">fa-moon</code> (Gold crescent moon inside circular gold emblem).</li>
+<li><strong>Navigation & Micro-Bar:</strong> <code class="inline-code">fa-map-marker-alt</code>, <code class="inline-code">fa-clock</code>, <code class="inline-code">fa-sun</code>, <code class="inline-code">fa-clock-rotate-left</code>, <code class="inline-code">fa-key</code>, <code class="inline-code">fa-bars</code>, <code class="inline-code">fa-times</code>.</li>
+<li><strong>Room Specifications:</strong></li>
+<li>Bed: <code class="inline-code">fa-bed</code></li>
+<li>Room Area: <code class="inline-code">fa-vector-square</code></li>
+<li>Guest Capacity: <code class="inline-code">fa-user-friends</code> / <code class="inline-code">fa-users</code></li>
+<li>Aspect / View: <code class="inline-code">fa-compass</code></li>
+<li>Floor level: <code class="inline-code">fa-layer-group</code></li>
+<li><strong>Amenities & Checks:</strong> <code class="inline-code">fa-check</code>, <code class="inline-code">fa-check-circle</code>, <code class="inline-code">fa-shield-halved</code>, <code class="inline-code">fa-wifi</code>, <code class="inline-code">fa-utensils</code>, <code class="inline-code">fa-spa</code>, <code class="inline-code">fa-water</code>, <code class="inline-code">fa-car-side</code>.</li>
+<li><strong>Trip Summary & Trust:</strong> <code class="inline-code">fa-certificate</code>, <code class="inline-code">fa-shield-halved</code>, <code class="inline-code">fa-ribbon</code>, <code class="inline-code">fa-award</code>.</li>
+<li><strong>Confirmation & Post-Stay:</strong> <code class="inline-code">fa-circle-check</code>, <code class="inline-code">fa-calendar-plus</code>, <code class="inline-code">fa-receipt</code>, <code class="inline-code">fa-print</code>, <code class="inline-code">fa-lock</code>.</li>
+<li><strong>Contact & Communication:</strong> <code class="inline-code">fa-phone</code>, <code class="inline-code">fa-envelope</code>, <code class="inline-code">fa-location-dot</code>, <code class="inline-code">fa-pen</code>, <code class="inline-code">fa-bookmark</code>, <code class="inline-code">fa-message</code>.</li>
+</ul>
+<hr class="doc-hr">
+<h2 class="doc-h2">5. Component Construction Rules</h2>
+<h3 class="doc-h3">5.1 Primary Button (<code class="inline-code">.btn-primary</code>)</h3>
+<pre class="code-block"><code>background: linear-gradient(135deg, #C5A869, #E5A93C);
+color: #0B0E14;
+font-weight: 700;
+font-size: 0.9rem;
+letter-spacing: 0.5px;
+padding: 12px 28px;
+border-radius: 6px;
+border: 1px solid rgba(255, 255, 255, 0.2);
+box-shadow: 0 4px 16px rgba(197, 168, 105, 0.25);</code></pre>
+<p class="doc-p"><em>Hover state:</em> Elevates <code class="inline-code">-2px</code> with expanded amber glow <code class="inline-code">box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4)</code>.</p>
+<h3 class="doc-h3">5.2 Filter Tag Pills (<code class="inline-code">.filter-pill</code>)</h3>
+<ul class="doc-list">
+<li>Default: background <code class="inline-code">#131A29</code>, border <code class="inline-code">#1E293B</code>, color <code class="inline-code">#94A3B8</code>.</li>
+<li>Active: background <code class="inline-code">#C5A869</code>, color <code class="inline-code">#0A0D14</code>, font-weight <code class="inline-code">700</code>, box-shadow <code class="inline-code">0 4px 14px rgba(212, 175, 55, 0.25)</code>.</li>
+</ul>
+<h3 class="doc-h3">5.3 Luxury Input Fields (<code class="inline-code">.form-input-lux</code>)</h3>
+<ul class="doc-list">
+<li>Dark semi-translucent fill: <code class="inline-code">rgba(11, 14, 20, 0.70)</code>.</li>
+<li>Inset left padding of <code class="inline-code">42px</code> to accommodate gold icons positioned absolutely at <code class="inline-code">left: 14px</code>.</li>
+<li>Focus: <code class="inline-code">border-color: #D4AF37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);</code>.</li>
+</ul>
+<hr class="doc-hr">
+<h2 class="doc-h2">6. Modular CSS Architecture</h2>
+<p class="doc-p">To maintain maintainability across team members, the styling is segmented into modular files:</p>
+<div class="doc-num-item"><span class="num-badge">1</span> <span><strong><code class="inline-code">css/global.css</code></strong>: Loaded on every page. Declares CSS variables, typography imports, resets, top micro-bar, site header, footer, toast notifications, badges, and modal overlays.</span></div>
+<div class="doc-num-item"><span class="num-badge">2</span> <span><strong><code class="inline-code">css/home.css</code></strong>: Loaded only on <code class="inline-code">index.html</code>. Handles hero banner, booking search widget, feature preview pills, wave SVG, and story layout.</span></div>
+<div class="doc-num-item"><span class="num-badge">3</span> <span><strong><code class="inline-code">css/rooms.css</code></strong>: Loaded only on <code class="inline-code">rooms.html</code>. Handles catalog grid, room cards, filter tags, and the sticky Trip Summary sidebar.</span></div>
+<div class="doc-num-item"><span class="num-badge">4</span> <span><strong><code class="inline-code">css/booking.css</code></strong>: Loaded on <code class="inline-code">booking.html</code>. Handles 2-column checkout grid, payment guarantee box, and input groups.</span></div>
+<div class="doc-num-item"><span class="num-badge">5</span> <span><strong><code class="inline-code">css/confirmation.css</code></strong>: Loaded on <code class="inline-code">confirmation.html</code>. Handles confirmation hero, reservation card, calendar export button, perks cards, and manage booking lookup box.</span></div>
+<div class="doc-num-item"><span class="num-badge">6</span> <span><strong><code class="inline-code">css/contact.css</code></strong>: Loaded on <code class="inline-code">contact.html</code>. Handles contact hero banner, 4 circular info cards, responsive Google Map iframe, and dark contact form.</span></div>
+
+  <div class="doc-footer">
+    <span>The Grand Reserve Hotel System • Architecture Handover</span>
+    <span>Lead Architect: Emmanuel • October 2026</span>
+  </div>
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Builder Handover Brief: Rooms Gallery & Live Trip Summary</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 16mm 14mm 16mm 14mm;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #0B0E14;
+      color: #E2E8F0;
+      line-height: 1.55;
+      font-size: 13px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .doc-cover-header {
+      border-bottom: 2px solid #C5A869;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .brand-crest {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      color: #FFFFFF;
+      letter-spacing: 2px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-crest span {
+      color: #C5A869;
+      font-size: 9.5px;
+      letter-spacing: 2px;
+      display: block;
+    }
+
+    .doc-meta-badge {
+      font-size: 9px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #F3D995;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .doc-h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 23px;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin: 14px 0 12px;
+      border-left: 4px solid #C5A869;
+      padding-left: 10px;
+    }
+
+    .doc-h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      color: #F3D995;
+      margin: 20px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      page-break-after: avoid;
+    }
+
+    .doc-h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
+      color: #FFFFFF;
+      font-weight: 700;
+      margin: 12px 0 6px;
+      page-break-after: avoid;
+    }
+
+    .doc-p {
+      margin-bottom: 10px;
+      color: #94A3B8;
+      font-size: 12.5px;
+    }
+
+    .doc-p strong { color: #F8FAFC; }
+
+    .doc-quote {
+      background: #131A29;
+      border-left: 3px solid #C5A869;
+      padding: 10px 14px;
+      border-radius: 0 4px 4px 0;
+      margin: 12px 0;
+      font-size: 12px;
+      color: #CBD5E1;
+    }
+
+    .doc-hr {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 18px 0;
+    }
+
+    .code-block {
+      background: #06080D;
+      border: 1px solid #1E293B;
+      border-left: 3px solid #C5A869;
+      padding: 10px 12px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 10.5px;
+      color: #E2E8F0;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+      page-break-inside: avoid;
+    }
+
+    .inline-code {
+      background: rgba(255, 255, 255, 0.08);
+      color: #F3D995;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+    }
+
+    .reference-image-box {
+      margin: 16px 0;
+      background: #0D121D;
+      border: 1px solid #C5A869;
+      border-radius: 6px;
+      overflow: hidden;
+      page-break-inside: avoid;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .ref-badge {
+      background: #131A29;
+      padding: 6px 12px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #F8FAFC;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .target-screenshot-img {
+      width: 100%;
+      max-height: 340px;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    .lux-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 11px;
+      page-break-inside: avoid;
+    }
+
+    .lux-table th {
+      background: #131A29;
+      color: #F3D995;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid #1E293B;
+      font-weight: 700;
+    }
+
+    .lux-table td {
+      padding: 6px 8px;
+      border: 1px solid #1E293B;
+      color: #94A3B8;
+      background: #0E131E;
+    }
+
+    .lux-table tr:nth-child(even) td { background: #111724; }
+
+    .doc-list {
+      margin: 6px 0 10px 18px;
+      color: #94A3B8;
+      font-size: 12.5px;
+    }
+
+    .doc-list li { margin-bottom: 4px; }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #131A29;
+      border: 1px solid #1E293B;
+      border-radius: 4px;
+      padding: 6px 10px;
+      margin-bottom: 5px;
+      font-size: 12px;
+      color: #E2E8F0;
+      page-break-inside: avoid;
+    }
+
+    .check-box {
+      width: 14px;
+      height: 14px;
+      border: 1px solid #C5A869;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #0A0D14;
+      background: #C5A869;
+      font-weight: bold;
+    }
+
+    .doc-num-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      color: #CBD5E1;
+    }
+
+    .num-badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid #C5A869;
+      color: #F3D995;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .doc-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 24px;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: #64748B;
+      font-size: 9.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="doc-cover-header">
+    <div class="brand-crest">
+      ⚜ THE GRAND RESERVE
+      <span>BOUTIQUE & SPA • BUILDER HANDOVER BRIEF</span>
+    </div>
+    <div class="doc-meta-badge">CONFIDENTIAL MISSION</div>
+  </div>
+
+  <h1 class="doc-h1">🏛 Builder Handover Brief: Rooms Gallery & Live Trip Summary</h1>
+<blockquote class="doc-quote"><strong>Builder:</strong> Stacy (Assigned to <code class="inline-code">web/rooms.html</code> & <code class="inline-code">web/css/rooms.css</code>)  </blockquote>
+<blockquote class="doc-quote"><strong>From:</strong> Emmanuel (Lead Architect & Database Developer)  </blockquote>
+<blockquote class="doc-quote"><strong>Visual Reference:</strong> [<code class="inline-code">docs/screenshots/rooms-reference.png</code>](../screenshots/rooms-reference.png)</blockquote>
+<hr class="doc-hr">
+<h2 class="doc-h2">1. Why I Chose You for the Rooms Gallery</h2>
+<p class="doc-p">Stacy, I hand-picked you for the <strong>Rooms Gallery and Trip Summary</strong> because this is the commercial heart of the entire hotel. If guests cannot easily browse through our 20 rooms or see their live pricing breakdown, the whole system stalls. </p>
+<p class="doc-p">You have a fantastic eye for structured catalogs, and you know how to make interactive elements feel crisp and satisfying to click. You will be presenting 20 authentic rooms across 3 floors (Single, Double, Suite, Deluxe) paired with our signature sticky Trip Summary sidebar that recalculates costs on the fly. </p>
+<p class="doc-p"><em>(Remember: The Contact page is being handled completely by me (<code class="inline-code">contact.html</code>), so you can pour 100% of your energy into this rooms experience!)</em></p>
+<hr class="doc-hr">
+<h2 class="doc-h2">2. Your Visual Focal Point</h2>
+<p class="doc-p">Open up your reference screenshot in <code class="inline-code">docs/screenshots/rooms-reference.png</code>:</p>
+
+          <div class="reference-image-box">
+            <div class="ref-badge"><span style="color:#C5A869">★ TARGET BENCHMARK:</span> Rendered Reference Capture</div>
+            <img src="file:///c:/Users/Emmanuel Chuma/Desktop/Hotel-Reservation-System/docs/screenshots/rooms-reference.png" alt="Target Benchmark Screenshot" class="target-screenshot-img">
+          </div>
+        
+<h3 class="doc-h3">What Makes This Page Work (Plain English):</h3>
+<div class="doc-num-item"><span class="num-badge">1</span> <span><strong>The Top Filter Tag Pills:</strong> Simple, rounded pill buttons (All Sanctuaries, Signature Suites, Deluxe Rooms, Executive Double, Classic Single). The selected pill turns solid champagne gold (<code class="inline-code">#C5A869</code>) with dark bold text.</span></div>
+<div class="doc-num-item"><span class="num-badge">2</span> <span><strong>The 2-Column Grid Layout:</strong> The left column (about 65% wide) holds the room cards. The right column (about 35% wide) holds the <strong>sticky Trip Summary sidebar</strong> that stays pinned to the screen as the guest scrolls.</span></div>
+<div class="doc-num-item"><span class="num-badge">3</span> <span><strong>The Anatomy of a Room Card:</strong></span></div>
+<ul class="doc-list">
+<li>Left side: Room photo with small badges (<em>Recommended</em>, <em>Only 2 Left</em>, <em>Floor 1/2/3</em>).</li>
+<li>Right side: Room title, spec icons (Bed size, sqm, guests, view), brief description, crossed-out comparator rate (<code class="inline-code">Expedia: $XXX</code>), large bold gold <strong>Live Direct Rate</strong>, a "View Details" link, and a gold "Select Room" button.</li>
+<div class="doc-num-item"><span class="num-badge">4</span> <span><strong>The Sticky Trip Summary:</strong> Keeps track of Check-in/Check-out dates, nights, guests, selected room, direct booking benefits, 15% taxes, and the large gold grand total.</span></div>
+</ul>
+<hr class="doc-hr">
+<h2 class="doc-h2">3. Generous Starter: HTML Scaffold (<code class="inline-code">rooms.html</code>)</h2>
+<p class="doc-p">Here is your starting foundation. It establishes the 2-column workspace and all the hooks needed for dynamic rendering:</p>
+<pre class="code-block"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Select Your Sanctuary | The Grand Reserve&lt;/title&gt;
+  
+  &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"&gt;
+  &lt;link rel="stylesheet" href="css/global.css"&gt;
+  &lt;link rel="stylesheet" href="css/rooms.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- Top Micro-bar &amp; Site Header (Matches global.css) --&gt;
+  &lt;header class="site-header"&gt;
+    &lt;div class="header-container"&gt;
+      &lt;a href="index.html" class="brand-logo"&gt;
+        &lt;div class="brand-emblem"&gt;&lt;i class="fas fa-moon"&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;div class="brand-text"&gt;
+          &lt;span class="brand-name"&gt;THE GRAND RESERVE&lt;/span&gt;
+          &lt;span class="brand-tagline"&gt;Boutique &amp; Spa&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/a&gt;
+      &lt;nav class="site-nav"&gt;
+        &lt;a href="index.html" class="nav-link"&gt;Home&lt;/a&gt;
+        &lt;a href="rooms.html" class="nav-link active"&gt;Rooms &amp; Suites&lt;/a&gt;
+        &lt;a href="contact.html" class="nav-link"&gt;Contact&lt;/a&gt;
+      &lt;/nav&gt;
+      &lt;div class="nav-cta-group"&gt;
+        &lt;a href="confirmation.html" class="btn-nav-outline"&gt;Manage Booking&lt;/a&gt;
+        &lt;a href="rooms.html" class="btn-nav-gold"&gt;Reserve Sanctuary&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;main class="rooms-catalog-section"&gt;
+    &lt;div class="container"&gt;
+      
+      &lt;!-- Breadcrumb Bar --&gt;
+      &lt;nav class="breadcrumb-bar"&gt;
+        &lt;ol class="breadcrumb-list"&gt;
+          &lt;li&gt;&lt;a href="index.html"&gt;Home&lt;/a&gt;&lt;/li&gt;
+          &lt;li class="breadcrumb-sep"&gt;&lt;i class="fas fa-chevron-right"&gt;&lt;/i&gt;&lt;/li&gt;
+          &lt;li class="breadcrumb-current"&gt;Room Selection&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/nav&gt;
+
+      &lt;div class="page-header"&gt;
+        &lt;h1 class="page-title"&gt;Select Your Sanctuary&lt;/h1&gt;
+        &lt;p class="page-subtitle"&gt;Tailored comfort for the discerning traveler. Prices are per night.&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Filter Tags Bar (Clicking changes active room filter) --&gt;
+      &lt;div class="filter-tags-bar"&gt;
+        &lt;div class="filter-pills-list"&gt;
+          &lt;button class="filter-pill active" data-filter="all"&gt;All Sanctuaries&lt;/button&gt;
+          &lt;button class="filter-pill" data-filter="suite"&gt;Signature Suites&lt;/button&gt;
+          &lt;button class="filter-pill" data-filter="deluxe"&gt;Deluxe Rooms&lt;/button&gt;
+          &lt;button class="filter-pill" data-filter="double"&gt;Executive Double&lt;/button&gt;
+          &lt;button class="filter-pill" data-filter="single"&gt;Classic Single&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class="filter-controls-right"&gt;
+          &lt;select class="filter-select" id="floorFilterSelect"&gt;
+            &lt;option value="all"&gt;All Floors (1, 2, 3)&lt;/option&gt;
+            &lt;option value="1"&gt;Floor 1 - Courtyard &amp; Garden&lt;/option&gt;
+            &lt;option value="2"&gt;Floor 2 - Panoramic Mid-Level&lt;/option&gt;
+            &lt;option value="3"&gt;Floor 3 - Top Floor Penthouses&lt;/option&gt;
+          &lt;/select&gt;
+
+          &lt;select class="filter-select" id="sortFilterSelect"&gt;
+            &lt;option value="featured"&gt;Sort: Recommended&lt;/option&gt;
+            &lt;option value="price-low"&gt;Price: Low to High&lt;/option&gt;
+            &lt;option value="price-high"&gt;Price: High to Low&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Two-Column Layout --&gt;
+      &lt;div class="rooms-layout-grid"&gt;
+        
+        &lt;!-- Left: 20 Rooms Container (Injected by JavaScript) --&gt;
+        &lt;div class="rooms-cards-container" id="roomsListContainer"&gt;
+          &lt;!-- Room cards will be rendered here dynamically --&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Right: Sticky Trip Summary Sidebar --&gt;
+        &lt;aside class="trip-summary-sidebar"&gt;
+          &lt;div class="trip-summary-header"&gt;
+            &lt;h2 class="trip-summary-title"&gt;Trip Summary&lt;/h2&gt;
+            &lt;a href="#searchCheckIn" class="btn-edit-search"&gt;Edit Search&lt;/a&gt;
+          &lt;/div&gt;
+
+          &lt;div class="trip-detail-items"&gt;
+            &lt;div class="trip-detail-row"&gt;
+              &lt;i class="fas fa-calendar trip-detail-icon"&gt;&lt;/i&gt;
+              &lt;div&gt;
+                &lt;div class="trip-detail-label"&gt;Dates&lt;/div&gt;
+                &lt;div class="trip-detail-val" id="summaryDates"&gt;Oct 24 — Oct 27, 2026&lt;/div&gt;
+                &lt;div class="trip-detail-sub" id="summaryNights"&gt;3 Nights&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="trip-detail-row"&gt;
+              &lt;i class="fas fa-bed trip-detail-icon"&gt;&lt;/i&gt;
+              &lt;div style="width: 100%;"&gt;
+                &lt;div class="trip-detail-label"&gt;Sanctuary&lt;/div&gt;
+                &lt;div id="summarySanctuary" style="margin-top: 6px;"&gt;
+                  &lt;!-- Selected room thumbnail &amp; title will appear here --&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Direct Benefits Card --&gt;
+          &lt;div class="direct-benefits-card"&gt;
+            &lt;div class="direct-benefits-title"&gt;&lt;i class="fas fa-certificate"&gt;&lt;/i&gt; Direct Booking Benefits&lt;/div&gt;
+            &lt;ul class="direct-benefits-list"&gt;
+              &lt;li&gt;&lt;i class="fas fa-check"&gt;&lt;/i&gt; Best Price Guaranteed&lt;/li&gt;
+              &lt;li&gt;&lt;i class="fas fa-check"&gt;&lt;/i&gt; Complimentary Welcome Drink&lt;/li&gt;
+              &lt;li&gt;&lt;i class="fas fa-check"&gt;&lt;/i&gt; Priority Late Check-out&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Financial Breakdown --&gt;
+          &lt;div class="trip-price-breakdown"&gt;
+            &lt;div class="breakdown-row"&gt;
+              &lt;span&gt;Average nightly rate&lt;/span&gt;
+              &lt;span id="summaryRate"&gt;$0.00&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="breakdown-row"&gt;
+              &lt;span&gt;Taxes &amp; Fees (15%)&lt;/span&gt;
+              &lt;span id="summaryTaxes"&gt;$0.00&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="breakdown-row discount"&gt;
+              &lt;span&gt;Direct Member Discount&lt;/span&gt;
+              &lt;span id="summaryDiscount"&gt;-$50.00&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="breakdown-row total-row"&gt;
+              &lt;strong&gt;Total&lt;/strong&gt;
+              &lt;span class="total-gold-amount" id="summaryTotal"&gt;$0.00&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;button class="btn-primary btn-complete-booking" id="completeBookingBtn"&gt;
+            Complete Booking
+          &lt;/button&gt;
+        &lt;/aside&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;!-- Scripts: Crucial order --&gt;
+  &lt;script src="js/rooms-data.js"&gt;&lt;/script&gt;
+  &lt;script src="js/weather.js"&gt;&lt;/script&gt;
+  &lt;script src="js/main.js"&gt;&lt;/script&gt;
+  &lt;script src="js/booking.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<hr class="doc-hr">
+<h2 class="doc-h2">4. Generous Starter: Key CSS Layout Rules (<code class="inline-code">rooms.css</code>)</h2>
+<p class="doc-p">Here is how you lock in the 2-column layout and the sticky sidebar:</p>
+<pre class="code-block"><code>/* 2-column layout: Left column expands, right column fixed at 380px */
+.rooms-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Sticky Trip Summary Sidebar */
+.trip-summary-sidebar {
+  position: sticky;
+  top: 96px; /* Sits comfortably below the header */
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+/* Room card horizontal layout */
+.room-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  transition: all 0.3s ease;
+}
+
+.room-card.selected {
+  border: 2px solid var(--gold-bright);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+}</code></pre>
+<hr class="doc-hr">
+<h2 class="doc-h2">5. Heavy Assistance on JavaScript (I've Done the Math)</h2>
+<p class="doc-p">You don't have to worry about writing complicated calculation algorithms. In <code class="inline-code">js/booking.js</code>, I have already written:</p>
+<div class="doc-num-item"><span class="num-badge">1</span> <span><code class="inline-code">ROOMS_DATA</code>: The complete list of all 20 rooms with photos, prices, bed specs, views, and floor numbers.</span></div>
+<div class="doc-num-item"><span class="num-badge">2</span> <span><code class="inline-code">selectSanctuary(roomId)</code>: Automatically highlights the selected card and recalculates:</span></div>
+<ul class="doc-list">
+<li>Nights: <code class="inline-code">(CheckOutDate - CheckInDate)</code></li>
+<li>Subtotal: <code class="inline-code">PricePerNight * Nights</code></li>
+<li>Tax: <code class="inline-code">15% of Subtotal</code></li>
+<li>Member Discount: <code class="inline-code">-$50.00</code></li>
+<li>Grand Total: <code class="inline-code">Subtotal + Tax - Discount</code></li>
+<div class="doc-num-item"><span class="num-badge">3</span> <span>Filter & Sort handlers: Filter by suite type or floor with one line of code!</span></div>
+</ul>
+<p class="doc-p">Just ensure your HTML container has <code class="inline-code">id="roomsListContainer"</code> and your summary elements use the IDs in the scaffold (<code class="inline-code">summaryDates</code>, <code class="inline-code">summaryNights</code>, <code class="inline-code">summaryRate</code>, <code class="inline-code">summaryTotal</code>), and <code class="inline-code">booking.js</code> will handle all the rendering seamlessly.</p>
+<p class="doc-p">Stacy, you are building the core of our hotel. Make it shine!</p>
+
+  <div class="doc-footer">
+    <span>The Grand Reserve Hotel System • Architecture Handover</span>
+    <span>Lead Architect: Emmanuel • October 2026</span>
+  </div>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Builder Handover Brief: Confirmation & Manage Booking Portal</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 16mm 14mm 16mm 14mm;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #0B0E14;
+      color: #E2E8F0;
+      line-height: 1.55;
+      font-size: 13px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .doc-cover-header {
+      border-bottom: 2px solid #C5A869;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .brand-crest {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      color: #FFFFFF;
+      letter-spacing: 2px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-crest span {
+      color: #C5A869;
+      font-size: 9.5px;
+      letter-spacing: 2px;
+      display: block;
+    }
+
+    .doc-meta-badge {
+      font-size: 9px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #F3D995;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .doc-h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 23px;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin: 14px 0 12px;
+      border-left: 4px solid #C5A869;
+      padding-left: 10px;
+    }
+
+    .doc-h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      color: #F3D995;
+      margin: 20px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      page-break-after: avoid;
+    }
+
+    .doc-h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
+      color: #FFFFFF;
+      font-weight: 700;
+      margin: 12px 0 6px;
+      page-break-after: avoid;
+    }
+
+    .doc-p {
+      margin-bottom: 10px;
+      color: #94A3B8;
+      font-size: 12.5px;
+    }
+
+    .doc-p strong { color: #F8FAFC; }
+
+    .doc-quote {
+      background: #131A29;
+      border-left: 3px solid #C5A869;
+      padding: 10px 14px;
+      border-radius: 0 4px 4px 0;
+      margin: 12px 0;
+      font-size: 12px;
+      color: #CBD5E1;
+    }
+
+    .doc-hr {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 18px 0;
+    }
+
+    .code-block {
+      background: #06080D;
+      border: 1px solid #1E293B;
+      border-left: 3px solid #C5A869;
+      padding: 10px 12px;
+      border-radius: 4px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 10.5px;
+      color: #E2E8F0;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+      page-break-inside: avoid;
+    }
+
+    .inline-code {
+      background: rgba(255, 255, 255, 0.08);
+      color: #F3D995;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+    }
+
+    .reference-image-box {
+      margin: 16px 0;
+      background: #0D121D;
+      border: 1px solid #C5A869;
+      border-radius: 6px;
+      overflow: hidden;
+      page-break-inside: avoid;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .ref-badge {
+      background: #131A29;
+      padding: 6px 12px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #F8FAFC;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .target-screenshot-img {
+      width: 100%;
+      max-height: 340px;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    .lux-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 11px;
+      page-break-inside: avoid;
+    }
+
+    .lux-table th {
+      background: #131A29;
+      color: #F3D995;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid #1E293B;
+      font-weight: 700;
+    }
+
+    .lux-table td {
+      padding: 6px 8px;
+      border: 1px solid #1E293B;
+      color: #94A3B8;
+      background: #0E131E;
+    }
+
+    .lux-table tr:nth-child(even) td { background: #111724; }
+
+    .doc-list {
+      margin: 6px 0 10px 18px;
+      color: #94A3B8;
+      font-size: 12.5px;
+    }
+
+    .doc-list li { margin-bottom: 4px; }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #131A29;
+      border: 1px solid #1E293B;
+      border-radius: 4px;
+      padding: 6px 10px;
+      margin-bottom: 5px;
+      font-size: 12px;
+      color: #E2E8F0;
+      page-break-inside: avoid;
+    }
+
+    .check-box {
+      width: 14px;
+      height: 14px;
+      border: 1px solid #C5A869;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #0A0D14;
+      background: #C5A869;
+      font-weight: bold;
+    }
+
+    .doc-num-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      color: #CBD5E1;
+    }
+
+    .num-badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid #C5A869;
+      color: #F3D995;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .doc-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 24px;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: #64748B;
+      font-size: 9.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="doc-cover-header">
+    <div class="brand-crest">
+      ⚜ THE GRAND RESERVE
+      <span>BOUTIQUE & SPA • BUILDER HANDOVER BRIEF</span>
+    </div>
+    <div class="doc-meta-badge">CONFIDENTIAL MISSION</div>
+  </div>
+
+  <h1 class="doc-h1">🏛 Builder Handover Brief: Confirmation & Manage Booking Portal</h1>
+<blockquote class="doc-quote"><strong>Builder:</strong> Terrance (Assigned to <code class="inline-code">web/confirmation.html</code> & <code class="inline-code">web/css/confirmation.css</code>)  </blockquote>
+<blockquote class="doc-quote"><strong>From:</strong> Emmanuel (Lead Architect & Database Developer)  </blockquote>
+<blockquote class="doc-quote"><strong>Visual Reference:</strong> [<code class="inline-code">docs/screenshots/confirmation-reference.png</code>](../screenshots/confirmation-reference.png)</blockquote>
+<hr class="doc-hr">
+<h2 class="doc-h2">1. Why I Chose You for the Confirmation Page</h2>
+<p class="doc-p">Terrance, I selected you for the <strong>Confirmation and Manage Booking Portal</strong> because you understand that the guest's relationship with our hotel doesn't end when they click "Pay"—it truly begins right here.</p>
+<p class="doc-p">When a guest sees their confirmation, they want instant reassurance: a clear Booking ID, arrival instructions for their digital key, direct booking benefits, a way to add their stay to their Google or Apple calendar, a formal printable tax receipt, and an easy lookup tool to check on their reservation anytime.</p>
+<p class="doc-p">You have a fantastic sense of structure, clarity, and precision. You know how to make information look authoritative and satisfying.</p>
+<p class="doc-p"><em>(Note: Don't worry about the Contact page—I am building <code class="inline-code">contact.html</code> myself! Your mission is delivering this world-class confirmation and booking management experience.)</em></p>
+<hr class="doc-hr">
+<h2 class="doc-h2">2. Your Visual Focal Point</h2>
+<p class="doc-p">Look at your reference screenshot in <code class="inline-code">docs/screenshots/confirmation-reference.png</code>:</p>
+
+          <div class="reference-image-box">
+            <div class="ref-badge"><span style="color:#C5A869">★ TARGET BENCHMARK:</span> Rendered Reference Capture</div>
+            <img src="file:///c:/Users/Emmanuel Chuma/Desktop/Hotel-Reservation-System/docs/screenshots/confirmation-reference.png" alt="Target Benchmark Screenshot" class="target-screenshot-img">
+          </div>
+        
+<h3 class="doc-h3">What Makes This Page Reassuring (Plain English):</h3>
+<div class="doc-num-item"><span class="num-badge">1</span> <span><strong>The Gold Checkmark Hero:</strong> A clean, glowing circular badge with a checkmark, reading <em>"Thank You — Your stay at [Room Name] is confirmed"</em>.</span></div>
+<div class="doc-num-item"><span class="num-badge">2</span> <span><strong>The Main Reservation Card:</strong></span></div>
+<ul class="doc-list">
+<li>Top bar: Gold shield badge labeled <em>"RESERVATION CONFIRMED"</em> and the large bold Booking ID (e.g. <code class="inline-code">#LXB-99283</code>).</li>
+<li>2-column layout: High-res room photo on the left; Stay dates, Check-in Info (<em>3:00 PM | Digital Key Ready</em>), digital key instructions, and the two action buttons (<em>Add to Calendar</em> and <em>View Receipt</em>) on the right.</li>
+<div class="doc-num-item"><span class="num-badge">3</span> <span><strong>The Direct Booking Perks Cards:</strong> Two sleek cards highlighting <em>Complimentary Breakfast</em> (cutlery icon) and <em>Guaranteed Late Checkout</em> (clock icon).</span></div>
+<div class="doc-num-item"><span class="num-badge">4</span> <span><strong>The Manage Booking Lookup Box:</strong> A simple search box at the bottom where returning guests can type their Booking ID to instantly look up their stay.</span></div>
+</ul>
+<hr class="doc-hr">
+<h2 class="doc-h2">3. Generous Starter: HTML Scaffold (<code class="inline-code">confirmation.html</code>)</h2>
+<p class="doc-p">Here is your starter foundation. It contains all the exact elements and IDs required:</p>
+<pre class="code-block"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Booking Confirmed | The Grand Reserve&lt;/title&gt;
+  
+  &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"&gt;
+  &lt;link rel="stylesheet" href="css/global.css"&gt;
+  &lt;link rel="stylesheet" href="css/confirmation.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- Site Header (Matches global.css) --&gt;
+  &lt;header class="site-header"&gt;
+    &lt;div class="header-container"&gt;
+      &lt;a href="index.html" class="brand-logo"&gt;
+        &lt;div class="brand-emblem"&gt;&lt;i class="fas fa-moon"&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;div class="brand-text"&gt;
+          &lt;span class="brand-name"&gt;THE GRAND RESERVE&lt;/span&gt;
+          &lt;span class="brand-tagline"&gt;Boutique &amp; Spa&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/a&gt;
+      &lt;nav class="site-nav"&gt;
+        &lt;a href="index.html" class="nav-link"&gt;Home&lt;/a&gt;
+        &lt;a href="rooms.html" class="nav-link"&gt;Rooms &amp; Suites&lt;/a&gt;
+        &lt;a href="contact.html" class="nav-link"&gt;Contact&lt;/a&gt;
+      &lt;/nav&gt;
+      &lt;div class="nav-cta-group"&gt;
+        &lt;a href="confirmation.html" class="btn-nav-outline active"&gt;Manage Booking&lt;/a&gt;
+        &lt;a href="rooms.html" class="btn-nav-gold"&gt;Reserve Sanctuary&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;main class="confirmation-section"&gt;
+    &lt;div class="container"&gt;
+
+      &lt;!-- Success Hero Banner --&gt;
+      &lt;div class="confirm-hero-center"&gt;
+        &lt;div class="confirm-success-icon"&gt;&lt;i class="fas fa-check"&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;h1 class="confirm-hero-title"&gt;Thank You&lt;/h1&gt;
+        &lt;p class="confirm-hero-sub"&gt;
+          Your stay at the &lt;span id="confirmRoomTitle"&gt;Executive Suite&lt;/span&gt; is confirmed.
+        &lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Main Confirmation Card --&gt;
+      &lt;div class="confirmation-card-main"&gt;
+        &lt;div class="reservation-top-header"&gt;
+          &lt;div class="res-tag-group"&gt;
+            &lt;span class="res-status-label"&gt;&lt;i class="fas fa-shield-check"&gt;&lt;/i&gt; RESERVATION CONFIRMED&lt;/span&gt;
+            &lt;div class="res-booking-id" id="confirmBookingId"&gt;Booking ID: #LXB-99283&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;span class="badge-tag badge-available"&gt;&lt;i class="fas fa-circle-check"&gt;&lt;/i&gt; Guaranteed Direct Rate&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="confirm-card-grid"&gt;
+          &lt;div&gt;
+            &lt;img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&amp;fit=crop&amp;w=900&amp;q=80" 
+                 alt="Confirmed Room" class="confirm-room-image" id="confirmRoomImage"&gt;
+          &lt;/div&gt;
+
+          &lt;div class="confirm-details-col"&gt;
+            &lt;div class="confirm-meta-row"&gt;
+              &lt;div class="confirm-meta-item"&gt;
+                &lt;i class="fas fa-calendar-alt"&gt;&lt;/i&gt;
+                &lt;div&gt;
+                  &lt;div class="label"&gt;STAY DATES&lt;/div&gt;
+                  &lt;div class="val" id="confirmStayDates"&gt;Oct 24 — Oct 27, 2026 (3 Nights)&lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;div class="confirm-meta-item"&gt;
+                &lt;i class="fas fa-clock"&gt;&lt;/i&gt;
+                &lt;div&gt;
+                  &lt;div class="label"&gt;CHECK-IN INFO&lt;/div&gt;
+                  &lt;div class="val" id="confirmCheckInInfo"&gt;3:00 PM | Digital Key Ready&lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;p class="confirm-instruction-text"&gt;
+              A digital key will be available in the Grand Reserve app 24 hours before your arrival. Please present a valid ID at the concierge desk for valet and luggage service.
+            &lt;/p&gt;
+
+            &lt;div class="confirm-actions-row"&gt;
+              &lt;button class="btn-primary" id="btnAddToCalendar"&gt;
+                &lt;i class="fas fa-calendar-plus"&gt;&lt;/i&gt; Add to Calendar
+              &lt;/button&gt;
+              &lt;button class="btn-secondary" id="btnViewReceipt"&gt;
+                &lt;i class="fas fa-receipt"&gt;&lt;/i&gt; View Receipt
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Direct Booking Perks Cards --&gt;
+      &lt;section class="direct-perks-section"&gt;
+        &lt;div class="perks-section-header"&gt;
+          &lt;h2 class="perks-section-title"&gt;Direct Booking Perks&lt;/h2&gt;
+          &lt;span class="badge-tag badge-gold"&gt;&lt;i class="fas fa-star"&gt;&lt;/i&gt; MEMBER EXCLUSIVE&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class="perks-grid"&gt;
+          &lt;div class="perk-card"&gt;
+            &lt;div class="perk-card-icon"&gt;&lt;i class="fas fa-utensils"&gt;&lt;/i&gt;&lt;/div&gt;
+            &lt;div class="perk-card-info"&gt;
+              &lt;h4&gt;Complimentary Breakfast&lt;/h4&gt;
+              &lt;p&gt;Chef's daily selection included at L'Héritage Dining Room.&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class="perk-card"&gt;
+            &lt;div class="perk-card-icon"&gt;&lt;i class="fas fa-clock"&gt;&lt;/i&gt;&lt;/div&gt;
+            &lt;div class="perk-card-info"&gt;
+              &lt;h4&gt;Guaranteed Late Checkout&lt;/h4&gt;
+              &lt;p&gt;Stay until 12:00 PM on your day of departure.&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;!-- Manage Booking Search Card --&gt;
+      &lt;div class="manage-lookup-box"&gt;
+        &lt;h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #FFF; margin-bottom: 6px;"&gt;
+          &lt;i class="fas fa-magnifying-glass" style="color: var(--gold-primary);"&gt;&lt;/i&gt; Look Up Existing Reservation
+        &lt;/h3&gt;
+        &lt;p style="font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 20px;"&gt;
+          Enter your Booking Reference ID to review or print an existing reservation.
+        &lt;/p&gt;
+
+        &lt;form id="manageBookingSearchForm" style="display: flex; gap: 12px; flex-wrap: wrap;"&gt;
+          &lt;input type="text" id="lookupBookingId" class="form-input-lux" placeholder="e.g. #LXB-99283" style="flex: 2; padding-left: 16px;" required&gt;
+          &lt;button type="submit" class="btn-primary" style="flex: 1; min-width: 160px;"&gt;Find Booking&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;script src="js/rooms-data.js"&gt;&lt;/script&gt;
+  &lt;script src="js/weather.js"&gt;&lt;/script&gt;
+  &lt;script src="js/main.js"&gt;&lt;/script&gt;
+  &lt;script src="js/confirmation.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<hr class="doc-hr">
+<h2 class="doc-h2">4. Generous Starter: Key CSS Layout Rules (<code class="inline-code">confirmation.css</code>)</h2>
+<p class="doc-p">Here is the styling to get the card elevation and perks grid looking regal:</p>
+<pre class="code-block"><code>/* Centered checkmark icon with gold glow */
+.confirm-success-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-amber));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #0A0D14;
+  font-size: 1.8rem;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+}
+
+/* Primary Confirmed Card */
+.confirmation-card-main {
+  max-width: 860px;
+  margin: 0 auto 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 35px rgba(212, 175, 55, 0.1);
+}
+
+.confirm-card-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.perks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}</code></pre>
+<hr class="doc-hr">
+<h2 class="doc-h2">5. Heavy Assistance on JavaScript (I've Built the Hard Logic)</h2>
+<p class="doc-p">You do <strong>not</strong> have to figure out how to generate raw calendar files or build printable invoices from scratch. In <code class="inline-code">js/confirmation.js</code>, I have provided:</p>
+<div class="doc-num-item"><span class="num-badge">1</span> <span><code class="inline-code">downloadCalendarEvent(booking)</code>: When the guest clicks "Add to Calendar", it creates an actual <code class="inline-code">.ics</code> iCalendar file that imports right into Apple Calendar, Google Calendar, or Outlook.</span></div>
+<div class="doc-num-item"><span class="num-badge">2</span> <span><code class="inline-code">openReceiptModal(booking)</code>: Opens an itemized official tax invoice modal with a working "Print Receipt" button that triggers <code class="inline-code">window.print()</code>.</span></div>
+<div class="doc-num-item"><span class="num-badge">3</span> <span><code class="inline-code">initManageBookingLookup()</code>: Takes any Booking ID typed into <code class="inline-code">#lookupBookingId</code>, looks it up in <code class="inline-code">localStorage</code>, and instantly updates the card with that reservation's data!</span></div>
+<p class="doc-p">Terrance, you are providing the ultimate peace of mind to our guests. Make it proud!</p>
+
+  <div class="doc-footer">
+    <span>The Grand Reserve Hotel System • Architecture Handover</span>
+    <span>Lead Architect: Emmanuel • October 2026</span>
+  </div>
+</body>
+</html>
