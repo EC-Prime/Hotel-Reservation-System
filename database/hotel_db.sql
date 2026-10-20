@@ -3,12 +3,6 @@
 -- Group 1, Gauteng City College — Final Year Project
 -- Owner: Emmanuel (Technical Lead / System Architect)
 --
--- CHANGELOG from v1:
---   - rooms: added floor_number (supports 18-24 room scale w/ filtering)
---   - reservations: added payment_reference (simulated payment, no gateway)
---   - added book_room() stored procedure: single source of truth for
---     concurrency-safe booking, called from BOTH the Node API and the
---     Swing app so neither write path can double-book a room.
 -- ============================================================
 
 CREATE DATABASE IF NOT EXISTS hotel_reservation_system;
@@ -117,62 +111,84 @@ CREATE INDEX idx_audit_user ON audit_log(user_id);
 -- the front-desk app from double-booking the same room, even if two
 -- people book at the exact same second.
 -- ============================================================
+-- book_room() v2. Run the WHOLE script in MySQL Workbench against hotel_reservation_system.
+-- Same name and same 12 parameters as before, so the Node API and the Swing app need no changes.
+--
+-- What changed:
+--  1. It locks the ROOM'S ROW first (SELECT ... FOR UPDATE on rooms). Two people booking the
+--     same room now queue up one behind the other, even when the room has no reservations yet.
+--  2. It refuses rooms that don't exist or are under MAINTENANCE, so the Swing path is covered
+--     as well as the API path.
+
+
+DROP PROCEDURE IF EXISTS book_room;
+
 DELIMITER $$
 
 CREATE PROCEDURE book_room(
-    IN p_room_id          INT,
-    IN p_guest_name       VARCHAR(100),
-    IN p_guest_email      VARCHAR(100),
-    IN p_guest_phone      VARCHAR(20),
-    IN p_check_in         DATE,
-    IN p_check_out        DATE,
-    IN p_num_guests       INT,
-    IN p_total_price      DECIMAL(10,2),
+    IN p_room_id           INT,
+    IN p_guest_name        VARCHAR(100),
+    IN p_guest_email       VARCHAR(100),
+    IN p_guest_phone       VARCHAR(20),
+    IN p_check_in          DATE,
+    IN p_check_out         DATE,
+    IN p_num_guests        INT,
+    IN p_total_price       DECIMAL(10,2),
     IN p_payment_reference VARCHAR(50),
-    IN p_created_by       INT,               -- NULL if self-service from the website
-    OUT p_reservation_id  INT,
-    OUT p_result_status   VARCHAR(20)        -- 'CONFIRMED' or 'ROOM_UNAVAILABLE'
+    IN p_created_by        INT,
+    OUT p_reservation_id   INT,
+    OUT p_result_status    VARCHAR(20)
 )
 BEGIN
-    DECLARE v_conflict_count INT DEFAULT 0;
+    DECLARE v_room_status VARCHAR(20) DEFAULT NULL;
+    DECLARE v_conflicts   INT DEFAULT 0;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
-        SET p_result_status = 'ERROR';
         SET p_reservation_id = NULL;
+        SET p_result_status = 'ERROR';
     END;
 
     START TRANSACTION;
 
-    -- Lock any existing active reservations for this room that overlap
-    -- the requested date range, so a concurrent call has to wait here.
-    SELECT COUNT(*) INTO v_conflict_count
-    FROM reservations
+    -- Lock this room's row. Anyone else booking the same room waits here until we commit.
+    SELECT status INTO v_room_status
+    FROM rooms
     WHERE room_id = p_room_id
-      AND status IN ('PENDING', 'CONFIRMED', 'CHECKED_IN')
-      AND check_in_date < p_check_out
-      AND check_out_date > p_check_in
     FOR UPDATE;
 
-    IF v_conflict_count > 0 THEN
+    IF v_room_status IS NULL OR v_room_status = 'MAINTENANCE' THEN
         ROLLBACK;
-        SET p_result_status = 'ROOM_UNAVAILABLE';
         SET p_reservation_id = NULL;
+        SET p_result_status = 'ROOM_UNAVAILABLE';
     ELSE
-        INSERT INTO reservations (
-            room_id, guest_name, guest_email, guest_phone,
-            check_in_date, check_out_date, num_guests,
-            total_price, payment_reference, status, created_by
-        ) VALUES (
-            p_room_id, p_guest_name, p_guest_email, p_guest_phone,
-            p_check_in, p_check_out, p_num_guests,
-            p_total_price, p_payment_reference, 'CONFIRMED', p_created_by
-        );
+        SELECT COUNT(*) INTO v_conflicts
+        FROM reservations
+        WHERE room_id = p_room_id
+          AND status IN ('PENDING', 'CONFIRMED', 'CHECKED_IN')
+          AND check_in_date  < p_check_out
+          AND check_out_date > p_check_in;
 
-        SET p_reservation_id = LAST_INSERT_ID();
-        SET p_result_status = 'CONFIRMED';
-        COMMIT;
+        IF v_conflicts > 0 THEN
+            ROLLBACK;
+            SET p_reservation_id = NULL;
+            SET p_result_status = 'ROOM_UNAVAILABLE';
+        ELSE
+            INSERT INTO reservations (
+                room_id, guest_name, guest_email, guest_phone,
+                check_in_date, check_out_date, num_guests,
+                total_price, payment_reference, status, created_by
+            ) VALUES (
+                p_room_id, p_guest_name, p_guest_email, p_guest_phone,
+                p_check_in, p_check_out, p_num_guests,
+                p_total_price, p_payment_reference, 'CONFIRMED', p_created_by
+            );
+
+            SET p_reservation_id = LAST_INSERT_ID();
+            SET p_result_status = 'CONFIRMED';
+            COMMIT;
+        END IF;
     END IF;
 END$$
 
