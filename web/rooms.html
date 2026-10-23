@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Your Sanctuary | The Grand Reserve Boutique & Spa</title>
+  <meta name="description" content="Discover 20 curated luxury rooms and suites across 3 floors at The Grand Reserve.">
+  <link rel="stylesheet" href="css/fontawesome.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/rooms.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Micro-Bar -->
+  <div class="top-microbar">
+    <div class="top-microbar-container">
+      <div class="top-bar-left">
+        <span class="top-item"><i class="fas fa-map-marker-alt"></i> 104 Ocean View Blvd, Waterfront</span>
+        <span class="top-item"><i class="fas fa-clock"></i> Concierge: 24/7 Available</span>
+        <span class="weather-badge" id="liveWeatherBadge">
+          <i class="fas fa-sun" id="weatherIcon"></i>
+          <span id="weatherTemp">24°C</span>
+          <span id="weatherDesc" style="color: var(--text-secondary); margin-left: 4px;">Coastal Breeze</span>
+        </span>
+      </div>
+      <div class="top-bar-right">
+        <span class="top-item"><i class="fas fa-clock-rotate-left"></i> <span id="liveHotelClock">--:--</span></span>
+        <div class="top-item">
+          <label for="currencySelector" style="font-size: 0.72rem; text-transform: uppercase; color: var(--gold-primary);">Currency:</label>
+          <select id="currencySelector" class="currency-select" aria-label="Select Currency">
+            <option value="ZAR">ZAR (R)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+        <a href="confirmation.html" class="top-cta-btn"><i class="fas fa-key"></i> Check In / Manage</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-emblem"><i class="fas fa-moon"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">THE GRAND RESERVE</span>
+          <span class="brand-tagline">Boutique & Spa</span>
+        </div>
+      </a>
+
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="rooms.html" class="nav-link active">Rooms & Suites</a>
+        <a href="rooms.html?type=suite" class="nav-link">Signature Penthouses</a>
+        <a href="index.html#amenities" class="nav-link">Experiences</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-cta-group">
+        <a href="confirmation.html" class="btn-nav-outline">Manage Booking</a>
+        <a href="rooms.html" class="btn-nav-gold">Reserve Sanctuary</a>
+        <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Sanctuary Catalog Content -->
+  <main class="rooms-catalog-section">
+    <div class="container">
+      
+      <!-- Breadcrumb Bar (Matching Image 1) -->
+      <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+        <ol class="breadcrumb-list">
+          <li><a href="index.html">Home</a></li>
+          <li class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></li>
+          <li><a href="rooms.html">Booking</a></li>
+          <li class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></li>
+          <li class="breadcrumb-current">Room Selection</li>
+        </ol>
+      </nav>
+
+      <!-- Page Header (Image 1) -->
+      <div class="page-header">
+        <h1 class="page-title">Select Your Sanctuary</h1>
+        <p class="page-subtitle">Tailored comfort for the discerning traveler. Prices are per night.</p>
+      </div>
+
+      <!-- Filter Tags Bar (Matching Image 1 & 5) -->
+      <div class="filter-tags-bar">
+        <div class="filter-pills-list">
+          <button class="filter-pill active" data-filter="all">All Sanctuaries</button>
+          <button class="filter-pill" data-filter="suite">Signature Suites</button>
+          <button class="filter-pill" data-filter="deluxe">Deluxe Rooms</button>
+          <button class="filter-pill" data-filter="double">Executive Double</button>
+          <button class="filter-pill" data-filter="single">Classic Single</button>
+        </div>
+
+        <div class="filter-controls-right">
+          <select class="filter-select" id="floorFilterSelect" aria-label="Filter by Floor">
+            <option value="all">All Floors (1, 2, 3)</option>
+            <option value="1">Floor 1 - Courtyard & Garden</option>
+            <option value="2">Floor 2 - Panoramic Mid-Level</option>
+            <option value="3">Floor 3 - Top Floor & Penthouses</option>
+          </select>
+
+          <select class="filter-select" id="sortFilterSelect" aria-label="Sort by Price">
+            <option value="featured">Sort: Recommended</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+
+          <button class="availability-toggle-btn" id="availToggleBtn">
+            <i class="fas fa-circle-check"></i> Available Only
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Date & Guest Adjustment Drawer -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-sm); padding: 14px 20px; margin-bottom: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label for="searchCheckIn" style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-primary);"><i class="fas fa-calendar"></i> Check-in:</label>
+            <input type="date" id="searchCheckIn" style="background: var(--bg-deep); border: 1px solid var(--border-subtle); color: #FFF; padding: 6px 10px; border-radius: 4px; font-size: 0.825rem;">
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label for="searchCheckOut" style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-primary);"><i class="fas fa-calendar"></i> Check-out:</label>
+            <input type="date" id="searchCheckOut" style="background: var(--bg-deep); border: 1px solid var(--border-subtle); color: #FFF; padding: 6px 10px; border-radius: 4px; font-size: 0.825rem;">
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label for="searchGuests" style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-primary);"><i class="fas fa-users"></i> Guests:</label>
+            <select id="searchGuests" style="background: var(--bg-deep); border: 1px solid var(--border-subtle); color: #FFF; padding: 6px 10px; border-radius: 4px; font-size: 0.825rem;">
+              <option value="1">1 Adult</option>
+              <option value="2">2 Adults</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+            </select>
+          </div>
+        </div>
+        <span id="roomsCountBadge" style="font-size: 0.8rem; color: var(--gold-light); font-weight: 600;">20 Sanctuaries Found</span>
+      </div>
+
+      <!-- Two-Column Layout (Matching Image 1 EXACTLY) -->
+      <div class="rooms-layout-grid">
+        
+        <!-- 20 Rooms Catalog Column -->
+        <div class="rooms-cards-container" id="roomsListContainer">
+          <!-- Room cards dynamically populated by booking.js -->
+        </div>
+
+        <!-- Sticky TRIP SUMMARY Sidebar (Matching Image 1) -->
+        <aside class="trip-summary-sidebar">
+          <div class="trip-summary-header">
+            <h2 class="trip-summary-title">Trip Summary</h2>
+            <a href="#searchCheckIn" class="btn-edit-search" onclick="document.getElementById('searchCheckIn').focus()">Edit Search</a>
+          </div>
+
+          <div class="trip-detail-items">
+            <div class="trip-detail-row">
+              <i class="fas fa-calendar trip-detail-icon"></i>
+              <div>
+                <div class="trip-detail-label">Dates</div>
+                <div class="trip-detail-val" id="summaryDates">Loading dates...</div>
+                <div class="trip-detail-sub" id="summaryNights">3 Nights</div>
+              </div>
+            </div>
+
+            <div class="trip-detail-row">
+              <i class="fas fa-user trip-detail-icon"></i>
+              <div>
+                <div class="trip-detail-label">Guests</div>
+                <div class="trip-detail-val" id="summaryGuests">2 Adults</div>
+              </div>
+            </div>
+
+            <div class="trip-detail-row">
+              <i class="fas fa-bed trip-detail-icon"></i>
+              <div style="width: 100%;">
+                <div class="trip-detail-label">Sanctuary</div>
+                <div id="summarySanctuary" style="margin-top: 6px;">
+                  <span style="color: var(--text-muted); font-size: 0.85rem;">Select a room to begin</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Direct Booking Benefits Card (Image 1) -->
+          <div class="direct-benefits-card">
+            <div class="direct-benefits-title">
+              <i class="fas fa-certificate"></i> Direct Booking Benefits
+            </div>
+            <ul class="direct-benefits-list">
+              <li><i class="fas fa-circle-check"></i> Best Price Guaranteed</li>
+              <li><i class="fas fa-circle-check"></i> Complimentary Welcome Drink</li>
+              <li><i class="fas fa-circle-check"></i> Priority Late Check-out</li>
+            </ul>
+          </div>
+
+          <!-- Price Calculation Breakdown (Image 1) -->
+          <div class="trip-price-breakdown">
+            <div class="breakdown-row">
+              <span>Average nightly rate</span>
+              <span id="summaryRate">R0</span>
+            </div>
+            <div class="breakdown-row total-row">
+              <strong>Total</strong>
+              <span class="total-gold-amount" id="summaryTotal">R0</span>
+            </div>
+          </div>
+
+          <!-- Complete Booking CTA Button -->
+          <button class="btn-primary btn-complete-booking" id="completeBookingBtn">
+            Complete Booking
+          </button>
+
+          <p class="cancellation-note">Free cancellation until 48 hours before check-in</p>
+
+          <!-- Security Trust Badges (Image 1) -->
+          <div class="trust-badges-row">
+            <div class="trust-item">
+              <i class="fas fa-shield-halved"></i>
+              <span>Secure Pay</span>
+            </div>
+            <div class="trust-item">
+              <i class="fas fa-ribbon"></i>
+              <span>Certified</span>
+            </div>
+            <div class="trust-item">
+              <i class="fas fa-award"></i>
+              <span>Winner 2024</span>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-main-grid container">
+      <div class="footer-brand-col">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-emblem"><i class="fas fa-moon"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">THE GRAND RESERVE</span>
+            <span class="brand-tagline">Boutique & Spa</span>
+          </div>
+        </a>
+        <p>A tranquil haven of architectural beauty, refined comfort, and private hospitality overlooking the picturesque waterfront.</p>
+        <form class="footer-subscribe-box" id="newsletterForm">
+          <input type="email" placeholder="Your email address" class="footer-subscribe-input" required>
+          <button type="submit" class="btn-primary" style="padding: 0 18px; font-size: 0.8rem;">Subscribe</button>
+        </form>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Quick Links</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">About The Hotel</a></li>
+          <li><a href="rooms.html">All 20 Sanctuaries</a></li>
+          <li><a href="rooms.html?type=suite">Signature Suites</a></li>
+          <li><a href="confirmation.html">Manage Reservation</a></li>
+          <li><a href="contact.html">Concierge Desk</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Sanctuaries</h4>
+        <ul class="footer-links-list">
+          <li><a href="rooms.html?floor=3">Floor 3 - Penthouse Wing</a></li>
+          <li><a href="rooms.html?floor=2">Floor 2 - Executive Suites</a></li>
+          <li><a href="rooms.html?floor=1">Floor 1 - Courtyard & Garden</a></li>
+          <li><a href="rooms.html?type=deluxe">Deluxe Ocean Horizon</a></li>
+          <li><a href="rooms.html?type=single">Classic Solo Retreats</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Information</h4>
+        <ul class="footer-info-list">
+          <li class="footer-info-item">
+            <i class="fas fa-location-dot"></i>
+            <span>104 Ocean View Blvd, Waterfront District</span>
+          </li>
+          <li class="footer-info-item">
+            <i class="fas fa-phone"></i>
+            <span>+1 (800) 472-6373 / +27 11 987 6543</span>
+          </li>
+          <li class="footer-info-item">
+            <i class="fas fa-envelope"></i>
+            <span>concierge@grandreserve.com</span>
+          </li>
+        </ul>
+        <div class="footer-social-row">
+          <a href="contact.html" class="social-circle-btn" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="contact.html" class="social-circle-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="contact.html" class="social-circle-btn" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="contact.html" class="social-circle-btn" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="footer-bottom-content container">
+        <p>&copy; 2026 The Grand Reserve Luxury Hotel & Spa. All Rights Reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="faq.html">Privacy Policy</a>
+          <a href="faq.html">Terms & Service</a>
+          <a href="faq.html">Accessibility</a>
+          <a href="faq.html">Security Protocol</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/rooms-data.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/booking.js"></script>
+</body>
+</html>

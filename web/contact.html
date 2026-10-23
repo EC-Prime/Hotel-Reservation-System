@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Concierge | The Grand Reserve Boutique & Spa</title>
+  <meta name="description" content="Connect with our dedicated 24/7 concierge team for tailored hospitality and reservations.">
+  <link rel="stylesheet" href="css/fontawesome.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/contact.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Micro-Bar -->
+  <div class="top-microbar">
+    <div class="top-microbar-container">
+      <div class="top-bar-left">
+        <span class="top-item"><i class="fas fa-map-marker-alt"></i> 104 Ocean View Blvd, Waterfront</span>
+        <span class="top-item"><i class="fas fa-clock"></i> Concierge: 24/7 Available</span>
+        <span class="weather-badge" id="liveWeatherBadge">
+          <i class="fas fa-sun" id="weatherIcon"></i>
+          <span id="weatherTemp">24°C</span>
+          <span id="weatherDesc" style="color: var(--text-secondary); margin-left: 4px;">Coastal Breeze</span>
+        </span>
+      </div>
+      <div class="top-bar-right">
+        <span class="top-item"><i class="fas fa-clock-rotate-left"></i> <span id="liveHotelClock">--:--</span></span>
+        <div class="top-item">
+          <label for="currencySelector" style="font-size: 0.72rem; text-transform: uppercase; color: var(--gold-primary);">Currency:</label>
+          <select id="currencySelector" class="currency-select" aria-label="Select Currency">
+            <option value="ZAR">ZAR (R)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+        <a href="confirmation.html" class="top-cta-btn"><i class="fas fa-key"></i> Check In / Manage</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-emblem"><i class="fas fa-moon"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">THE GRAND RESERVE</span>
+          <span class="brand-tagline">Boutique & Spa</span>
+        </div>
+      </a>
+
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="rooms.html" class="nav-link">Rooms & Suites</a>
+        <a href="rooms.html?type=suite" class="nav-link">Signature Penthouses</a>
+        <a href="index.html#amenities" class="nav-link">Experiences</a>
+        <a href="contact.html" class="nav-link active">Contact</a>
+      </nav>
+
+      <div class="nav-cta-group">
+        <a href="confirmation.html" class="btn-nav-outline">Manage Booking</a>
+        <a href="rooms.html" class="btn-nav-gold">Reserve Sanctuary</a>
+        <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner with Breadcrumbs (Image 2) -->
+  <section class="contact-hero-banner">
+    <h1 class="contact-hero-title">Contact</h1>
+    <nav class="breadcrumb-bar" style="padding: 0;" aria-label="Breadcrumb">
+      <ol class="breadcrumb-list" style="justify-content: center;">
+        <li><a href="index.html">Home</a></li>
+        <li class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></li>
+        <li class="breadcrumb-current">Contact</li>
+      </ol>
+    </nav>
+  </section>
+
+  <!-- Contact Main Section (Image 2) -->
+  <main class="contact-main-section">
+    <div class="container">
+      
+      <!-- Intro Title (Image 2) -->
+      <div class="contact-intro-header">
+        <span class="contact-intro-label"><i class="fas fa-star" style="font-size: 0.65rem;"></i> Get In Touch</span>
+        <h2 class="contact-intro-title">Connect With Us For Personalized Assistance</h2>
+        <p class="contact-intro-sub">
+          Whether organizing private yacht excursions, helicopter transfers, or tailoring dietary requirements for your stay, our bespoke concierge desk attends to every distinction.
+        </p>
+      </div>
+
+      <!-- 4 Circular Icon Contact Cards (Image 2) -->
+      <div class="contact-info-grid">
+        <div class="contact-info-card">
+          <div class="contact-icon-circle">
+            <i class="fas fa-phone"></i>
+          </div>
+          <span class="contact-card-label">Phone Number</span>
+          <span class="contact-card-val">+1 (800) 472-6373<br>+27 11 987 6543</span>
+        </div>
+
+        <div class="contact-info-card">
+          <div class="contact-icon-circle">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <span class="contact-card-label">Mail Address</span>
+          <span class="contact-card-val">concierge@grandreserve.com<br>reservations@grandreserve.com</span>
+        </div>
+
+        <div class="contact-info-card">
+          <div class="contact-icon-circle">
+            <i class="fas fa-location-dot"></i>
+          </div>
+          <span class="contact-card-label">Location</span>
+          <span class="contact-card-val">104 Ocean View Blvd, Waterfront District</span>
+        </div>
+
+        <div class="contact-info-card">
+          <div class="contact-icon-circle">
+            <i class="fas fa-clock"></i>
+          </div>
+          <span class="contact-card-label">Operating Hours</span>
+          <span class="contact-card-val">Monday – Sunday<br>24/7 Dedicated Concierge</span>
+        </div>
+      </div>
+
+      <!-- Split: Map & Contact Form (Image 2) -->
+      <div class="contact-split-grid">
+        
+        <!-- Left: Interactive Map -->
+        <div class="contact-map-container">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13247.382436155514!2d18.41249765!3d-33.90364375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcc5d7c86e08fd7%3A0x6735e2363ebc3bb1!2sV%26A%20Waterfront!5e0!3m2!1sen!2sza!4v1711200000000!5m2!1sen!2sza" 
+            title="The Grand Reserve Waterfront Location" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+
+        <!-- Right: Contact Form Card (Image 2) -->
+        <div class="contact-form-card">
+          <div>
+            <h3 class="contact-form-title">Contact Us</h3>
+            <p class="contact-form-sub">Leave our concierge a message. We respond within 15 minutes.</p>
+
+            <form id="contactInquiryForm" class="contact-form">
+              <div class="form-group-with-icon">
+                <i class="fas fa-pen"></i>
+                <input type="text" id="contactName" class="form-input-lux" placeholder="Name" required>
+              </div>
+
+              <div class="form-group-with-icon">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="contactEmail" class="form-input-lux" placeholder="Email" required>
+              </div>
+
+              <div class="form-group-with-icon">
+                <i class="fas fa-bookmark"></i>
+                <input type="text" id="contactSubject" class="form-input-lux" placeholder="Subject" required>
+              </div>
+
+              <div class="form-group-with-icon">
+                <i class="fas fa-message" style="top: 20px;"></i>
+                <textarea id="contactMessage" class="form-input-lux" placeholder="Message" required></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; margin-top: 6px;">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer (Image 2 Structure) -->
+  <footer class="site-footer">
+    <div class="footer-main-grid container">
+      <div class="footer-brand-col">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-emblem"><i class="fas fa-moon"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">THE GRAND RESERVE</span>
+            <span class="brand-tagline">Boutique & Spa</span>
+          </div>
+        </a>
+        <p>A tranquil haven of architectural beauty, refined comfort, and private hospitality overlooking the picturesque waterfront.</p>
+        <form class="footer-subscribe-box" id="newsletterForm">
+          <input type="email" placeholder="Your email address" class="footer-subscribe-input" required>
+          <button type="submit" class="btn-primary" style="padding: 0 18px; font-size: 0.8rem;">Subscribe</button>
+        </form>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Quick Links</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">About The Hotel</a></li>
+          <li><a href="rooms.html">All 20 Sanctuaries</a></li>
+          <li><a href="rooms.html?type=suite">Signature Suites</a></li>
+          <li><a href="confirmation.html">Manage Reservation</a></li>
+          <li><a href="contact.html">Concierge Desk</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Sanctuaries</h4>
+        <ul class="footer-links-list">
+          <li><a href="rooms.html?floor=3">Floor 3 - Penthouse Wing</a></li>
+          <li><a href="rooms.html?floor=2">Floor 2 - Executive Suites</a></li>
+          <li><a href="rooms.html?floor=1">Floor 1 - Courtyard & Garden</a></li>
+          <li><a href="rooms.html?type=deluxe">Deluxe Ocean Horizon</a></li>
+          <li><a href="rooms.html?type=single">Classic Solo Retreats</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Information</h4>
+        <ul class="footer-info-list">
+          <li class="footer-info-item">
+            <i class="fas fa-location-dot"></i>
+            <span>104 Ocean View Blvd, Waterfront District</span>
+          </li>
+          <li class="footer-info-item">
+            <i class="fas fa-phone"></i>
+            <span>+1 (800) 472-6373 / +27 11 987 6543</span>
+          </li>
+          <li class="footer-info-item">
+            <i class="fas fa-envelope"></i>
+            <span>concierge@grandreserve.com</span>
+          </li>
+        </ul>
+        <div class="footer-social-row">
+          <a href="contact.html" class="social-circle-btn" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="contact.html" class="social-circle-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="contact.html" class="social-circle-btn" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="contact.html" class="social-circle-btn" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="footer-bottom-content container">
+        <p>&copy; 2026 The Grand Reserve Luxury Hotel & Spa. All Rights Reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="faq.html">Privacy Policy</a>
+          <a href="faq.html">Terms & Service</a>
+          <a href="faq.html">Accessibility</a>
+          <a href="faq.html">Security Protocol</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/rooms-data.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Handle Contact Form Submit with toast feedback
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contactInquiryForm');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = document.getElementById('contactName').value;
+          showToast(`Thank you, ${name}. Your message has been routed to our Lead Concierge.`);
+          form.reset();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
