@@ -12,6 +12,8 @@ const nodemailer = require('nodemailer');
 
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_APP_PASSWORD = process.env.EMAIL_APP_PASSWORD;
+const RESEND_COOLDOWN_MS = 30 * 1000;
+const resendTimestamps = new Map();
 
 // If the credentials aren't set (e.g. a teammate running the API locally),
 // skip emailing quietly instead of crashing.
@@ -30,6 +32,23 @@ function escapeHtml(text) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function resendKey(booking) {
+  return `${String(booking.reservationId)}:${String(booking.guestEmail || '').trim().toLowerCase()}`;
+}
+
+function getResendStatus(booking) {
+  const key = resendKey(booking);
+  const lastSentAt = resendTimestamps.get(key);
+  const now = Date.now();
+
+  if (!lastSentAt) {
+    return { allowed: true, retryAfterMs: 0 };
+  }
+
+  const retryAfterMs = Math.max(0, RESEND_COOLDOWN_MS - (now - lastSentAt));
+  return { allowed: retryAfterMs <= 0, retryAfterMs };
 }
 
 /**
@@ -76,6 +95,7 @@ async function sendConfirmationEmail(booking) {
       subject: `Booking confirmed, ref ${booking.paymentReference}`,
       html
     });
+    resendTimestamps.set(resendKey(booking), Date.now());
     console.log(`emailService: confirmation sent for reservation ${booking.reservationId}`);
     return true;
   } catch (err) {
@@ -84,4 +104,22 @@ async function sendConfirmationEmail(booking) {
   }
 }
 
-module.exports = { sendConfirmationEmail };
+async function resendConfirmationEmail(booking) {
+  const status = getResendStatus(booking);
+  if (!status.allowed) {
+    return {
+      sent: false,
+      blocked: true,
+      retryAfterMs: status.retryAfterMs
+    };
+  }
+
+  const sent = await sendConfirmationEmail(booking);
+  return {
+    sent,
+    blocked: false,
+    retryAfterMs: 0
+  };
+}
+
+module.exports = { sendConfirmationEmail, resendConfirmationEmail, RESEND_COOLDOWN_MS };

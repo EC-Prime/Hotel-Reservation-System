@@ -111,8 +111,85 @@ async function loadConfirmedBooking() {
   }
 }
 
+let resendCooldownUntil = 0;
+
+function updateResendButtonState() {
+  const btn = document.getElementById('btnResendConfirmationEmail');
+  const status = document.getElementById('resendEmailCooldownText');
+  if (!btn) return;
+
+  const remainingMs = Math.max(0, resendCooldownUntil - Date.now());
+  const remainingSeconds = Math.ceil(remainingMs / 1000);
+
+  if (remainingMs > 0) {
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-clock"></i> Resend Email (${remainingSeconds}s)`;
+    if (status) {
+      status.textContent = `Confirmation email can be resent in ${remainingSeconds}s`;
+      status.style.display = 'block';
+    }
+    return;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fas fa-paper-plane"></i> Resend Confirmation Email';
+  if (status) {
+    status.style.display = 'none';
+    status.textContent = '';
+  }
+}
+
+async function handleResendConfirmationEmail(booking) {
+  const btn = document.getElementById('btnResendConfirmationEmail');
+  if (!btn) return;
+
+  if (Date.now() < resendCooldownUntil) {
+    const remainingSeconds = Math.max(1, Math.ceil((resendCooldownUntil - Date.now()) / 1000));
+    showToast(`Please wait ${remainingSeconds} seconds before resending the email.`, 'urgent');
+    updateResendButtonState();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/reservations/${encodeURIComponent(booking.reservationId)}/resend-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: booking.guestEmail })
+    });
+
+    let data = {};
+    try {
+      data = await response.json();
+    } catch (err) {
+      data = {};
+    }
+
+    if (response.ok) {
+      resendCooldownUntil = Date.now() + 30000;
+      updateResendButtonState();
+      showToast('Confirmation email resent. Please check your inbox and spam folder.');
+      return;
+    }
+
+    const message = data.message || data.error || 'We could not resend the confirmation email right now.';
+    showToast(message, 'urgent');
+    if (response.status === 429 && data.retryAfterSeconds) {
+      resendCooldownUntil = Date.now() + data.retryAfterSeconds * 1000;
+    }
+    updateResendButtonState();
+  } catch (err) {
+    showToast('The email service is unavailable right now. Please try again in a moment.', 'urgent');
+    updateResendButtonState();
+  }
+}
+
 function renderConfirmationUI(booking) {
   setConfirmedStayVisible(true);
+  resendCooldownUntil = 0;
+  updateResendButtonState();
 
   const heading = document.querySelector('.confirm-hero-title');
   const sub = document.querySelector('.confirm-hero-sub');
@@ -154,6 +231,12 @@ function renderConfirmationUI(booking) {
     btnReceipt.onclick = () => openReceiptModal(booking);
   }
 
+  const btnResend = document.getElementById('btnResendConfirmationEmail');
+  if (btnResend) {
+    btnResend.onclick = () => handleResendConfirmationEmail(booking);
+  }
+
+  updateResendButtonState();
   window.activeBookingForReceipt = booking;
 }
 
