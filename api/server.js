@@ -5,12 +5,15 @@
 // in db.js fires and tells you whether Aiven is reachable.
 
 
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const pool = require('./config/db');   // requiring this file runs testConnection()
 const apiRoutes = require('./routes/apiRoutes');
 
 const app = express();
+
 app.use(cors());
 app.use(express.json()); // lets the server read JSON request bodies
 
