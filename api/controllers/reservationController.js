@@ -13,6 +13,10 @@ const MAX_NIGHTS = 30;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function parseEmailInput(value) {
+  return String(value || '').trim();
+}
+
 function isRealDate(str) {
   if (!DATE_RE.test(str)) return false;
   const d = new Date(str + 'T00:00:00Z');
@@ -92,9 +96,9 @@ async function createReservation(req, res) {
     });
 
     if (result.status === 'CONFIRMED') {
-      // Fire and forget: the email service catches its own errors, and the
-      // guest shouldn't wait on Gmail before seeing their confirmation.
-      emailService.sendConfirmationEmail({
+      // Wait for the confirmation email result before responding so booking
+      // success and email delivery status are both tracked consistently.
+      await emailService.sendConfirmationEmail({
         guestName,
         guestEmail,
         reservationId: result.reservationId,
@@ -152,4 +156,53 @@ async function getReservation(req, res) {
   }
 }
 
-module.exports = { createReservation, getReservation };
+async function resendConfirmationEmail(req, res) {
+  const id = Number(req.params.id);
+  const email = parseEmailInput(req.body?.email || req.query?.email);
+
+  if (!Number.isInteger(id) || id < 1 || !email || !EMAIL_RE.test(email)) {
+    return res.status(400).json({ error: 'A valid reservation id and email are required.' });
+  }
+
+  try {
+    const reservation = await reservationService.getReservation(id, email);
+    if (!reservation) {
+      return res.status(404).json({ error: 'Reservation not found.' });
+    }
+
+    const result = await emailService.resendConfirmationEmail({
+      reservationId: reservation.reservationId,
+      guestEmail: reservation.guestEmail,
+      guestName: reservation.guestName,
+      roomNumber: reservation.roomNumber,
+      roomType: reservation.roomType,
+      checkIn: reservation.checkIn,
+      checkOut: reservation.checkOut,
+      totalPrice: reservation.totalPrice,
+      paymentReference: reservation.paymentReference
+    });
+
+    if (result.blocked) {
+      const retryAfterSeconds = Math.max(1, Math.ceil(result.retryAfterMs / 1000));
+      return res.status(429).json({
+        error: `Please wait ${retryAfterSeconds} seconds before requesting another confirmation email.`,
+        retryAfterSeconds
+      });
+    }
+
+    if (!result.sent) {
+      return res.status(500).json({ error: 'Unable to resend the confirmation email right now. Please try again in a moment.' });
+    }
+
+    return res.status(200).json({
+      message: 'Confirmation email resent successfully.',
+      sent: true,
+      retryAfterSeconds: Math.ceil(emailService.RESEND_COOLDOWN_MS / 1000)
+    });
+  } catch (err) {
+    console.error('resendConfirmationEmail failed:', err.message);
+    return res.status(500).json({ error: 'Something went wrong, please try again.' });
+  }
+}
+
+module.exports = { createReservation, getReservation, resendConfirmationEmail };

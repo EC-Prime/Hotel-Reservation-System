@@ -88,4 +88,15 @@ swing/src/config/db.properties
 swing/certs/
 api/.env
 api/certs/
+
+# ==========================================
+# Course-brief clutter (keep out of graded repo)
+# ==========================================
+docs/CHATGPT.md
+docs/CLAUDE.md
+docs/screenshots/
+docs/pdf-sources/
+docs/*.pdf
+docs/capture-screens.js
+docs/build-pdfs.js
 *.jks

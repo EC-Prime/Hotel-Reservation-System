@@ -11,5 +11,6 @@ const roomController = require('../controllers/roomController');
 router.get('/rooms', roomController.getRooms);
 router.post('/reservations', reservationController.createReservation);
 router.get('/reservations/:id', reservationController.getReservation);
+router.post('/reservations/:id/resend-email', reservationController.resendConfirmationEmail);
 
 module.exports = router;
