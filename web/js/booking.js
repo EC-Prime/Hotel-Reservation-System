@@ -385,7 +385,15 @@ function updateTripSummary() {
   }
 
   if (summaryRate) summaryRate.textContent = `${formatCurrency(nightly)} × ${nights} nights`;
-  if (summaryTotal) summaryTotal.textContent = formatCurrency(total);
+  if (summaryTotal) {
+    const formatted = formatCurrency(total);
+    if (summaryTotal.textContent !== formatted) {
+      summaryTotal.textContent = formatted;
+      summaryTotal.classList.remove('price-highlight-glow');
+      void summaryTotal.offsetWidth; // trigger reflow
+      summaryTotal.classList.add('price-highlight-glow');
+    }
+  }
 
   if (completeBtn) {
     const bookable = isRoomBookable(room);
@@ -396,6 +404,11 @@ function updateTripSummary() {
     completeBtn.onclick = () => {
       if (!bookable) return;
       saveTripToLocalStorage();
+      if (typeof isLoggedIn === 'function' && !isLoggedIn()) {
+        const dest = `booking.html?roomId=${room.roomId}&checkIn=${bookingState.checkIn}&checkOut=${bookingState.checkOut}&guests=${bookingState.numGuests}`;
+        window.location.href = `login.html?redirect=${encodeURIComponent(dest)}`;
+        return;
+      }
       window.location.href = `booking.html?roomId=${room.roomId}&checkIn=${bookingState.checkIn}&checkOut=${bookingState.checkOut}&guests=${bookingState.numGuests}`;
     };
   }
@@ -572,7 +585,7 @@ function renderCheckoutRecap(room, checkIn, checkOut) {
           <span>Rate (${nights} nights × ${formatCurrency(room.pricePerNight)}):</span> <span>${formatCurrency(total)}</span>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 1.15rem; color: #FFF; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
-          <span>Total Payable:</span> <strong style="color: var(--gold-bright); font-size: 1.6rem; font-family: var(--font-display);">${formatCurrency(total)}</strong>
+          <span>Total Payable:</span> <strong id="checkoutTotalAmount" class="price-highlight-glow" style="color: var(--gold-bright); font-size: 1.6rem; font-family: var(--font-display);">${formatCurrency(total)}</strong>
         </div>
       </div>
     </div>
@@ -582,6 +595,11 @@ function renderCheckoutRecap(room, checkIn, checkOut) {
 function initBookingForm() {
   const form = document.getElementById('reservationCheckoutForm');
   if (!form) return;
+
+  // Protect checkout form: user must be logged in to book
+  if (typeof requireAuth === 'function') {
+    requireAuth('login.html');
+  }
 
   const urlParams = new URLSearchParams(window.location.search);
   const roomId = urlParams.get('roomId') || 9;
@@ -600,6 +618,16 @@ function initBookingForm() {
   const submitBtn = form.querySelector('button[type="submit"]');
   let checkoutAvailabilityVerified = false;
   let availabilityRequestId = 0;
+
+  // Auto-fill form fields from logged-in user profile
+  if (typeof getUser === 'function') {
+    const user = getUser();
+    if (user) {
+      if (guestName && !guestName.value && user.name) guestName.value = user.name;
+      if (guestEmail && !guestEmail.value && user.email) guestEmail.value = user.email;
+      if (guestPhone && !guestPhone.value && user.phone) guestPhone.value = user.phone;
+    }
+  }
 
   if (formCheckIn) formCheckIn.value = checkIn;
   if (formCheckOut) formCheckOut.value = checkOut;
@@ -678,9 +706,14 @@ function initBookingForm() {
     };
 
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (typeof authHeaders === 'function') {
+        Object.assign(headers, authHeaders());
+      }
+
       const response = await fetch(`${API_BASE_URL}/reservations`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(payload)
       });
 

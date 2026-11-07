@@ -18,12 +18,145 @@ const CURRENCY_RATES = {
 let currentCurrency = localStorage.getItem('grand_reserve_currency') || 'ZAR';
 
 document.addEventListener('DOMContentLoaded', () => {
+  initPageLoadBar();
   initStickyHeader();
   initMobileMenu();
   initLiveClock();
   initCurrencySelector();
   initNewsletterForm();
+  initNavAuthUI();
+  initScrollAnimations();
+  initHeroPillsCurrency();
+
+  document.addEventListener('currencyChanged', () => {
+    initHeroPillsCurrency();
+  });
 });
+
+// Subtle Royal Gold Top Page Transition Loading Bar
+function initPageLoadBar() {
+  let bar = document.getElementById('pageLoadBar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'pageLoadBar';
+    document.body.prepend(bar);
+  }
+
+  // Animate on arrival
+  bar.classList.add('loading');
+  bar.style.width = '75%';
+  setTimeout(() => {
+    bar.classList.add('done');
+    setTimeout(() => {
+      bar.style.width = '0%';
+      bar.classList.remove('loading', 'done');
+    }, 600);
+  }, 200);
+
+  // Hook internal link clicks for smooth transitions
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
+    if (!link || !link.href) return;
+
+    // Ignore new tabs, anchors, tel/mailto, or external sites
+    if (link.target === '_blank' || link.href.includes('#') || link.href.startsWith('mailto:') || link.href.startsWith('tel:')) return;
+    if (link.origin !== window.location.origin) return;
+
+    bar.classList.remove('done');
+    bar.classList.add('loading');
+    bar.style.width = '85%';
+  });
+}
+
+// Update the featured suite pills on the homepage with current currency
+function initHeroPillsCurrency() {
+  const pill1 = document.querySelector('a[href*="roomId=9"] span:last-child');
+  const pill2 = document.querySelector('a[href*="roomId=13"] span:last-child');
+  const pill3 = document.querySelector('a[href*="roomId=15"] span:last-child');
+
+  if (pill1) pill1.textContent = `The Royal Terrace Suite • ${formatCurrency(2200)}`;
+  if (pill2) pill2.textContent = `Ocean Horizon Deluxe • ${formatCurrency(3000)}`;
+  if (pill3) pill3.textContent = `The Celestial Penthouse • ${formatCurrency(2400)}`;
+}
+
+// Staggered scroll reveal observer for cards and content sections
+function initScrollAnimations() {
+  const elementsToReveal = document.querySelectorAll(
+    '.room-card, .perk-card, .experience-card, .footer-main-grid, .confirm-hero-center, .confirmation-card-main, .manage-lookup-box, .auth-card'
+  );
+
+  if (!elementsToReveal.length) return;
+
+  // Mark elements for initial hidden state
+  elementsToReveal.forEach((el, index) => {
+    el.classList.add('reveal-init');
+    // Add staggered delay to child cards within grids
+    const staggerIndex = (index % 4) + 1;
+    el.classList.add(`stagger-${staggerIndex}`);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  elementsToReveal.forEach(el => observer.observe(el));
+}
+
+// Update the navigation CTA group to reflect whether the user is logged in
+function initNavAuthUI() {
+  if (typeof getUser !== 'function') return;
+
+  const navCtaGroup = document.querySelector('.nav-cta-group');
+  if (!navCtaGroup) return;
+
+  const user = getUser();
+  const reserveBtn = navCtaGroup.querySelector('.btn-nav-gold');
+  const reserveHref = reserveBtn ? reserveBtn.getAttribute('href') : 'rooms.html';
+
+  if (user) {
+    // Logged in: show guest name pill + discrete logout + primary Reserve button
+    const firstName = (user.name || 'Guest').split(' ')[0];
+    navCtaGroup.innerHTML = `
+      <a href="account.html" class="nav-user-pill" title="My Account & Stays">
+        <i class="fas fa-crown"></i>
+        <span>${escapeHtml(firstName)}</span>
+      </a>
+      <button onclick="logout('index.html')" class="btn-nav-signout" title="Sign Out">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+      <a href="${reserveHref}" class="btn-nav-gold">Reserve Sanctuary</a>
+      <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+    `;
+  } else {
+    // Logged out: show sleek text Sign In link + divider + Reserve Sanctuary button
+    navCtaGroup.innerHTML = `
+      <a href="login.html" class="nav-auth-link">
+        <i class="fas fa-user-circle"></i>
+        <span>Sign In</span>
+      </a>
+      <span class="nav-divider"></span>
+      <a href="${reserveHref}" class="btn-nav-gold">Reserve Sanctuary</a>
+      <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+    `;
+  }
+
+  // Re-bind mobile toggle button
+  initMobileMenu();
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
 
 // Sticky Header blur & elevation
 function initStickyHeader() {

@@ -21,7 +21,8 @@ const pool = require('../config/db');
  * @param {number} details.numGuests
  * @param {number} details.totalPrice
  * @param {string} details.paymentReference - e.g. 'SIM-8F2A91'
- * @param {number|null} [details.createdBy] - staff user_id, or null if self-service
+ * @param {number|null} [details.createdBy]    - staff user_id, or null if self-service
+ * @param {number|null} [details.guestUserId]  - guest_users.guest_user_id from JWT, or null
  * @returns {Promise<{reservationId: number|null, status: 'CONFIRMED'|'ROOM_UNAVAILABLE'|'ERROR'}>}
  */
 async function book(details) {
@@ -35,7 +36,8 @@ async function book(details) {
     numGuests,
     totalPrice,
     paymentReference,
-    createdBy = null
+    createdBy   = null,
+    guestUserId = null
   } = details;
 
   const connection = await pool.getConnection();
@@ -63,6 +65,16 @@ async function book(details) {
     const [[result]] = await connection.query(
       `SELECT @res_id AS reservationId, @res_status AS status`
     );
+
+    // If a logged-in guest made this booking, link it to their account.
+    // We do this AFTER the stored procedure to avoid changing the procedure
+    // (which is also called by the Swing app via JDBC).
+    if (result.reservationId && result.status === 'CONFIRMED' && guestUserId) {
+      await connection.query(
+        'UPDATE reservations SET guest_user_id = ? WHERE reservation_id = ?',
+        [guestUserId, result.reservationId]
+      );
+    }
 
     return {
       reservationId: result.reservationId,

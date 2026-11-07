@@ -53,8 +53,18 @@ function viewModelFromApi(reservation) {
 }
 
 async function fetchReservation(id, email) {
-  const params = new URLSearchParams({ email });
-  const response = await fetch(`${API_BASE_URL}/reservations/${encodeURIComponent(id)}?${params.toString()}`);
+  const params = new URLSearchParams();
+  if (email) params.set('email', email);
+
+  const queryStr = params.toString() ? `?${params.toString()}` : '';
+  const headers = {};
+  if (typeof authHeaders === 'function') {
+    Object.assign(headers, authHeaders());
+  }
+
+  const response = await fetch(`${API_BASE_URL}/reservations/${encodeURIComponent(id)}${queryStr}`, {
+    headers
+  });
   let data = {};
   try {
     data = await response.json();
@@ -84,7 +94,15 @@ function setConfirmedStayVisible(visible) {
 async function loadConfirmedBooking() {
   const urlParams = new URLSearchParams(window.location.search);
   const targetId = urlParams.get('id');
-  const email = urlParams.get('email');
+  let email = urlParams.get('email');
+
+  // If email is not in URL, but user is logged in, use the logged-in user's email
+  if (!email && typeof getUser === 'function') {
+    const user = getUser();
+    if (user && user.email) {
+      email = user.email;
+    }
+  }
 
   if (!targetId || !email) {
     setConfirmedStayVisible(false);
