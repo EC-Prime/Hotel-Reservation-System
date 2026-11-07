@@ -119,25 +119,27 @@
       </div>
 
       <!-- Quick Date & Guest Adjustment Drawer -->
-      <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-sm); padding: 14px 20px; margin-bottom: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
-        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <label for="searchCheckIn" style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-primary);"><i class="fas fa-calendar"></i> Check-in:</label>
-            <input type="date" id="searchCheckIn" style="background: var(--bg-deep); border: 1px solid var(--border-subtle); color: #FFF; padding: 6px 10px; border-radius: 4px; font-size: 0.825rem;">
+      <div class="rooms-date-drawer">
+        <div class="rooms-date-drawer-fields">
+          <div class="drawer-field-group">
+            <label for="searchCheckIn"><i class="fas fa-calendar-check"></i> Check-in:</label>
+            <input type="date" id="searchCheckIn">
           </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <label for="searchCheckOut" style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-primary);"><i class="fas fa-calendar"></i> Check-out:</label>
-            <input type="date" id="searchCheckOut" style="background: var(--bg-deep); border: 1px solid var(--border-subtle); color: #FFF; padding: 6px 10px; border-radius: 4px; font-size: 0.825rem;">
+          <div class="drawer-field-group">
+            <label for="searchCheckOut"><i class="fas fa-calendar-xmark"></i> Check-out:</label>
+            <input type="date" id="searchCheckOut">
           </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <label for="searchGuests" style="font-size: 0.75rem; text-transform: uppercase; color: var(--gold-primary);"><i class="fas fa-users"></i> Guests:</label>
-            <select id="searchGuests" style="background: var(--bg-deep); border: 1px solid var(--border-subtle); color: #FFF; padding: 6px 10px; border-radius: 4px; font-size: 0.825rem;">
+          <div class="drawer-field-group">
+            <label for="searchGuests"><i class="fas fa-users"></i> Guests:</label>
+            <select id="searchGuests">
               <option value="1">1 Adult</option>
               <option value="2">2 Adults</option>
               <option value="3">3 Guests</option>
               <option value="4">4 Guests</option>
             </select>
           </div>
+        </div>
+      </div>
         </div>
         <span id="roomsCountBadge" style="font-size: 0.8rem; color: var(--gold-light); font-weight: 600;">20 Sanctuaries Found</span>
       </div>
@@ -317,6 +319,7 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="js/auth.js"></script>
   <script src="js/rooms-data.js"></script>
   <script src="js/weather.js"></script>
   <script src="js/main.js"></script>

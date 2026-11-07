@@ -5,9 +5,14 @@
 // Nothing else in the API should ever create its own separate connection —
 // everyone shares this one pool.
 
-require('dotenv').config();       // loads variables from a local .env file into process.env
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const mysql = require('mysql2/promise');
 const fs = require('fs');
+
+const certPath = process.env.DB_SSL_CERT_PATH
+  ? path.resolve(__dirname, '..', process.env.DB_SSL_CERT_PATH)
+  : path.resolve(__dirname, '../certs/ca.pem');
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,             // e.g. hotel-reservation-db-xxxx.aivencloud.com
@@ -16,7 +21,7 @@ const pool = mysql.createPool({
   password: process.env.DB_PASSWORD,     // from Aiven's Overview page
   database: process.env.DB_NAME,         // hotel_reservation_system
   ssl: {
-    ca: fs.readFileSync(process.env.DB_SSL_CERT_PATH) // path to the ca.pem you downloaded
+    ca: fs.readFileSync(certPath)
   },
   waitForConnections: true,
   connectionLimit: 10,                   // max simultaneous connections in the pool

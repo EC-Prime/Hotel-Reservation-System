@@ -92,7 +92,8 @@ async function createReservation(req, res) {
       numGuests,
       totalPrice,
       paymentReference,
-      createdBy: null // guest self-service
+      createdBy: null,          // staff user_id — always null for self-service web bookings
+      guestUserId: req.user ? req.user.sub : null  // links reservation to web account if logged in
     });
 
     if (result.status === 'CONFIRMED') {
@@ -134,21 +135,41 @@ async function createReservation(req, res) {
 
 /**
  * GET /api/reservations/:id?email=guest@example.com
- * For confirmation.html. The email must match the booking.
+ * For confirmation.html. Supports two access modes:
+ *   1. URL param mode (existing): ?email= must match the booking's guest_email
+ *   2. JWT mode (new): logged-in user can access their own reservations
+ *      (optionalAuth middleware sets req.user if a valid token is present)
  */
 async function getReservation(req, res) {
   const { email } = req.query;
   const id = Number(req.params.id);
 
-  if (!Number.isInteger(id) || id < 1 || !email) {
+  if (!Number.isInteger(id) || id < 1) {
+    return res.status(400).json({ error: 'A valid reservation id is required.' });
+  }
+
+  // JWT mode: logged-in user requesting their own reservation — no email needed
+  const isJwtAccess = !!(req.user && !email);
+
+  // URL-param mode: email must be provided
+  if (!isJwtAccess && !email) {
     return res.status(400).json({ error: 'A reservation id and email are required.' });
   }
 
   try {
-    const reservation = await reservationService.getReservation(id, email);
+    const reservation = await reservationService.getReservation(id, isJwtAccess ? null : email);
     if (!reservation) {
       return res.status(404).json({ error: 'Reservation not found.' });
     }
+
+    // JWT mode: verify the reservation actually belongs to this user
+    if (isJwtAccess) {
+      const ownerEmail = reservation.guestEmail || reservation.guest_email;
+      if (ownerEmail !== req.user.email) {
+        return res.status(403).json({ error: 'You do not have access to this reservation.' });
+      }
+    }
+
     return res.status(200).json(reservation);
   } catch (err) {
     console.error('getReservation failed:', err.message);
@@ -205,4 +226,18 @@ async function resendConfirmationEmail(req, res) {
   }
 }
 
-module.exports = { createReservation, getReservation, resendConfirmationEmail };
+/**
+ * GET /api/reservations/my-bookings
+ * Requires verifyToken middleware. Returns all reservations linked to this account or email.
+ */
+async function getMyReservations(req, res) {
+  try {
+    const reservations = await reservationService.getReservationsForUser(req.user.sub, req.user.email);
+    return res.status(200).json(reservations);
+  } catch (err) {
+    console.error('getMyReservations failed:', err.message);
+    return res.status(500).json({ error: 'Could not load your reservations.' });
+  }
+}
+
+module.exports = { createReservation, getReservation, resendConfirmationEmail, getMyReservations };

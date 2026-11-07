@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create an Account | The Grand Reserve Boutique & Spa</title>
+  <meta name="description" content="Create a guest account to reserve your sanctuary at The Grand Reserve.">
+  <link rel="stylesheet" href="css/fontawesome.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+  <!-- Top Micro-Bar -->
+  <div class="top-microbar">
+    <div class="top-microbar-container">
+      <div class="top-bar-left">
+        <span class="top-item"><i class="fas fa-map-marker-alt"></i> 104 Ocean View Blvd, Waterfront</span>
+        <span class="top-item"><i class="fas fa-clock"></i> Concierge: 24/7 Available</span>
+      </div>
+      <div class="top-bar-right">
+        <span class="top-item"><i class="fas fa-clock-rotate-left"></i> <span id="liveHotelClock">--:--</span></span>
+        <a href="confirmation.html" class="top-cta-btn"><i class="fas fa-key"></i> Active Booking</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-emblem"><i class="fas fa-moon"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">THE GRAND RESERVE</span>
+          <span class="brand-tagline">Boutique & Spa</span>
+        </div>
+      </a>
+
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="rooms.html" class="nav-link">Rooms & Suites</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-cta-group">
+        <a href="login.html" class="btn-nav-outline">Sign In</a>
+        <a href="rooms.html" class="btn-nav-gold">Reserve Sanctuary</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Signup Main Content -->
+  <main class="auth-page-wrapper">
+    <div class="auth-card">
+
+      <div class="auth-card-header">
+        <div class="auth-card-emblem">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <h1 class="auth-card-title">Join The Grand Reserve</h1>
+        <p class="auth-card-sub">Create your private guest account to secure reservations and enjoy direct booking privileges.</p>
+      </div>
+
+      <!-- Global Error Banner -->
+      <div class="auth-error-banner" id="signupErrorBanner" role="alert">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="signupErrorMessage">Please fix the errors below.</span>
+      </div>
+
+      <form class="auth-form" id="signupForm" novalidate>
+
+        <!-- Full Name -->
+        <div class="auth-field">
+          <label class="auth-label" for="signupFullName">Full Name</label>
+          <input
+            type="text"
+            id="signupFullName"
+            class="auth-input"
+            placeholder="e.g. Eleanor Vance"
+            autocomplete="name"
+            required
+          >
+          <span class="auth-field-error" id="fullNameError"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="auth-field">
+          <label class="auth-label" for="signupEmail">Email Address</label>
+          <input
+            type="email"
+            id="signupEmail"
+            class="auth-input"
+            placeholder="eleanor@example.com"
+            autocomplete="email"
+            required
+          >
+          <span class="auth-field-error" id="emailError"></span>
+        </div>
+
+        <!-- Phone (Optional) -->
+        <div class="auth-field">
+          <label class="auth-label" for="signupPhone">
+            Phone Number <span class="auth-optional-hint">(Optional)</span>
+          </label>
+          <input
+            type="tel"
+            id="signupPhone"
+            class="auth-input"
+            placeholder="+27 82 000 0000"
+            autocomplete="tel"
+          >
+          <span class="auth-field-error" id="phoneError"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="auth-field">
+          <label class="auth-label" for="signupPassword">Password</label>
+          <input
+            type="password"
+            id="signupPassword"
+            class="auth-input"
+            placeholder="At least 8 characters, with 1 number"
+            autocomplete="new-password"
+            required
+          >
+          <!-- Password strength indicator -->
+          <div class="password-strength-bar">
+            <div class="password-strength-fill" id="strengthFill"></div>
+          </div>
+          <span class="password-strength-hint" id="strengthHint">Min. 8 characters with at least one number</span>
+          <span class="auth-field-error" id="passwordError"></span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="auth-field">
+          <label class="auth-label" for="signupConfirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="signupConfirmPassword"
+            class="auth-input"
+            placeholder="Re-enter your password"
+            autocomplete="new-password"
+            required
+          >
+          <span class="auth-field-error" id="confirmPasswordError"></span>
+        </div>
+
+        <button type="submit" class="auth-submit-btn" id="signupSubmitBtn">
+          Create Account
+        </button>
+
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <p class="auth-footer-text">
+        Already have an account?
+        <a href="login.html" id="loginLink">Sign In</a>
+      </p>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (isLoggedIn()) {
+      window.location.href = 'booking.html';
+    }
+
+    // Preserve the redirect param on the login link
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectParam = urlParams.get('redirect');
+    if (redirectParam) {
+      const loginLink = document.getElementById('loginLink');
+      if (loginLink) {
+        loginLink.href = `login.html?redirect=${encodeURIComponent(redirectParam)}`;
+      }
+    }
+
+    // Elements
+    const form            = document.getElementById('signupForm');
+    const fullNameInput   = document.getElementById('signupFullName');
+    const emailInput      = document.getElementById('signupEmail');
+    const phoneInput      = document.getElementById('signupPhone');
+    const passwordInput   = document.getElementById('signupPassword');
+    const confirmInput    = document.getElementById('signupConfirmPassword');
+    const submitBtn       = document.getElementById('signupSubmitBtn');
+    const errorBanner     = document.getElementById('signupErrorBanner');
+    const errorMessage    = document.getElementById('signupErrorMessage');
+    const strengthFill    = document.getElementById('strengthFill');
+    const strengthHint    = document.getElementById('strengthHint');
+
+    // Real-time password strength meter
+    passwordInput.addEventListener('input', () => {
+      const val = passwordInput.value;
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (/\d/.test(val)) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      const levels = [
+        { pct: '0%',   color: 'transparent', text: 'Min. 8 characters with at least one number' },
+        { pct: '25%',  color: '#EF4444',     text: 'Weak — add more characters' },
+        { pct: '50%',  color: '#F59E0B',     text: 'Fair — add an uppercase letter or symbol' },
+        { pct: '75%',  color: '#3B82F6',     text: 'Good' },
+        { pct: '100%', color: '#10B981',     text: 'Strong' }
+      ];
+
+      const current = val.length === 0 ? levels[0] : levels[score];
+      strengthFill.style.width = current.pct;
+      strengthFill.style.backgroundColor = current.color;
+      strengthHint.textContent = current.text;
+      strengthHint.style.color = current.color === 'transparent' ? 'var(--text-muted)' : current.color;
+    });
+
+    function setFieldError(fieldId, errorId, message) {
+      const input = document.getElementById(fieldId);
+      const errEl = document.getElementById(errorId);
+      if (input) input.classList.add('error');
+      if (errEl) {
+        errEl.textContent = message;
+        errEl.classList.add('visible');
+      }
+    }
+
+    function clearErrors() {
+      if (errorBanner) errorBanner.classList.remove('visible');
+      ['signupFullName', 'signupEmail', 'signupPhone', 'signupPassword', 'signupConfirmPassword'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('error');
+      });
+      ['fullNameError', 'emailError', 'phoneError', 'passwordError', 'confirmPasswordError'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.textContent = '';
+          el.classList.remove('visible');
+        }
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      const fullName = fullNameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = confirmInput.value;
+
+      // Client-side pre-validation
+      let hasError = false;
+
+      if (!fullName || fullName.length < 2) {
+        setFieldError('signupFullName', 'fullNameError', 'Please enter your full name (at least 2 characters).');
+        hasError = true;
+      }
+
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRe.test(email)) {
+        setFieldError('signupEmail', 'emailError', 'Please enter a valid email address.');
+        hasError = true;
+      }
+
+      if (!password || password.length < 8) {
+        setFieldError('signupPassword', 'passwordError', 'Password must be at least 8 characters.');
+        hasError = true;
+      } else if (!/\d/.test(password)) {
+        setFieldError('signupPassword', 'passwordError', 'Password must contain at least one number.');
+        hasError = true;
+      }
+
+      if (password !== confirmPassword) {
+        setFieldError('signupConfirmPassword', 'confirmPasswordError', 'Passwords do not match.');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullName, email, phone: phone || null, password, confirmPassword })
+        });
+
+        const data = await response.json();
+
+        if (response.status === 201) {
+          // Success — redirect to login with registered=1 param
+          const dest = redirectParam
+            ? `login.html?registered=1&redirect=${encodeURIComponent(redirectParam)}`
+            : 'login.html?registered=1';
+          window.location.href = dest;
+          return;
+        }
+
+        // Server-side validation errors
+        if (data.fields) {
+          if (data.fields.fullName)        setFieldError('signupFullName', 'fullNameError', data.fields.fullName);
+          if (data.fields.email)           setFieldError('signupEmail', 'emailError', data.fields.email);
+          if (data.fields.password)        setFieldError('signupPassword', 'passwordError', data.fields.password);
+          if (data.fields.confirmPassword) setFieldError('signupConfirmPassword', 'confirmPasswordError', data.fields.confirmPassword);
+        } else {
+          if (errorMessage) errorMessage.textContent = data.error || 'Account creation failed. Please try again.';
+          if (errorBanner)  errorBanner.classList.add('visible');
+        }
+      } catch (err) {
+        if (errorMessage) errorMessage.textContent = 'Could not reach the server. Please check your connection and try again.';
+        if (errorBanner)  errorBanner.classList.add('visible');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Create Account';
+      }
+    });
+  </script>
+</body>
+</html>

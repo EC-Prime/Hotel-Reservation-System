@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account & Sanctuaries | The Grand Reserve Boutique & Spa</title>
+  <meta name="description" content="View and manage your private reservations and guest profile at The Grand Reserve.">
+  <link rel="stylesheet" href="css/fontawesome.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <style>
+    .account-section {
+      padding: 120px 20px 80px;
+      min-height: 85vh;
+      position: relative;
+      z-index: 1;
+    }
+    .account-container {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .account-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 32px;
+      margin-top: 36px;
+    }
+    .profile-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      box-shadow: var(--shadow-lg);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--gold-subtle);
+      border: 2px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--gold-bright);
+      margin: 0 auto 16px;
+    }
+    .profile-name {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #FFF;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .profile-badge {
+      display: inline-block;
+      text-align: center;
+      width: 100%;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      margin-bottom: 24px;
+    }
+    .profile-details-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.85rem;
+    }
+    .profile-detail-item {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-secondary);
+    }
+    .profile-detail-item strong {
+      color: #FFF;
+    }
+    .bookings-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .booking-summary-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      transition: all var(--transition-normal);
+    }
+    .booking-summary-card:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    }
+    .booking-card-thumb {
+      width: 140px;
+      height: 95px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+    .booking-card-info h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: #FFF;
+      margin-bottom: 6px;
+    }
+    .booking-dates {
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+    }
+    .booking-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .booking-card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .empty-bookings-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 60px 24px;
+      text-align: center;
+    }
+    @media (max-width: 860px) {
+      .account-grid {
+        grid-template-columns: 1fr;
+      }
+      .booking-summary-card {
+        grid-template-columns: 1fr;
+      }
+      .booking-card-thumb {
+        width: 100%;
+        height: 160px;
+      }
+      .booking-card-actions {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Micro-Bar -->
+  <div class="top-microbar">
+    <div class="top-microbar-container">
+      <div class="top-bar-left">
+        <span class="top-item"><i class="fas fa-map-marker-alt"></i> 104 Ocean View Blvd, Waterfront</span>
+        <span class="top-item"><i class="fas fa-clock"></i> Concierge: 24/7 Available</span>
+      </div>
+      <div class="top-bar-right">
+        <span class="top-item"><i class="fas fa-clock-rotate-left"></i> <span id="liveHotelClock">--:--</span></span>
+        <a href="confirmation.html" class="top-cta-btn"><i class="fas fa-key"></i> Active Booking</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-emblem"><i class="fas fa-moon"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">THE GRAND RESERVE</span>
+          <span class="brand-tagline">Boutique & Spa</span>
+        </div>
+      </a>
+
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="rooms.html" class="nav-link">Rooms & Suites</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-cta-group">
+        <a href="rooms.html" class="btn-nav-gold">Reserve Sanctuary</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="account-section">
+    <div class="account-container">
+      
+      <div>
+        <span class="badge-tag badge-gold"><i class="fas fa-crown"></i> PRIVATE GUEST PORTAL</span>
+        <h1 style="font-family: var(--font-display); font-size: 2.2rem; color: #FFF; margin-top: 10px;">
+          Welcome Back, <span id="welcomeUserName">Valued Guest</span>
+        </h1>
+        <p style="color: var(--text-secondary); margin-top: 6px;">Manage your sanctuary bookings and personalized luxury preferences.</p>
+      </div>
+
+      <div class="account-grid">
+        
+        <!-- Left: Profile Card -->
+        <aside class="profile-card">
+          <div class="profile-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <h2 class="profile-name" id="profileCardName">—</h2>
+          <span class="profile-badge">Honorary Member</span>
+
+          <div class="profile-details-list">
+            <div class="profile-detail-item">
+              <span>Email:</span>
+              <strong id="profileCardEmail">—</strong>
+            </div>
+            <div class="profile-detail-item">
+              <span>Phone:</span>
+              <strong id="profileCardPhone">Not specified</strong>
+            </div>
+            <div class="profile-detail-item">
+              <span>Member Tier:</span>
+              <strong style="color: var(--gold-bright);">Grand Privilege</strong>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px;">
+            <button onclick="logout('index.html')" class="btn-secondary" style="width: 100%;">
+              <i class="fas fa-sign-out-alt"></i> Sign Out
+            </button>
+          </div>
+        </aside>
+
+        <!-- Right: Bookings List -->
+        <section>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px;">
+            <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF;">
+              <i class="fas fa-calendar-check" style="color: var(--gold-primary);"></i> My Reservations
+            </h2>
+            <a href="rooms.html" class="btn-nav-outline" style="font-size: 0.8rem; padding: 6px 14px;">
+              <i class="fas fa-plus"></i> Book Another Room
+            </a>
+          </div>
+
+          <div class="bookings-container" id="myBookingsList">
+            <p style="color: var(--text-muted); text-align: center; padding: 40px;">
+              <i class="fas fa-spinner fa-spin"></i> Retrieving your bookings...
+            </p>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/auth.js"></script>
+  <script src="js/rooms-data.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Enforce login on account page
+    requireAuth('login.html');
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = getUser();
+      if (!user) return;
+
+      // Populate profile info
+      const welcomeName = document.getElementById('welcomeUserName');
+      const cardName = document.getElementById('profileCardName');
+      const cardEmail = document.getElementById('profileCardEmail');
+      const cardPhone = document.getElementById('profileCardPhone');
+
+      const firstName = (user.name || 'Guest').split(' ')[0];
+      if (welcomeName) welcomeName.textContent = firstName;
+      if (cardName) cardName.textContent = user.name || 'Guest';
+      if (cardEmail) cardEmail.textContent = user.email || '—';
+      if (cardPhone) cardPhone.textContent = user.phone || 'Not provided';
+
+      // Fetch user's bookings from backend
+      const container = document.getElementById('myBookingsList');
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/reservations/my-bookings`, {
+          headers: { ...authHeaders() }
+        });
+
+        if (!response.ok) throw new Error('Could not load reservations.');
+
+        const bookings = await response.json();
+
+        if (!bookings.length) {
+          container.innerHTML = `
+            <div class="empty-bookings-box">
+              <i class="fas fa-bed" style="font-size: 2.2rem; color: var(--gold-primary); margin-bottom: 14px;"></i>
+              <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #FFF; margin-bottom: 6px;">No Active Reservations</h3>
+              <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">You have not made any room reservations yet.</p>
+              <a href="rooms.html" class="btn-primary">Explore Available Sanctuaries</a>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = bookings.map(b => {
+          const roomExtras = typeof ROOMS_DATA !== 'undefined'
+            ? (ROOMS_DATA.find(r => r.roomNumber === String(b.roomNumber)) || {})
+            : {};
+          const roomImg = b.image || roomExtras.image || 'images/photo-1578683010236-d716f9a3f461.jpg';
+          const title = roomExtras.title || `${b.roomType} Sanctuary`;
+
+          return `
+            <div class="booking-summary-card">
+              <img src="${roomImg}" alt="${title}" class="booking-card-thumb">
+              <div class="booking-card-info">
+                <span class="badge-tag badge-gold" style="font-size: 0.65rem; padding: 2px 8px;">Floor ${roomExtras.floorNumber || 1} • Room ${b.roomNumber}</span>
+                <h3 style="margin-top: 4px;">${title}</h3>
+                <div class="booking-dates">
+                  <i class="fas fa-calendar-alt"></i> ${formatDateDisplay(b.checkIn)} — ${formatDateDisplay(b.checkOut)}
+                </div>
+                <div class="booking-meta">
+                  Ref: <strong style="color: var(--text-primary);">${b.paymentReference}</strong> • Total: <strong style="color: var(--gold-bright);">${formatCurrency(b.totalPrice)}</strong>
+                </div>
+              </div>
+              <div class="booking-card-actions">
+                <a href="confirmation.html?id=${b.reservationId}&email=${encodeURIComponent(b.guestEmail)}" class="btn-primary" style="font-size: 0.8rem; padding: 8px 16px;">
+                  <i class="fas fa-eye"></i> View Stay Details
+                </a>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        container.innerHTML = `
+          <div class="empty-bookings-box">
+            <p style="color: var(--status-occupied); margin-bottom: 12px;">Could not load reservations right now.</p>
+            <button class="btn-secondary" onclick="location.reload()">Retry</button>
+          </div>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

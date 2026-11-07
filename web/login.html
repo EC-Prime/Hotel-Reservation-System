@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guest Sign In | The Grand Reserve Boutique & Spa</title>
+  <meta name="description" content="Sign in to your Grand Reserve guest account to manage your stays and reservations.">
+  <link rel="stylesheet" href="css/fontawesome.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+  <!-- Top Micro-Bar -->
+  <div class="top-microbar">
+    <div class="top-microbar-container">
+      <div class="top-bar-left">
+        <span class="top-item"><i class="fas fa-map-marker-alt"></i> 104 Ocean View Blvd, Waterfront</span>
+        <span class="top-item"><i class="fas fa-clock"></i> Concierge: 24/7 Available</span>
+      </div>
+      <div class="top-bar-right">
+        <span class="top-item"><i class="fas fa-clock-rotate-left"></i> <span id="liveHotelClock">--:--</span></span>
+        <a href="confirmation.html" class="top-cta-btn"><i class="fas fa-key"></i> Active Booking</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-emblem"><i class="fas fa-moon"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">THE GRAND RESERVE</span>
+          <span class="brand-tagline">Boutique & Spa</span>
+        </div>
+      </a>
+
+      <nav class="site-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="rooms.html" class="nav-link">Rooms & Suites</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-cta-group">
+        <a href="signup.html" class="btn-nav-outline">Create Account</a>
+        <a href="rooms.html" class="btn-nav-gold">Reserve Sanctuary</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Login Main Content -->
+  <main class="auth-page-wrapper">
+    <div class="auth-card">
+
+      <div class="auth-card-header">
+        <div class="auth-card-emblem">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <h1 class="auth-card-title">Guest Portal</h1>
+        <p class="auth-card-sub">Sign in to access your reservations and private privilege benefits.</p>
+      </div>
+
+      <!-- Success message (e.g. redirected here after signup) -->
+      <div class="auth-success-banner" id="loginSuccessBanner" role="status">
+        <i class="fas fa-check-circle"></i>
+        <span id="loginSuccessMessage">Account created! Please sign in.</span>
+      </div>
+
+      <!-- Global Error Banner -->
+      <div class="auth-error-banner" id="loginErrorBanner" role="alert">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="loginErrorMessage">Invalid email or password.</span>
+      </div>
+
+      <form class="auth-form" id="loginForm" novalidate>
+
+        <div class="auth-field">
+          <label class="auth-label" for="loginEmail">Email Address</label>
+          <input
+            type="email"
+            id="loginEmail"
+            class="auth-input"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+          <span class="auth-field-error" id="loginEmailError"></span>
+        </div>
+
+        <div class="auth-field">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <label class="auth-label" for="loginPassword">Password</label>
+            <a href="forgot-password.html" style="font-size: 0.72rem; color: var(--gold-primary); text-decoration: none;">Forgot password?</a>
+          </div>
+          <input
+            type="password"
+            id="loginPassword"
+            class="auth-input"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            required
+          >
+          <span class="auth-field-error" id="loginPasswordError"></span>
+        </div>
+
+        <button type="submit" class="auth-submit-btn" id="loginSubmitBtn">
+          Sign In
+        </button>
+
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <p class="auth-footer-text">
+        Don't have an account yet?
+        <a href="signup.html" id="signupLink">Create an Account</a>
+      </p>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (isLoggedIn()) {
+      const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'booking.html';
+      window.location.href = redirectUrl;
+    }
+
+    // Preserve the redirect query param on the signup link too
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectParam = urlParams.get('redirect');
+    if (redirectParam) {
+      const signupLink = document.getElementById('signupLink');
+      if (signupLink) {
+        signupLink.href = `signup.html?redirect=${encodeURIComponent(redirectParam)}`;
+      }
+    }
+
+    // Show signup success message if passed via query param
+    if (urlParams.get('registered') === '1') {
+      const successBanner = document.getElementById('loginSuccessBanner');
+      if (successBanner) successBanner.classList.add('visible');
+    }
+
+    // Form submission
+    const form = document.getElementById('loginForm');
+    const emailInput = document.getElementById('loginEmail');
+    const passwordInput = document.getElementById('loginPassword');
+    const submitBtn = document.getElementById('loginSubmitBtn');
+    const errorBanner = document.getElementById('loginErrorBanner');
+    const errorMessage = document.getElementById('loginErrorMessage');
+
+    function showError(msg) {
+      if (errorMessage) errorMessage.textContent = msg;
+      if (errorBanner) errorBanner.classList.add('visible');
+    }
+
+    function clearError() {
+      if (errorBanner) errorBanner.classList.remove('visible');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearError();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        showError('Please enter both your email and password.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.token) {
+          setToken(data.token);
+          // Redirect to the originally requested page, or default to booking.html
+          const destination = redirectParam ? decodeURIComponent(redirectParam) : 'booking.html';
+          window.location.href = destination;
+          return;
+        }
+
+        // Generic error — never reveal whether email or password was wrong
+        showError(data.error || 'Invalid email or password. Please try again.');
+      } catch (err) {
+        showError('Could not reach the server. Please check your connection and try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Sign In';
+      }
+    });
+  </script>
+</body>
+</html>
