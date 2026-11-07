@@ -23,18 +23,35 @@
   top: 15%;
   left: 50%;
   transform: translateX(-50%);
-  width: 600px;
-  height: 350px;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+  width: 700px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, rgba(197, 168, 105, 0.08) 45%, rgba(0, 0, 0, 0) 75%);
   pointer-events: none;
-  filter: blur(40px);
+  filter: blur(50px);
+  animation: heroGlowPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlowPulse {
+  0% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+  }
 }
 
 .hero-content {
   position: relative;
   z-index: 10;
-  max-width: 900px;
+  width: 100%;
+  max-width: 1240px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .hero-rating-pill {
@@ -64,12 +81,72 @@
   color: var(--text-white);
   margin-bottom: 20px;
   letter-spacing: 0.5px;
+  max-width: 880px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero-title span {
-  background: linear-gradient(135deg, #FFF 30%, var(--gold-bright) 100%);
+  background: linear-gradient(
+    120deg,
+    #FFFFFF 0%,
+    var(--gold-bright) 25%,
+    #FFF 45%,
+    var(--gold-amber) 70%,
+    var(--gold-light) 100%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: goldTextShine 7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes goldTextShine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.booking-search-bar {
+  width: 100%;
+  max-width: 1200px;
+  background: rgba(19, 26, 41, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  padding: 18px 24px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 175, 55, 0.12);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* Subtle Floating Starlight / Gold Dust Overlay */
+.hero-particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.65;
 }
 
 .hero-subtitle {
@@ -84,16 +161,17 @@
 /* Quick Search Booking Widget on Hero */
 .booking-search-bar {
   background: rgba(19, 26, 41, 0.95);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-gold);
   border-radius: var(--radius-md);
-  padding: 18px 24px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 175, 55, 0.12);
+  padding: 20px 28px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.14);
   display: grid;
-  grid-template-columns: repeat(4, 1fr) auto;
-  gap: 16px;
+  grid-template-columns: minmax(165px, 1.1fr) minmax(165px, 1.1fr) minmax(215px, 1.35fr) minmax(200px, 1.3fr) auto;
+  gap: 18px;
   align-items: center;
-  max-width: 1140px;
+  max-width: 1200px;
   margin: 0 auto;
   text-align: left;
 }
@@ -101,54 +179,82 @@
 .search-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
+  min-width: 0;
 }
 
 .search-label {
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   color: var(--gold-primary);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
+  white-space: nowrap;
 }
 
 .search-input-wrap {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .search-input-wrap input,
 .search-input-wrap select {
   width: 100%;
-  background: rgba(11, 14, 20, 0.75);
+  background: rgba(11, 14, 20, 0.85);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-sm);
   color: var(--text-white);
-  padding: 10px 12px;
+  padding: 11px 14px;
   font-size: 0.875rem;
+  font-family: var(--font-body);
   outline: none;
-  transition: border-color var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .search-input-wrap input:focus,
 .search-input-wrap select:focus {
   border-color: var(--gold-bright);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.search-input-wrap select {
+  cursor: pointer;
+  text-overflow: ellipsis;
+  padding-right: 28px;
 }
 
 .search-input-wrap select option {
-  background: var(--bg-card);
+  background: #0F1420;
   color: var(--text-white);
+  padding: 8px 12px;
+}
+
+/* Luxury Gold Calendar Icon Filter */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(74%) sepia(48%) saturate(700%) hue-rotate(5deg) brightness(98%) contrast(92%);
+  opacity: 0.95;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  padding: 2px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  transform: scale(1.18);
+  filter: invert(82%) sepia(60%) saturate(900%) hue-rotate(5deg) brightness(115%) contrast(95%);
 }
 
 .btn-search-submit {
   align-self: flex-end;
-  height: 44px;
-  padding: 0 24px;
+  height: 45px;
+  padding: 0 26px;
   white-space: nowrap;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
 }
 
 /* Feature Preview Badges (01, 02, 03) */
