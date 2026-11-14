@@ -133,7 +133,7 @@ function initNavAuthUI() {
         <i class="fas fa-sign-out-alt"></i>
       </button>
       <a href="${reserveHref}" class="btn-nav-gold">Book a Room</a>
-      <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+      <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false"><i class="fas fa-bars"></i></button>
     `;
   } else {
     // Logged out: show Sign In link + Book a Room button
@@ -144,7 +144,7 @@ function initNavAuthUI() {
       </a>
       <span class="nav-divider"></span>
       <a href="${reserveHref}" class="btn-nav-gold">Book a Room</a>
-      <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+      <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false"><i class="fas fa-bars"></i></button>
     `;
   }
 
@@ -181,6 +181,15 @@ function initMobileMenu() {
   toggleBtn.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('mobile-open');
     toggleBtn.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    toggleBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  nav.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('mobile-open');
+      toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    });
   });
 }
 

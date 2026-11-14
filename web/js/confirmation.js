@@ -1,7 +1,4 @@
-/**
- * confirmation.js - Booking Confirmation & Manage Booking Handlers
- * Royal Haven Boutique & Spa
- */
+
 
 document.addEventListener('DOMContentLoaded', () => {
   loadConfirmedBooking();

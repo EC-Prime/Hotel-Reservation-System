@@ -4,11 +4,17 @@
  */
 package hotel.reservation;
 
+import hotel.database.DatabaseConnection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.SwingWorker;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -129,6 +135,91 @@ public class Dashboard extends javax.swing.JFrame {
         jSeparator1.setOpaque(true);
         jSeparator1.setSize(jSeparator1.getWidth(), 0);
 
+        loadDashboardData();
+
+    }
+
+    private void loadDashboardData() {
+        new SwingWorker<DashboardData, Void>() {
+            @Override
+            protected DashboardData doInBackground() throws Exception {
+                DashboardData data = new DashboardData();
+                try (Connection connection = DatabaseConnection.getConnection()) {
+                    data.totalRooms = count(connection, "SELECT COUNT(*) FROM rooms");
+                    data.availableRooms = count(connection,
+                            "SELECT COUNT(*) FROM rooms WHERE status = 'AVAILABLE'");
+                    data.todayReservations = count(connection,
+                            "SELECT COUNT(*) FROM reservations WHERE check_in_date = CURRENT_DATE "
+                            + "AND status <> 'CANCELLED'");
+                    data.checkedInGuests = count(connection,
+                            "SELECT COUNT(*) FROM reservations WHERE status = 'CHECKED_IN'");
+
+                    String sql = "SELECT r.guest_name, rm.room_number, r.check_in_date, "
+                            + "r.check_out_date, r.status FROM reservations r "
+                            + "JOIN rooms rm ON rm.room_id = r.room_id "
+                            + "ORDER BY r.created_at DESC LIMIT 8";
+                    try (PreparedStatement statement = connection.prepareStatement(sql);
+                            ResultSet results = statement.executeQuery()) {
+                        while (results.next()) {
+                            data.recentBookings.add(new Object[]{
+                                results.getString("guest_name"),
+                                results.getString("room_number"),
+                                results.getDate("check_in_date"),
+                                results.getDate("check_out_date"),
+                                formatStatus(results.getString("status"))
+                            });
+                        }
+                    }
+                }
+                return data;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    DashboardData data = get();
+                    jLabel19.setText(String.valueOf(data.totalRooms));
+                    jLabel22.setText(String.valueOf(data.availableRooms));
+                    jLabel26.setText(String.valueOf(data.todayReservations));
+                    jLabel27.setText(String.valueOf(data.checkedInGuests));
+
+                    DefaultTableModel model = (DefaultTableModel) tbllatestbookings.getModel();
+                    model.setRowCount(0);
+                    for (Object[] booking : data.recentBookings) {
+                        model.addRow(booking);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(Dashboard.this,
+                            "The dashboard could not load database data:\n" + ex.getMessage(),
+                            "Database error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }.execute();
+    }
+
+    private static int count(Connection connection, String sql) throws Exception {
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet results = statement.executeQuery()) {
+            results.next();
+            return results.getInt(1);
+        }
+    }
+
+    private static String formatStatus(String status) {
+        return switch (status) {
+            case "CHECKED_IN" -> "Checked In";
+            case "CHECKED_OUT" -> "Checked Out";
+            default -> status.substring(0, 1).toUpperCase()
+                    + status.substring(1).toLowerCase();
+        };
+    }
+
+    private static final class DashboardData {
+        private int totalRooms;
+        private int availableRooms;
+        private int todayReservations;
+        private int checkedInGuests;
+        private final java.util.List<Object[]> recentBookings = new java.util.ArrayList<>();
     }
 
     /**
@@ -781,6 +872,9 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        Dashboard d = new Dashboard();
+        d.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package hotel.reservation;
+import hotel.database.DatabaseConnection;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.table.DefaultTableModel;
@@ -11,6 +12,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Dimension;
 import java.awt.CardLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.SwingWorker;
 /**
  *
  * @author DCS Admin
@@ -57,25 +62,7 @@ model.setColumnIdentifiers(new String[]{
 
 model.setRowCount(0);
 
-model.addRow(new Object[]{
-    "RH001", "John Smith", "101",
-    "2026-11-05", "2026-11-08", "Confirmed"
-});
-
-model.addRow(new Object[]{
-    "RH002", "Sarah Williams", "105",
-    "2026-11-06", "2026-11-10", "Checked In"
-});
-
-model.addRow(new Object[]{
-    "RH003", "Michael Brown", "110",
-    "2026-11-07", "2026-11-09", "Pending"
-});
-
-model.addRow(new Object[]{
-    "RH004", "Emily Johnson", "115",
-    "2026-11-08", "2026-11-12", "Checked Out"
-});
+loadReservations(model);
 
 tblreservationstatus.setIntercellSpacing(new Dimension(12,8));
 tblreservationstatus.setRowHeight(35);
@@ -133,6 +120,57 @@ tblreservationstatus.getColumnModel()
         }
     });
                     }
+
+private void loadReservations(DefaultTableModel model) {
+    new SwingWorker<java.util.List<Object[]>, Void>() {
+        @Override
+        protected java.util.List<Object[]> doInBackground() throws Exception {
+            java.util.List<Object[]> rows = new java.util.ArrayList<>();
+            String sql = "SELECT r.reservation_id, r.guest_name, rm.room_number, "
+                    + "r.check_in_date, r.check_out_date, r.status "
+                    + "FROM reservations r JOIN rooms rm ON rm.room_id = r.room_id "
+                    + "ORDER BY r.check_in_date DESC, r.created_at DESC";
+            try (Connection connection = DatabaseConnection.getConnection();
+                    PreparedStatement statement = connection.prepareStatement(sql);
+                    ResultSet results = statement.executeQuery()) {
+                while (results.next()) {
+                    rows.add(new Object[]{
+                        String.format("RH%03d", results.getInt("reservation_id")),
+                        results.getString("guest_name"),
+                        results.getString("room_number"),
+                        results.getDate("check_in_date"),
+                        results.getDate("check_out_date"),
+                        formatStatus(results.getString("status"))
+                    });
+                }
+            }
+            return rows;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                model.setRowCount(0);
+                for (Object[] row : get()) {
+                    model.addRow(row);
+                }
+            } catch (Exception ex) {
+                javax.swing.JOptionPane.showMessageDialog(checkinOut.this,
+                        "Reservations could not be loaded:\n" + ex.getMessage(),
+                        "Database error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }.execute();
+}
+
+private static String formatStatus(String status) {
+    return switch (status) {
+        case "CHECKED_IN" -> "Checked In";
+        case "CHECKED_OUT" -> "Checked Out";
+        default -> status.substring(0, 1).toUpperCase()
+                + status.substring(1).toLowerCase();
+    };
+}
 
         /**
          * This method is called from within the constructor to initialize the
@@ -319,6 +357,7 @@ tblreservationstatus.getColumnModel()
         jButton16.setForeground(new java.awt.Color(245, 247, 250));
         jButton16.setText("Dashboard");
         jButton16.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButton16.addActionListener(this::jButton16ActionPerformed);
 
         jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gif.gif"))); // NOI18N
         jLabel27.setText("jLabel27");
@@ -1120,6 +1159,13 @@ if (!found) {
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        // TODO add your handling code here:
+        Dashboard d = new Dashboard();
+        d.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton16ActionPerformed
 
     /**
      * @param args the command line arguments

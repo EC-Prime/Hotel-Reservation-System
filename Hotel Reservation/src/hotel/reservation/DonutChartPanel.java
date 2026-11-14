@@ -11,7 +11,7 @@ package hotel.reservation;
 
     class DonutChartPanel extends javax.swing.JPanel {
 
-    private final int[] values = {9, 5,6 };
+    private int[] values;
 
     private final java.awt.Color[] colors = {
         new java.awt.Color(193, 123, 55),   
@@ -21,9 +21,19 @@ package hotel.reservation;
     };
 
     public DonutChartPanel() {
+        this(new int[]{0, 0, 0});
+    }
+
+    public DonutChartPanel(int[] values) {
+        this.values = values.clone();
         setBackground(new java.awt.Color(18, 32, 54));
         setPreferredSize(new java.awt.Dimension(280, 250));
         setOpaque(true);
+    }
+
+    public void setValues(int[] values) {
+        this.values = values.clone();
+        repaint();
     }
 
     @Override
@@ -41,6 +51,11 @@ package hotel.reservation;
         int total = 0;
         for (int value : values) {
             total += value;
+        }
+
+        if (total == 0) {
+            g2.dispose();
+            return;
         }
 
         int size = Math.min(getWidth() - 40, getHeight() - 50);
