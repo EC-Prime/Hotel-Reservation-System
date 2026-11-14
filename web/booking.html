@@ -60,7 +60,7 @@
       <div class="nav-cta-group">
         <a href="confirmation.html" class="btn-nav-outline">Manage Booking</a>
         <a href="rooms.html" class="btn-nav-gold">Book a Room</a>
-        <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+        <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false"><i class="fas fa-bars"></i></button>
       </div>
     </div>
   </header>
@@ -85,15 +85,15 @@
         <p class="page-subtitle">Enter your details to finish booking your room.</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 400px; gap: 32px; align-items: start;">
+      <div class="checkout-layout" style="display: grid; grid-template-columns: 1fr 400px; gap: 32px; align-items: start;">
         
         <!-- Left Column: Form -->
-        <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 32px;">
+        <div class="checkout-form-card" style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 32px;">
           <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; margin-bottom: 6px;">1. Your Details</h2>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 24px;">We will send your booking confirmation to this email.</p>
 
           <form id="reservationCheckoutForm" class="contact-form">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="checkout-fields-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="search-field">
                 <label class="search-label" for="guestName"><i class="fas fa-user"></i> Full Name *</label>
                 <div class="form-group-with-icon">
@@ -111,7 +111,7 @@
               </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="checkout-fields-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="search-field">
                 <label class="search-label" for="guestPhone"><i class="fas fa-phone"></i> Mobile Phone *</label>
                 <div class="form-group-with-icon">
@@ -134,7 +134,7 @@
             </div>
 
             <!-- Stay Dates -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="checkout-fields-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="search-field">
                 <label class="search-label" for="formCheckIn"><i class="fas fa-calendar-check"></i> Check-in Date</label>
                 <div class="search-input-wrap">
@@ -164,12 +164,12 @@
               <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; margin-bottom: 6px;">2. Payment</h2>
               <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Your card will not be charged until you arrive. Cancel for free up to 48 hours before check-in.</p>
 
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+              <div class="payment-fields-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
                 <div class="form-group-with-icon">
                   <i class="fas fa-credit-card"></i>
                   <input type="text" class="form-input-lux" placeholder="Card Number •••• •••• •••• 4242" value="4532 •••• •••• 8892">
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="payment-expiry-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                   <input type="text" class="form-input-lux" placeholder="MM/YY" value="12/28" style="padding-left: 14px;">
                   <input type="text" class="form-input-lux" placeholder="CVV" value="923" style="padding-left: 14px;">
                 </div>
