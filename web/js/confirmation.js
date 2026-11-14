@@ -1,6 +1,6 @@
 /**
  * confirmation.js - Booking Confirmation & Manage Booking Handlers
- * The Grand Haven Boutique & Spa
+ * Royal Haven Boutique & Spa
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -259,9 +259,9 @@ function renderConfirmationUI(booking) {
 }
 
 function downloadCalendarEvent(booking) {
-  const title = `Stay at The Grand Haven (${booking.room.title})`;
+  const title = `Stay at Royal Haven (${booking.room.title})`;
   const description = `Reservation ${booking.paymentReference} for ${booking.guestName}. Check-in 3:00 PM.`;
-  const location = `The Grand Haven Boutique & Spa, 104 Ocean View Blvd, Waterfront`;
+  const location = `Royal Haven Boutique & Spa, 104 Ocean View Blvd, Waterfront`;
 
   const startDate = booking.checkIn.replace(/-/g, '') + 'T150000Z';
   const endDate = booking.checkOut.replace(/-/g, '') + 'T110000Z';
@@ -269,7 +269,7 @@ function downloadCalendarEvent(booking) {
   const icsContent = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//The Grand Haven Boutique and Spa//EN',
+    'PRODID:-//Royal Haven Boutique and Spa//EN',
     'BEGIN:VEVENT',
     `UID:${booking.paymentReference}-${Date.now()}@grandreserve.com`,
     `DTSTAMP:${startDate}`,
@@ -286,7 +286,7 @@ function downloadCalendarEvent(booking) {
   const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.setAttribute('download', `GrandHaven-Booking-${String(booking.paymentReference).replace(/[^a-zA-Z0-9]/g, '')}.ics`);
+  link.setAttribute('download', `RoyalHaven-Booking-${String(booking.paymentReference).replace(/[^a-zA-Z0-9]/g, '')}.ics`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -312,7 +312,7 @@ function openReceiptModal(booking) {
       <div id="printableReceiptArea" style="padding: 36px 32px; color: #FFF;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-subtle);">
           <div>
-            <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; letter-spacing: 1px;">THE GRAND HAVEN</h2>
+            <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; letter-spacing: 1px;">ROYAL HAVEN</h2>
             <p style="font-size: 0.72rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 2px;">Boutique & Spa</p>
             <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">104 Ocean View Blvd, Waterfront<br>Tel: +1 (800) 472-6373</p>
           </div>

@@ -1,6 +1,6 @@
 /**
  * payment.js - Simulated Card Verification & Transaction Reference Generator
- * The Grand Haven Boutique & Spa
+ * Royal Haven Boutique & Spa
  */
 
 function generatePaymentReference() {

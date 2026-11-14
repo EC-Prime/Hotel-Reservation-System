@@ -1,6 +1,6 @@
 /**
  * booking.js - Room Selection, Trip Summary, Filters & Reservation Flow
- * The Grand Haven Boutique & Spa
+ * Royal Haven Boutique & Spa
  */
 
 // Current Booking State

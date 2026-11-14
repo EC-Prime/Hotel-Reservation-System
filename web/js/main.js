@@ -1,6 +1,6 @@
 /**
  * main.js - Core Navigation, Currency, Clock & Global Utilities
- * The Grand Haven Boutique & Spa
+ * Royal Haven Boutique & Spa
  */
 
 const API_BASE_URL = (location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')

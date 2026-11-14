@@ -1,5 +1,5 @@
 /**
- * rooms-data.js - The Grand Haven Boutique & Spa
+ * rooms-data.js - Royal Haven Boutique & Spa
  * 20 rooms across 3 floors
  * Matches database/seed_data.sql schema exactly
  */
