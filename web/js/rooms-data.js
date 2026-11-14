@@ -1,6 +1,6 @@
 /**
- * rooms-data.js - The Grand Reserve Boutique & Spa
- * 20 Authentic Luxury Sanctuaries across 3 Floors
+ * rooms-data.js - The Grand Haven Boutique & Spa
+ * 20 rooms across 3 floors
  * Matches database/seed_data.sql schema exactly
  */
 
@@ -42,7 +42,7 @@ const ROOMS_DATA = [
     badge: null,
     urgencyText: 'Only 1 Left on Floor 1',
     image: 'images/photo-1505693416388-ac5ce068fe85.jpg',
-    description: 'Cozy single sanctuary, garden facing with floor-to-ceiling glass doors opening onto tranquil courtyard greenery.',
+    description: 'Cozy single room facing the garden, with floor-to-ceiling glass doors overlooking the courtyard.',
     amenities: ['Garden Patio', 'Aromatherapy Diffuser', 'Rain Shower', 'Organic Robes', 'Ergonomic Workstation']
   },
   {
@@ -282,7 +282,7 @@ const ROOMS_DATA = [
     badge: null,
     urgencyText: null,
     image: 'images/photo-1591088398332-8a7791972843.jpg',
-    description: 'Deluxe sanctuary positioned at the top-floor quiet end with double acoustic insulation, harbor views, and a dedicated butler pantry.',
+    description: 'Deluxe room on a quiet top floor, with harbor views and a private pantry.',
     amenities: ['Top Floor Quiet Wing', 'King Grand Bed', 'Butler Pantry', 'Walk-in Rain Suite']
   },
   {
@@ -302,7 +302,7 @@ const ROOMS_DATA = [
     badge: 'RECOMMENDED',
     urgencyText: 'Premier Penthouse',
     image: 'images/photo-1502672260266-1c1ef2d93688.jpg',
-    description: 'The pinnacle of The Grand Reserve: A sprawling split-level residence with private terrace, cocktail bar, and personal butler service.',
+    description: 'A spacious two-level suite with a private terrace, cocktail bar, and personal butler service.',
     amenities: ['110 sqm Penthouse', '2 King Master Suites', 'Private Terrace', 'Private Butler', 'Private Wine Cellar']
   },
   {

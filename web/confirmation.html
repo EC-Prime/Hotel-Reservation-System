@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking Confirmed | The Grand Reserve Boutique & Spa</title>
-  <meta name="description" content="Your sanctuary reservation is confirmed. View details, add to calendar, or download your receipt.">
+  <title>Booking Confirmed | The Grand Haven Boutique & Spa</title>
+  <meta name="description" content="View your booking details, add your stay to your calendar, or download your receipt.">
   <link rel="stylesheet" href="css/fontawesome.min.css">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/confirmation.css">
@@ -17,7 +17,7 @@
     <div class="top-microbar-container">
       <div class="top-bar-left">
         <span class="top-item"><i class="fas fa-map-marker-alt"></i> 104 Ocean View Blvd, Waterfront</span>
-        <span class="top-item"><i class="fas fa-clock"></i> Concierge: 24/7 Available</span>
+        <span class="top-item"><i class="fas fa-clock"></i> Front Desk: Open 24/7</span>
         <span class="weather-badge" id="liveWeatherBadge">
           <i class="fas fa-sun" id="weatherIcon"></i>
           <span id="weatherTemp">24°C</span>
@@ -46,7 +46,7 @@
       <a href="index.html" class="brand-logo">
         <div class="brand-emblem"><i class="fas fa-moon"></i></div>
         <div class="brand-text">
-          <span class="brand-name">THE GRAND RESERVE</span>
+          <span class="brand-name">THE GRAND HAVEN</span>
           <span class="brand-tagline">Boutique & Spa</span>
         </div>
       </a>
@@ -61,7 +61,7 @@
 
       <div class="nav-cta-group">
         <a href="confirmation.html" class="btn-nav-outline active">Manage Booking</a>
-        <a href="rooms.html" class="btn-nav-gold">Reserve Sanctuary</a>
+        <a href="rooms.html" class="btn-nav-gold">Book a Room</a>
         <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
       </div>
     </div>
@@ -78,7 +78,7 @@
         </div>
         <h1 class="confirm-hero-title">Manage Your Stay</h1>
         <p class="confirm-hero-sub">
-          Enter your reservation id and the email used at booking to load a confirmed stay.
+          Enter your booking number and the email address you used to book.
         </p>
       </div>
 
@@ -87,10 +87,10 @@
       <div class="confirmation-card-main">
         <div class="reservation-top-header">
           <div class="res-tag-group">
-            <span class="res-status-label"><i class="fas fa-shield-check"></i> RESERVATION CONFIRMED</span>
+            <span class="res-status-label"><i class="fas fa-shield-check"></i> BOOKING CONFIRMED</span>
             <div class="res-booking-id" id="confirmBookingId">Booking ID: —</div>
           </div>
-          <span class="badge-tag badge-available"><i class="fas fa-circle-check"></i> Guaranteed Direct Rate</span>
+          <span class="badge-tag badge-available"><i class="fas fa-circle-check"></i> Booking Confirmed</span>
         </div>
 
         <div class="confirm-card-grid">
@@ -118,7 +118,7 @@
             </div>
 
             <p class="confirm-instruction-text">
-              A digital key will be available in the Grand Reserve app 24 hours before your arrival. Please present a valid ID at the concierge desk for valet and luggage service.
+              Your digital room key will be ready 24 hours before you arrive. Bring a valid ID when you check in. Ask us if you need help with parking or luggage.
             </p>
 
             <div class="confirm-actions-row">
@@ -151,7 +151,7 @@
             <div class="perk-card-icon"><i class="fas fa-utensils"></i></div>
             <div class="perk-card-info">
               <h4>Complimentary Breakfast</h4>
-              <p>Chef's daily selection included at L'Héritage Dining Room each morning.</p>
+              <p>Breakfast is included each morning at L'Héritage Dining Room.</p>
             </div>
           </div>
 
@@ -159,7 +159,7 @@
             <div class="perk-card-icon"><i class="fas fa-clock"></i></div>
             <div class="perk-card-info">
               <h4>Guaranteed Late Checkout</h4>
-              <p>Stay until 12:00 PM on your day of departure with unhurried valet service.</p>
+              <p>You can stay until 12:00 PM on the day you leave.</p>
             </div>
           </div>
         </div>
@@ -170,22 +170,22 @@
         <span>Need to make changes to your reservation?</span>
         <a href="#manageLookup" class="helper-link" onclick="document.getElementById('lookupBookingId').focus()"><i class="fas fa-pen-to-square"></i> Modify Stay</a>
         <span>•</span>
-        <a href="contact.html" class="helper-link"><i class="fas fa-headset"></i> Contact Concierge</a>
+        <a href="contact.html" class="helper-link"><i class="fas fa-headset"></i> Contact Us</a>
       </div>
       </div>
 
       <!-- Manage Booking Search Card -->
       <div class="manage-lookup-box" id="manageLookup">
         <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #FFF; margin-bottom: 6px;">
-          <i class="fas fa-magnifying-glass" style="color: var(--gold-primary);"></i> Look Up Existing Reservation
+          <i class="fas fa-magnifying-glass" style="color: var(--gold-primary);"></i> Find Your Booking
         </h3>
         <p style="font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 20px;">
-          Enter your reservation id and the email used at booking.
+          Enter your booking number and the email address you used to book.
         </p>
 
         <form id="manageBookingSearchForm" style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <input type="text" id="lookupBookingId" class="form-input-lux" placeholder="Reservation id (e.g. 42)" style="flex: 1; padding-left: 16px;" required>
-          <input type="email" id="lookupGuestEmail" class="form-input-lux" placeholder="Email used at booking" style="flex: 2; padding-left: 16px;" required>
+          <input type="text" id="lookupBookingId" class="form-input-lux" placeholder="Booking number (e.g. 42)" style="flex: 1; padding-left: 16px;" required>
+          <input type="email" id="lookupGuestEmail" class="form-input-lux" placeholder="Email used to book" style="flex: 2; padding-left: 16px;" required>
           <button type="submit" class="btn-primary" style="flex: 1; min-width: 160px;">
             Find Booking
           </button>
@@ -202,25 +202,25 @@
         <a href="index.html" class="brand-logo">
           <div class="brand-emblem"><i class="fas fa-moon"></i></div>
           <div class="brand-text">
-            <span class="brand-name">THE GRAND RESERVE</span>
+            <span class="brand-name">THE GRAND HAVEN</span>
             <span class="brand-tagline">Boutique & Spa</span>
           </div>
         </a>
-        <p>A tranquil haven of architectural beauty, refined comfort, and private hospitality overlooking the picturesque waterfront.</p>
+        <p>Stay by the water and enjoy comfortable rooms and friendly service.</p>
       </div>
 
       <div>
         <h4 class="footer-col-title">Quick Links</h4>
         <ul class="footer-links-list">
           <li><a href="index.html">About The Hotel</a></li>
-          <li><a href="rooms.html">All 20 Sanctuaries</a></li>
+          <li><a href="rooms.html">All 20 Rooms</a></li>
           <li><a href="confirmation.html">Manage Reservation</a></li>
-          <li><a href="contact.html">Concierge Desk</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="footer-col-title">Sanctuaries</h4>
+        <h4 class="footer-col-title">Rooms</h4>
         <ul class="footer-links-list">
           <li><a href="rooms.html?floor=3">Floor 3 - Penthouse Wing</a></li>
           <li><a href="rooms.html?floor=2">Floor 2 - Executive Suites</a></li>
@@ -239,7 +239,7 @@
 
     <div class="footer-bottom-bar">
       <div class="footer-bottom-content container">
-        <p>&copy; 2026 The Grand Reserve Luxury Hotel & Spa. All Rights Reserved.</p>
+        <p>&copy; 2026 The Grand Haven Boutique & Spa. All Rights Reserved.</p>
         <div class="footer-bottom-links">
           <a href="faq.html">Privacy Policy</a>
           <a href="faq.html">Terms & Service</a>

@@ -1,6 +1,6 @@
 /**
  * confirmation.js - Booking Confirmation & Manage Booking Handlers
- * The Grand Reserve Boutique & Spa
+ * The Grand Haven Boutique & Spa
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -110,7 +110,7 @@ async function loadConfirmedBooking() {
     const sub = document.querySelector('.confirm-hero-sub');
     if (heading) heading.textContent = 'Manage Your Stay';
     if (sub) {
-      sub.textContent = 'Enter your reservation id and the email used at booking to load a confirmed stay.';
+      sub.textContent = 'Enter your booking number and the email address you used to book.';
     }
     return;
   }
@@ -124,7 +124,7 @@ async function loadConfirmedBooking() {
     showToast(err.message, 'urgent');
     const heading = document.querySelector('.confirm-hero-title');
     const sub = document.querySelector('.confirm-hero-sub');
-    if (heading) heading.textContent = 'Reservation Not Found';
+    if (heading) heading.textContent = 'Booking Not Found';
     if (sub) sub.textContent = err.message;
   }
 }
@@ -259,9 +259,9 @@ function renderConfirmationUI(booking) {
 }
 
 function downloadCalendarEvent(booking) {
-  const title = `Stay at The Grand Reserve (${booking.room.title})`;
+  const title = `Stay at The Grand Haven (${booking.room.title})`;
   const description = `Reservation ${booking.paymentReference} for ${booking.guestName}. Check-in 3:00 PM.`;
-  const location = `The Grand Reserve Boutique & Spa, 104 Ocean View Blvd, Waterfront`;
+  const location = `The Grand Haven Boutique & Spa, 104 Ocean View Blvd, Waterfront`;
 
   const startDate = booking.checkIn.replace(/-/g, '') + 'T150000Z';
   const endDate = booking.checkOut.replace(/-/g, '') + 'T110000Z';
@@ -269,7 +269,7 @@ function downloadCalendarEvent(booking) {
   const icsContent = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//The Grand Reserve Luxury Hotels//EN',
+    'PRODID:-//The Grand Haven Boutique and Spa//EN',
     'BEGIN:VEVENT',
     `UID:${booking.paymentReference}-${Date.now()}@grandreserve.com`,
     `DTSTAMP:${startDate}`,
@@ -286,7 +286,7 @@ function downloadCalendarEvent(booking) {
   const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
-  link.setAttribute('download', `GrandReserve-Reservation-${String(booking.paymentReference).replace(/[^a-zA-Z0-9]/g, '')}.ics`);
+  link.setAttribute('download', `GrandHaven-Booking-${String(booking.paymentReference).replace(/[^a-zA-Z0-9]/g, '')}.ics`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -312,7 +312,7 @@ function openReceiptModal(booking) {
       <div id="printableReceiptArea" style="padding: 36px 32px; color: #FFF;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-subtle);">
           <div>
-            <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; letter-spacing: 1px;">THE GRAND RESERVE</h2>
+            <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; letter-spacing: 1px;">THE GRAND HAVEN</h2>
             <p style="font-size: 0.72rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 2px;">Boutique & Spa</p>
             <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">104 Ocean View Blvd, Waterfront<br>Tel: +1 (800) 472-6373</p>
           </div>
@@ -331,7 +331,7 @@ function openReceiptModal(booking) {
             ${booking.guestPhone ? `<p style="color: var(--text-secondary);">${booking.guestPhone}</p>` : ''}
           </div>
           <div>
-            <p style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Reservation Stay:</p>
+            <p style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Your Stay:</p>
             <p style="font-weight: 600; color: #FFF;">${formattedIn} — ${formattedOut}</p>
             <p style="color: var(--text-secondary);">${booking.nights} Nights • ${booking.numGuests} Guests</p>
             <p style="color: var(--gold-primary);">Room ${booking.room.roomNumber}${booking.room.floorNumber ? ` (Floor ${booking.room.floorNumber})` : ''}</p>
@@ -404,13 +404,13 @@ function initManageBookingLookup() {
     const email = emailInput ? emailInput.value.trim() : '';
 
     if (!reservationId || !email) {
-      showToast('Enter both your reservation id and email to search.', 'urgent');
+      showToast('Enter your booking number and email to search.', 'urgent');
       return;
     }
 
     try {
       const booking = await fetchReservation(reservationId, email);
-      showToast(`Found reservation for ${booking.guestName}.`);
+      showToast(`Booking found for ${booking.guestName}.`);
       renderConfirmationUI(booking);
       const next = new URLSearchParams({ id: String(booking.reservationId), email: booking.guestEmail });
       history.replaceState({}, '', `confirmation.html?${next.toString()}`);

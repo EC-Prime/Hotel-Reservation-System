@@ -1,6 +1,6 @@
 /**
  * weather.js - Open-Meteo Live Weather Integration
- * Fetches real-time weather forecasts for the luxury hotel sanctuary
+ * Fetches real-time weather forecasts for the hotel
  */
 
 const HOTEL_LOCATION = {

@@ -1,6 +1,6 @@
 /**
  * main.js - Core Navigation, Currency, Clock & Global Utilities
- * The Grand Reserve Boutique & Spa
+ * The Grand Haven Boutique & Spa
  */
 
 const API_BASE_URL = (location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')
@@ -132,18 +132,18 @@ function initNavAuthUI() {
       <button onclick="logout('index.html')" class="btn-nav-signout" title="Sign Out">
         <i class="fas fa-sign-out-alt"></i>
       </button>
-      <a href="${reserveHref}" class="btn-nav-gold">Reserve Sanctuary</a>
+      <a href="${reserveHref}" class="btn-nav-gold">Book a Room</a>
       <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
     `;
   } else {
-    // Logged out: show sleek text Sign In link + divider + Reserve Sanctuary button
+    // Logged out: show Sign In link + Book a Room button
     navCtaGroup.innerHTML = `
       <a href="login.html" class="nav-auth-link">
         <i class="fas fa-user-circle"></i>
         <span>Sign In</span>
       </a>
       <span class="nav-divider"></span>
-      <a href="${reserveHref}" class="btn-nav-gold">Reserve Sanctuary</a>
+      <a href="${reserveHref}" class="btn-nav-gold">Book a Room</a>
       <button class="mobile-menu-btn" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
     `;
   }

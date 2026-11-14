@@ -1,5 +1,5 @@
 /* ==========================================================================
-   THE GRAND RESERVE BOUTIQUE & SPA - DESIGN SYSTEM
+   THE GRAND HAVEN BOUTIQUE & SPA - DESIGN SYSTEM
    Luxury Hospitality Theme & Color Palette (Dark Obsidian & Champagne Gold)
    ========================================================================== */
 
@@ -921,7 +921,7 @@ button {
 }
 
 /* ==========================================================================
-   ROOMS CATALOG & SANCTUARY SELECTION (IMAGE 1 & 5 STYLING)
+   ROOMS CATALOG & SELECTION (IMAGE 1 & 5 STYLING)
    ========================================================================== */
 .rooms-catalog-section {
   padding: 30px 24px 100px;
@@ -1408,7 +1408,7 @@ button {
   color: var(--text-secondary);
 }
 
-/* Selected Sanctuary Highlight in Trip Summary */
+/* Selected Room Highlight in Trip Summary */
 .selected-sanctuary-box {
   background: rgba(11, 14, 20, 0.7);
   border: 1px dashed var(--border-gold);

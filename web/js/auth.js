@@ -1,6 +1,6 @@
 /**
  * auth.js — Shared JWT authentication helpers
- * The Grand Reserve Boutique & Spa
+ * The Grand Haven Boutique & Spa
  *
  * Include this script BEFORE any page script that needs auth.
  * It exposes a small, clean API used by booking.js, main.js,

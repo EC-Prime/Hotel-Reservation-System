@@ -1,6 +1,6 @@
 /**
  * booking.js - Room Selection, Trip Summary, Filters & Reservation Flow
- * The Grand Reserve Boutique & Spa
+ * The Grand Haven Boutique & Spa
  */
 
 // Current Booking State
@@ -234,14 +234,14 @@ function renderRoomsGrid() {
   }
 
   if (countBadge) {
-    countBadge.textContent = `${rooms.length} Sanctuaries Found`;
+    countBadge.textContent = `${rooms.length} Rooms Found`;
   }
 
   if (rooms.length === 0) {
     container.innerHTML = `
       <div style="text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-card);">
         <i class="fas fa-bed" style="font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 16px;"></i>
-        <h3 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; margin-bottom: 8px;">No Sanctuaries Matched Your Criteria</h3>
+        <h3 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; margin-bottom: 8px;">No Rooms Match Your Search</h3>
         <p style="color: var(--text-secondary); margin-bottom: 20px;">Try adjusting your filters or dates to discover available rooms.</p>
         <button class="btn-primary" onclick="resetAllFilters()">Reset All Filters</button>
       </div>
@@ -358,12 +358,12 @@ function updateTripSummary() {
   }
 
   if (!bookingState.selectedRoom) {
-    if (summarySanctuary) summarySanctuary.innerHTML = '<span style="color: var(--text-muted);">No sanctuary selected yet</span>';
+    if (summarySanctuary) summarySanctuary.innerHTML = '<span style="color: var(--text-muted);">No room selected yet</span>';
     if (summaryRate) summaryRate.textContent = formatCurrency(0);
     if (summaryTotal) summaryTotal.textContent = formatCurrency(0);
     if (completeBtn) {
       completeBtn.disabled = true;
-      completeBtn.textContent = 'Select a Sanctuary to Proceed';
+      completeBtn.textContent = 'Select a Room to Continue';
     }
     return;
   }
@@ -497,7 +497,7 @@ function openRoomModal(roomId) {
       <div style="position: relative; height: 320px; overflow: hidden;">
         <img src="${room.image}" alt="${room.title}" style="width: 100%; height: 100%; object-fit: cover;">
         <div style="position: absolute; bottom: 16px; left: 20px; background: rgba(11, 14, 20, 0.85); padding: 6px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-gold);">
-          <span style="color: var(--gold-bright); font-weight: 700;">Floor ${room.floorNumber} • Sanctuary #${room.roomNumber}</span>
+          <span style="color: var(--gold-bright); font-weight: 700;">Floor ${room.floorNumber} • Room ${room.roomNumber}</span>
         </div>
       </div>
       <div style="padding: 30px;">
@@ -517,7 +517,7 @@ function openRoomModal(roomId) {
 
         <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 24px;">${room.description}</p>
 
-        <h4 style="font-family: var(--font-display); font-size: 1rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Curated Amenities & Services</h4>
+        <h4 style="font-family: var(--font-display); font-size: 1rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Room Features</h4>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 30px;">
           ${(room.amenities || []).map(a => `<div style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-primary);"><i class="fas fa-check-circle" style="color: var(--gold-primary);"></i> ${a}</div>`).join('')}
         </div>
@@ -525,7 +525,7 @@ function openRoomModal(roomId) {
         <div style="display: flex; justify-content: flex-end; gap: 14px; border-top: 1px solid var(--border-subtle); padding-top: 20px;">
           <button class="btn-secondary" onclick="closeRoomModal()">Close</button>
           <button class="btn-primary" onclick="selectSanctuary(${room.roomId}); closeRoomModal();">
-            <i class="fas fa-check"></i> Select This Sanctuary
+            <i class="fas fa-check"></i> Select This Room
           </button>
         </div>
       </div>
@@ -572,7 +572,7 @@ function renderCheckoutRecap(room, checkIn, checkOut) {
       <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle);">
         <img src="${room.image}" alt="${room.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-sm);">
         <div>
-          <span class="badge-tag badge-gold">Floor ${room.floorNumber} • Sanctuary #${room.roomNumber}</span>
+          <span class="badge-tag badge-gold">Floor ${room.floorNumber} • Room ${room.roomNumber}</span>
           <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #FFF; margin-top: 4px;">${room.title}</h3>
           <p style="font-size: 0.8rem; color: var(--gold-light);">${room.bedType} • Max ${room.capacity} Guests</p>
         </div>
