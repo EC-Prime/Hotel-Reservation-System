@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Grand Reserve</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-emblem"><i class="fas fa-moon"></i></div>
+
+        <div class="brand-text">
+          <span class="brand-name">THE GRAND RESERVE</span>
+          <span class="brand-tagline">BOUTIQUE &amp;spa </span>
+        </div>
+      </a>
+      <div class="nav-cta-group">
+        <a href="rooms.html" class="btn-nav-gold">Reserve Sanctuary</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="rooms-catalog-section">
+    <div class="container">
+
+      <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-current">Guest Details &amp; Guarantee</li>
+        </ol>
+      </nav>
+
+      <div class="page-header">
+        <h1 class="page-title">Confirm Your Sanctuary</h1>
+        <p class="page-subtitle">Complete your details to secure your direct booking rate and luxury privileges.</p>
+      </div>
+
+
+      <div class="checkout-grid-container">
+        <div class="checkout-card">
+          <h2 class="checkout-section-title"> Primary Guest Information</h2>
+          <p class="checkout-section-sub">Your digital key and confirmation receipt will be delivered to this email.</p>
+
+          <form id="reservationCheckoutForm" class="contact-form">
+            <div class="form-row">
+              <div class="search-field">
+                <label class="search-label" for="guestName"><i class="fas fa-user"></i> Full Name *</label>
+                <div class="form-group-with-icon">
+                  <i class="fas fa-signature"></i>
+                  <input type="text" id="guestName" class="form-input-lux" placeholder="e.g. Alex Vance" required>
+                </div>
+              </div>
+
+              <div class="search-field">
+                <label class="search-label" for="guestEmail"><i class="fas fa-envelope"></i> Email Address </label>
+                <div class="form-group-with-icon">
+                  <i class="fas fa-at"></i>
+                  <input type="email" id="guestEmail" class="form-input-lux" placeholder="alex.vance@example.com"
+                    required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="search-field">
+                <label class="search-label" for="guestPhone"><i class="fas fa-phone"></i> Phone Number</label>
+                <div class="form-group-with-icon">
+                  <i class="fas fa-mobile-screen"></i>
+                  <input type="tel" id="guestPhone" class="form-input-lux" placeholder="+27">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="search-field">
+                <label class="search-label" for="formCheckIn"><i class="fas fa-calendar-check"></i> Check-in
+                  Date</label>
+                <div class="search-input-wrap">
+                  <input type="date" id="formCheckIn" required>
+                </div>
+              </div>
+
+              <div class="search-field">
+                <label class="search-label" for="formCheckOut"><i class="fas fa-calendar-xmark"></i> Check-out
+                  Date</label>
+                <div class="search-input-wrap">
+                  <input type="date" id="formCheckOut" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="search-field">
+              <label class="search-label" for="specialRequests"><i class="fas fa-concierge-bell"></i> Special
+                Requests</label>
+              <div class="form-group-with-icon form-group-textarea">
+                <i class="fas fa-feather-pointed"></i>
+                <textarea id="specialRequests" class="form-input-lux" rows="3"
+                  placeholder="Late arrival, dietary needs, celebrations, pillow preferences..."></textarea>
+              </div>
+            </div>
+            <section class="container service-bookings" id="spa-booking">
+              <div class="booking-intro">
+                <p class="booking-kicker">Relax and recharge</p>
+                <h2>Spa booking</h2>
+                <p>Choose a treatment and preferred appointment time. We’ll be happy to help you plan a restorative
+                  break.</p>
+              </div>
+              <form class="service-form">
+                <div class="field">
+                  <label for="spa-service">Treatment</label>
+                  <select id="spa-service" name="treatment" required>
+                    <option value="" selected disabled>Choose a treatment</option>
+                    <option>Relaxing massage</option>
+                    <option>Deep tissue massage</option>
+                    <option>Facial treatment</option>
+                    <option>Wellness ritual</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="spa-date">Preferred date</label>
+                  <input id="spa-date" name="date" type="date" required>
+                </div>
+                <div class="field">
+                  <label for="spa-time">Preferred time</label>
+                  <input id="spa-time" name="time" type="time" required>
+                </div>
+                <div class="field">
+                  <label for="spa-name">Your name</label>
+                  <input id="spa-name" name="name" type="text" autocomplete="name" required>
+                </div>
+                <div class="field">
+                  <label for="spa-email">Email address</label>
+                  <input id="spa-email" name="email" type="email" autocomplete="email" required>
+                </div>
+                <button class="btn btn-cta" type="submit">Request spa booking</button>
+                <p class="booking-status" aria-live="polite"></p>
+              </form>
+            </section>
+
+            <section class="container service-bookings" id="boutique-booking">
+              <div class="booking-intro">
+                <p class="booking-kicker">Discover something special</p>
+                <h2>Boutique appointment</h2>
+                <p> Arrange a personal shopping visit, browse local gifts, or schedule a time to collect a purchase.</p>
+              </div>
+              <form class="service-form">
+                <div class="field">
+                  <label for="boutique-service">Appointment type</label>
+                  <select id="boutique-service" name="appointment" required>
+                    <option value="" selected disabled>Choose an appointment</option>
+                    <option>Personal shopping</option>
+                    <option>Browse local gifts</option>
+                    <option>Purchase collection</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="boutique-date">Preferred date</label>
+                  <input id="boutique-date" name="date" type="date" required>
+                </div>
+                <div class="field">
+                  <label for="boutique-time">Preferred time</label>
+                  <input id="boutique-time" name="time" type="time" required>
+                </div>
+                <div class="field">
+                  <label for="boutique-name">Your name</label>
+                  <input id="boutique-name" name="name" type="text" autocomplete="name" required>
+                </div>
+                <div class="field">
+                  <label for="boutique-email">Email address</label>
+                  <input id="boutique-email" name="email" type="email" autocomplete="email" required>
+                </div>
+                <button class="btn btn-primary" type="submit">Request boutique appointment</button>
+                <p class="booking-status" aria-live="polite"></p>
+              </form>
+            </section>
+
+
+
+            <div class="payment-guarantee-box">
+              <h2 class="checkout-section-title"> Payment &amp; Guarantee</h2>
+              <p class="checkout-section-sub">Zero cancellation penalties up to 48 hours before arrival.</p>
+
+              <div class="form-row">
+                <div class="form-group-with-icon">
+                  <i class="fas fa-credit-card"></i>
+                  <input type="text" class="form-input-lux" placeholder="Card Number" value="4532 •••• 8892"
+                    aria-label="Card number">
+                </div>
+                <div class="form-row-inner">
+                  <input type="text" class="form-input-lux no-icon" placeholder="MM/YY" value="12/28"
+                    aria-label="Expiry date">
+                  <input type="text" class="form-input-lux no-icon" placeholder="CVV" value="923" aria-label="CVV">
+                </div>
+              </div>
+
+
+              <div class="no-charge-notice">
+                <i class="fas fa-lock"></i>
+                <p><strong>No upfront charge.</strong> Your card only guarantees the room and will not be charged until
+                  check-in.</p>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary btn-confirm">
+              <i class="fas fa-shield-alt"></i> Confirm &amp; Guarantee Reservation
+            </button>
+          </form>
+        </div>
+
+        <aside>
+          <div id="checkoutRoomRecap">
+            <div class="recap-card">
+              <div class="recap-thumb" role="img" aria-label="Suite photo placeholder"></div>
+              <div class="recap-body">
+                <h3 class="recap-title">Oceanview Penthouse</h3>
+
+                <div class="recap-stay">
+                  <div><span>Check-in</span><strong>—</strong></div>
+                  <i class="fas fa-arrow-right"></i>
+                  <div><span>Check-out</span><strong>—</strong></div>
+                </div>
+
+                <dl class="recap-lines">
+                  <div>
+                    <dt>Nightly rate</dt>
+                    <dd>R 1 600,00</dd>
+                  </div>
+                  <div>
+                    <dt>Taxes &amp; fees</dt>
+                    <dd>R 192,00</dd>
+                  </div>
+                  <div class="recap-discount">
+                    <dt>Direct booking discount</dt>
+                    <dd>−R 160,00</dd>
+                  </div>
+                </dl>
+
+                <div class="recap-total">
+                  <span>Grand Total</span>
+                  <strong>R 1 632,00</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+
+  <footer class="site-footer">
+    <div class="footer-container">
+
+    </div>
+
+
+
+    <div class="footer-legal">
+      <p>&copy; 2026 The Grand Reserve. All rights reserved.</p>
+    </div>
+    </div>
+</body>
+
+</html>
