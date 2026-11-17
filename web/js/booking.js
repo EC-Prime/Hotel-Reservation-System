@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRoomsGallery();
   initFilters();
   initBookingForm();
+  initServiceBookingForms();
 
   document.addEventListener('currencyChanged', () => {
     renderRoomsGrid();
@@ -744,4 +745,21 @@ function initBookingForm() {
       }
     }
   });
+}
+
+function initServiceBookingForms() {
+  const bindServiceForm = (formId, successMessage) => {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const status = form.querySelector('.booking-status');
+      if (status) status.textContent = successMessage;
+      form.reset();
+    });
+  };
+
+  bindServiceForm('spaBookingForm', 'Spa booking request received. Our team will confirm shortly.');
+  bindServiceForm('boutiqueBookingForm', 'Boutique appointment request received. Our team will confirm shortly.');
 }

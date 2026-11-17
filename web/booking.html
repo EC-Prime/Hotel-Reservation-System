@@ -184,6 +184,83 @@
               <i class="fas fa-lock" style="color: var(--gold-primary);"></i> Your payment details are protected
             </p>
           </form>
+
+          <!-- Spa Booking (from Blessing) -->
+          <section class="service-bookings" id="spa-booking">
+            <div class="booking-intro">
+              <p class="booking-kicker">Relax and recharge</p>
+              <h2>Spa booking</h2>
+              <p>Choose a treatment and preferred appointment time. We’ll be happy to help you plan a restorative break.</p>
+            </div>
+            <form class="service-form" id="spaBookingForm">
+              <div class="field">
+                <label for="spa-service">Treatment</label>
+                <select id="spa-service" name="treatment" required>
+                  <option value="" selected disabled>Choose a treatment</option>
+                  <option>Relaxing massage</option>
+                  <option>Deep tissue massage</option>
+                  <option>Facial treatment</option>
+                  <option>Wellness ritual</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="spa-date">Preferred date</label>
+                <input id="spa-date" name="date" type="date" required>
+              </div>
+              <div class="field">
+                <label for="spa-time">Preferred time</label>
+                <input id="spa-time" name="time" type="time" required>
+              </div>
+              <div class="field">
+                <label for="spa-name">Your name</label>
+                <input id="spa-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="spa-email">Email address</label>
+                <input id="spa-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <button class="btn btn-cta" type="submit">Request spa booking</button>
+              <p class="booking-status" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <!-- Boutique Appointment (from Blessing) -->
+          <section class="service-bookings" id="boutique-booking">
+            <div class="booking-intro">
+              <p class="booking-kicker">Discover something special</p>
+              <h2>Boutique appointment</h2>
+              <p>Arrange a personal shopping visit, browse local gifts, or schedule a time to collect a purchase.</p>
+            </div>
+            <form class="service-form" id="boutiqueBookingForm">
+              <div class="field">
+                <label for="boutique-service">Appointment type</label>
+                <select id="boutique-service" name="appointment" required>
+                  <option value="" selected disabled>Choose an appointment</option>
+                  <option>Personal shopping</option>
+                  <option>Browse local gifts</option>
+                  <option>Purchase collection</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="boutique-date">Preferred date</label>
+                <input id="boutique-date" name="date" type="date" required>
+              </div>
+              <div class="field">
+                <label for="boutique-time">Preferred time</label>
+                <input id="boutique-time" name="time" type="time" required>
+              </div>
+              <div class="field">
+                <label for="boutique-name">Your name</label>
+                <input id="boutique-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="boutique-email">Email address</label>
+                <input id="boutique-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <button class="btn btn-primary" type="submit">Request boutique appointment</button>
+              <p class="booking-status" aria-live="polite"></p>
+            </form>
+          </section>
         </div>
 
         <!-- Right Column: Selected Room Recap -->
