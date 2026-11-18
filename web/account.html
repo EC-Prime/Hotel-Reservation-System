@@ -6,7 +6,6 @@
   <title>My Account | Royal Haven Boutique & Spa</title>
   <meta name="description" content="View and manage your bookings and account details at Royal Haven.">
   <link rel="stylesheet" href="css/fontawesome.min.css">
-  <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/auth.css">
   <style>
@@ -27,11 +26,13 @@
       margin-top: 36px;
     }
     .profile-card {
-      background: var(--bg-card);
+      background: var(--inner-glass);
       border: 1px solid var(--border-gold);
       border-radius: var(--radius-lg);
       padding: 36px 28px;
       box-shadow: var(--shadow-lg);
+      -webkit-backdrop-filter: blur(16px) saturate(125%);
+      backdrop-filter: blur(16px) saturate(125%);
       height: fit-content;
       position: sticky;
       top: 100px;
@@ -154,7 +155,7 @@
     }
   </style>
 </head>
-<body>
+<body class="inner-page">
 
   <!-- Top Micro-Bar -->
   <div class="top-microbar">
