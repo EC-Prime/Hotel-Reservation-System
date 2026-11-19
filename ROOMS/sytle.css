@@ -1,0 +1,370 @@
+:root {
+  --royal-blue: #1b4f8a;
+  --midnight-blue: #102d4d;
+  --sky-blue: #102d4d;
+  --deep-gold: #a66f32;
+  --soft-gold: #d2a86f;
+  --white: #ffffff;
+  --black: #1f1f1f;
+  --shadow: 0 0.8rem 2rem rgba(92, 60, 34, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--sky-blue);
+  color: var(--midnight-blue);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.header {
+  padding: 1.5rem 5%;
+  background: rgba(5, 22, 41, 0.95);
+}
+
+.navbar {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  color: var(--midnight-blue);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+}
+
+.navbar a:first-child {
+  color: var(--deep-gold);
+  font-weight: 800;
+}
+
+.btn-book {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+  background: var(--deep-gold);
+  color: var(--white) !important;
+}
+
+main {
+  padding: 2rem 0 4rem;
+}
+
+.availability {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.availability form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(27, 79, 138, 0.12);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.availability .box {
+  flex: 1 1 160px;
+}
+
+.availability .box p {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.availability .box p span {
+  color: var(--deep-gold);
+}
+
+.input,
+.btn {
+  width: 100%;
+  border: 1px solid rgba(27, 79, 138, 0.2);
+  border-radius: 0.7rem;
+  background: var(--white);
+  color: var(--black);
+  padding: 0.9rem 1rem;
+  font: inherit;
+}
+
+.input:focus {
+  border-color: var(--deep-gold);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(200, 155, 45, 0.2);
+}
+
+.btn {
+  margin-top: 2rem;
+  background: linear-gradient(135deg, var(--deep-gold), var(--soft-gold));
+  border: none;
+  color: var(--midnight-blue);
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08rem;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.rooms {
+  max-width: 1200px;
+  margin: 4rem auto 0;
+  padding: 0 1.5rem;
+}
+
+.Amenities {
+  max-width: 1200px;
+  margin: 4rem auto 0;
+  padding: 0 1.5rem;
+}
+
+.heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--white);
+}
+
+.heading span {
+  color: var(--deep-gold);
+}
+
+.rooms-tagline {
+  margin: -1.2rem 0 2rem;
+  text-align: center;
+  color: #7a5a3b;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.room-slider {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.amenities-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.slide {
+  background: rgba(255, 255, 255, 0.8);
+  border: 3px solid var(--deep-gold);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.amenity {
+  background: rgba(255, 255, 255, 0.8);
+  border: 3px solid var(--deep-gold);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.75) translateY(40px);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.05) translateY(-8px);
+  }
+  75% {
+    transform: scale(0.98) translateY(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.slide,
+.amenity,
+.heading,
+.rooms-tagline {
+  animation: bounce-in 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.slide:nth-child(3n + 2),
+.amenity:nth-child(3n + 2) {
+  animation-delay: 0.12s;
+}
+
+.slide:nth-child(3n),
+.amenity:nth-child(3n) {
+  animation-delay: 0.24s;
+}
+
+.slide:hover,
+.amenity:hover {
+  transform: translateY(-5px);
+}
+
+.image {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.amenity img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+
+.image img:hover,
+.amenity img:hover {
+  transform: scale(1.05);
+}
+
+.price {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(16, 45, 77, 0.85);
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.luxury-shopping-cart {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--midnight-blue);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.luxury-shopping-cart:hover {
+  background: var(--royal-blue);
+  color: var(--white);
+  transform: rotate(10deg);
+}
+
+.content {
+  padding: 1.5rem;
+}
+
+.content h2 {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+
+.content p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #3f5d7a;
+  margin-bottom: 0.8rem;
+}
+
+.slide .content p {
+  display: -webkit-box;
+  min-height: calc(1.6em * 4);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.amenity h2 {
+  padding: 1.5rem 1.5rem 0;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+
+.amenity p {
+  padding: 0 1.5rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #3f5d7a;
+}
+
+.stars {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.stars i {
+  color: var(--deep-gold);
+  font-style: normal;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 680px) {
+  .header {
+    padding: 1.25rem 1rem;
+  }
+
+  .navbar {
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .availability form {
+    padding: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide,
+  .amenity,
+  .heading,
+  .rooms-tagline {
+    animation: none;
+  }
+}
