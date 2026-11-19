@@ -66,180 +66,185 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <canvas class="hero-particles-canvas" id="heroParticles"></canvas>
-    <div class="hero-overlay-glow"></div>
-    <div class="hero-content">
-      <div class="hero-rating-pill">
-        <span class="hero-rating-stars">★★★★★</span>
-        <span>BEST LUXURY BOUTIQUE HOTEL • 20K+ FIVE-STAR REVIEWS</span>
+  <main>
+    <section class="home-hero" id="home">
+      <div class="home-hero-slides" aria-label="Featured Royal Haven rooms">
+        <img class="home-hero-image is-active" src="images/photo-1578683010236-d716f9a3f461.jpg" alt="The Royal Terrace Suite with waterfront views" data-caption="THE ROYAL TERRACE SUITE" aria-hidden="false" fetchpriority="high">
+        <img class="home-hero-image" src="images/photo-1582719508461-905c673771fd.jpg" alt="Ocean Horizon Deluxe with a private balcony" data-caption="OCEAN HORIZON DELUXE" aria-hidden="true">
+        <img class="home-hero-image" src="images/photo-1502672260266-1c1ef2d93688.jpg" alt="The Celestial Penthouse Suite" data-caption="THE CELESTIAL PENTHOUSE" aria-hidden="true">
+        <img class="home-hero-image" src="images/photo-1631049307264-da0ec9d70304.jpg" alt="An elegant guest room at Royal Haven" data-caption="A ROYAL HAVEN RETREAT" aria-hidden="true">
       </div>
-
-      <h1 class="hero-title">Stay at <span>Royal Haven</span></h1>
-      <p class="hero-subtitle">
-        Relax by the ocean in a comfortable room with friendly service, great food, and a welcoming spa.
-      </p>
-
-      <!-- Booking Quick Search Bar -->
-      <form class="booking-search-bar" action="rooms.html" method="GET">
-        <div class="search-field">
-          <label class="search-label"><i class="fas fa-calendar-check"></i> Check-In</label>
-          <div class="search-input-wrap">
-            <input type="date" name="checkIn" id="searchCheckIn" required>
-          </div>
+      <div class="home-hero-shade"></div>
+      <div class="home-hero-content">
+        <p class="home-eyebrow"><span></span> A WATERFRONT BOUTIQUE HOTEL <span></span></p>
+        <h1>Where comfort<br><em>meets the coast.</em></h1>
+        <p class="home-hero-intro">A welcoming place to slow down, take in the ocean air, and enjoy thoughtful hospitality at every turn.</p>
+        <div class="home-hero-actions">
+          <a class="home-button home-button-gold" href="#booking">Plan your stay <span aria-hidden="true">↗</span></a>
+          <a class="home-text-link" href="#story">Discover Royal Haven <span aria-hidden="true">↓</span></a>
         </div>
-
-        <div class="search-field">
-          <label class="search-label"><i class="fas fa-calendar-xmark"></i> Check-Out</label>
-          <div class="search-input-wrap">
-            <input type="date" name="checkOut" id="searchCheckOut" required>
-          </div>
-        </div>
-
-        <div class="search-field">
-          <label class="search-label"><i class="fas fa-user-group"></i> Guests</label>
-          <div class="search-input-wrap">
-            <select name="guests" id="searchGuests">
-              <option value="1">1 Adult</option>
-              <option value="2" selected>2 Adults (Couples Stay)</option>
-              <option value="3">3 Guests (Executive)</option>
-              <option value="4">4 Guests (Family Suite)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="search-field">
-          <label class="search-label"><i class="fas fa-layer-group"></i> Room Type</label>
-          <div class="search-input-wrap">
-            <select name="type" id="searchType">
-              <option value="all">All 20 Rooms</option>
-              <option value="suite">Signature Suites</option>
-              <option value="deluxe">Deluxe Ocean Rooms</option>
-              <option value="double">Executive Double</option>
-              <option value="single">Classic Single</option>
-            </select>    
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary btn-search-submit">
-          <i class="fas fa-search"></i> Find Rooms
+      </div>
+      <div class="home-hero-caption" aria-live="polite">
+        <span class="home-slide-count">01 / 04</span>
+        <span class="home-caption-line"></span>
+        <span class="home-slide-title">THE ROYAL TERRACE SUITE</span>
+      </div>
+      <div class="home-hero-controls" role="group" aria-label="Featured room slideshow controls">
+        <button class="home-slideshow-toggle" type="button" aria-label="Pause slideshow" aria-pressed="false">
+          <i class="fas fa-pause" aria-hidden="true"></i>
         </button>
+        <button class="home-slide-button" type="button" aria-label="Show room 1 of 4: The Royal Terrace Suite" aria-pressed="true" data-slide="0"></button>
+        <button class="home-slide-button" type="button" aria-label="Show room 2 of 4: Ocean Horizon Deluxe" aria-pressed="false" data-slide="1"></button>
+        <button class="home-slide-button" type="button" aria-label="Show room 3 of 4: The Celestial Penthouse Suite" aria-pressed="false" data-slide="2"></button>
+        <button class="home-slide-button" type="button" aria-label="Show room 4 of 4: Elegant guest room" aria-pressed="false" data-slide="3"></button>
+      </div>
+      <svg class="home-wave" viewBox="0 0 1440 110" preserveAspectRatio="none" aria-hidden="true"><path d="M0,55 C260,115 480,105 720,65 C980,20 1190,0 1440,45 L1440,110 L0,110 Z"></path></svg>
+    </section>
+
+    <section class="home-booking" id="booking" aria-label="Search for a room">
+      <form class="home-booking-panel" id="homeBookingSearch" action="rooms.html" method="GET">
+        <label>CHECK-IN
+          <input type="date" name="checkIn" id="homeCheckIn" required>
+        </label>
+        <label>CHECK-OUT
+          <input type="date" name="checkOut" id="homeCheckOut" required>
+        </label>
+        <label>GUESTS
+          <select name="guests" id="homeGuests">
+            <option value="2" selected>2 Adults</option>
+            <option value="1">1 Adult</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+          </select>
+        </label>
+        <label>ROOM TYPE
+          <select name="type" id="homeRoomType">
+            <option value="all">All 20 Rooms</option>
+            <option value="suite">Signature Suites</option>
+            <option value="deluxe">Deluxe Ocean Rooms</option>
+            <option value="double">Executive Double</option>
+            <option value="single">Classic Single</option>
+          </select>
+        </label>
+        <button class="home-button home-button-gold home-booking-submit" type="submit">Find rooms <span aria-hidden="true">↗</span></button>
       </form>
+      <p class="home-booking-note">Thoughtful stays, right by the water.</p>
+    </section>
 
-      <!-- Featured Suite Quick Selector Pills (01, 02, 03 from Image 4) -->
-      <div class="hero-pills-row">
-        <a href="rooms.html?roomId=9" class="hero-pill-card">
-          <span class="hero-pill-num">01</span>
-          <span>The Royal Terrace Suite • R2,200</span>
-        </a>
-        <a href="rooms.html?roomId=13" class="hero-pill-card">
-          <span class="hero-pill-num">02</span>
-          <span>Ocean Horizon Deluxe • R3,000</span>
-        </a>
-        <a href="rooms.html?roomId=15" class="hero-pill-card">
-          <span class="hero-pill-num">03</span>
-          <span>The Celestial Penthouse • R2,400</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Curved Luxury Wave Divider (Image 4) -->
-  <div class="curved-wave-divider">
-    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M0,0 C150,90 350,-40 500,40 C650,120 900,20 1200,60 L1200,120 L0,120 Z" class="shape-fill"></path>
-    </svg>
-  </div>
-
-  <!-- About Section -->
-  <section class="about-section">
-    <div class="container">
-      <div class="about-grid">
-        <div class="about-image-stack">
-          <img src="images/photo-1582719478250-c89cae4dc85b.jpg" alt="Royal Haven lobby" class="about-main-img">
-          <div class="about-float-card">
-            <div class="about-float-icon"><i class="fas fa-gem"></i></div>
-            <h4 class="about-float-title">A Place to Relax</h4>
-            <p class="about-float-desc">A relaxing place to stay, with thoughtful details and warm service.</p>
-          </div>
-        </div>
-
+    <section class="home-story home-section" id="story">
+      <div class="home-section-kicker">01 — WELCOME TO ROYAL HAVEN</div>
+      <div class="home-story-grid">
         <div>
-          <span class="section-label"><i class="fas fa-feather-pointed"></i> About Royal Haven</span>
-          <h2 class="section-title">Comfort and Ocean Views</h2>
-          <p class="section-subtitle">
-            Set on the waterfront, Royal Haven has 20 rooms across three floors. Enjoy friendly service, fresh meals, and time to relax during your stay.
-          </p>
-
-          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-            <a href="rooms.html" class="btn-primary">See All 20 Rooms</a>
-            <a href="contact.html" class="btn-secondary">Contact Us</a>
-          </div>
-
-          <div class="stats-grid">
-            <div class="stat-item">
-              <h3>20</h3>
-              <p>Comfortable Rooms</p>
-            </div>
-            <div class="stat-item">
-              <h3>3</h3>
-              <p>Floors to Explore</p>
-            </div>
-            <div class="stat-item">
-              <h3>100%</h3>
-              <p>Helpful Service & Parking</p>
-            </div>
-          </div>
+          <p class="home-eyebrow home-eyebrow-gold">A PLACE TO FEEL AT EASE</p>
+          <h2>Some stays<br>stay <em>with you.</em></h2>
+        </div>
+        <div class="home-story-copy">
+          <p class="home-lead">Royal Haven is an invitation to slow down, settle in, and enjoy hospitality that feels personal.</p>
+          <p>With 20 comfortable rooms across three floors, ocean views, fresh local dining, and a welcoming team, make your time by the water your own.</p>
+          <a class="home-underlined-link" href="contact.html">Get to know us <span aria-hidden="true">↗</span></a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Hotel Services -->
-  <section class="about-section" id="amenities" style="background: var(--bg-secondary); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
-    <div class="container">
-      <div style="text-align: center; max-width: 700px; margin: 0 auto 50px;">
-        <span class="section-label"><i class="fas fa-bell-concierge"></i> Our Services</span>
-        <h2 class="section-title">Enjoy Your Stay</h2>
-        <p class="section-subtitle">Enjoy tasty meals, relaxing spa treatments, a rooftop pool, and help whenever you need it.</p>
+      <div class="home-story-image">
+        <img src="images/photo-1631049307264-da0ec9d70304.jpg" alt="Elegant guest room interior at Royal Haven" loading="lazy">
+        <div class="home-image-stamp"><span>ROYAL</span><strong>H</strong><span>HAVEN</span></div>
       </div>
+    </section>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
-        <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 32px 24px; text-align: center; transition: transform var(--transition-fast);">
-          <div style="width: 58px; height: 58px; border-radius: 50%; border: 1px solid var(--gold-primary); background: var(--gold-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: var(--gold-bright); font-size: 1.3rem;">
-            <i class="fas fa-utensils"></i>
-          </div>
-          <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: #FFF; margin-bottom: 8px;">Fresh, Local Dining</h3>
-          <p style="font-size: 0.85rem; color: var(--text-secondary);">Enjoy seasonal dishes made with fresh ingredients and local seafood.</p>
+    <section class="home-rooms home-section" id="featured-rooms">
+      <div class="home-section-kicker">02 — FIND YOUR ROOM</div>
+      <div class="home-section-heading">
+        <div>
+          <p class="home-eyebrow home-eyebrow-gold">REST, REIMAGINED</p>
+          <h2>Room to<br><em>unwind.</em></h2>
         </div>
-
-        <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 32px 24px; text-align: center;">
-          <div style="width: 58px; height: 58px; border-radius: 50%; border: 1px solid var(--gold-primary); background: var(--gold-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: var(--gold-bright); font-size: 1.3rem;">
-            <i class="fas fa-spa"></i>
+        <p class="home-section-description">From peaceful retreats to ocean-view suites, find a stay that feels just right.</p>
+      </div>
+      <div class="home-room-grid">
+        <article class="home-room-card home-room-featured">
+          <a class="home-room-photo" href="rooms.html?roomId=9" aria-label="View The Royal Terrace Suite">
+            <img src="images/photo-1578683010236-d716f9a3f461.jpg" alt="The Royal Terrace Suite" loading="lazy">
+            <span class="home-room-number">01</span>
+          </a>
+          <div class="home-room-info">
+            <div><p class="home-eyebrow home-eyebrow-gold">THE SIGNATURE COLLECTION</p><h3>The Royal Terrace Suite</h3><p>Private outdoor lounge and waterfront views.</p></div>
+            <a class="home-circle-arrow" href="rooms.html?roomId=9" aria-label="View The Royal Terrace Suite">↗</a>
           </div>
-          <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: #FFF; margin-bottom: 8px;">Spa & Wellness</h3>
-          <p style="font-size: 0.85rem; color: var(--text-secondary);">Unwind with soothing baths, sauna sessions, and relaxing treatments.</p>
-        </div>
-
-        <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 32px 24px; text-align: center;">
-          <div style="width: 58px; height: 58px; border-radius: 50%; border: 1px solid var(--gold-primary); background: var(--gold-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: var(--gold-bright); font-size: 1.2rem;">
-            <i class="fas fa-water"></i>
+        </article>
+        <article class="home-room-card">
+          <a class="home-room-photo" href="rooms.html?roomId=13" aria-label="View Ocean Horizon Deluxe">
+            <img src="images/photo-1582719508461-905c673771fd.jpg" alt="Ocean Horizon Deluxe room" loading="lazy">
+            <span class="home-room-number">02</span>
+          </a>
+          <div class="home-room-info">
+            <div><p class="home-eyebrow home-eyebrow-gold">OCEAN VIEWS</p><h3>Ocean Horizon Deluxe</h3><p>A private balcony and room to breathe.</p></div>
+            <a class="home-circle-arrow" href="rooms.html?roomId=13" aria-label="View Ocean Horizon Deluxe">↗</a>
           </div>
-          <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: #FFF; margin-bottom: 8px;">Rooftop Pool</h3>
-          <p style="font-size: 0.85rem; color: var(--text-secondary);">Swim in the heated rooftop pool and enjoy views of the bay.</p>
-        </div>
-
-        <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 32px 24px; text-align: center;">
-          <div style="width: 58px; height: 58px; border-radius: 50%; border: 1px solid var(--gold-primary); background: var(--gold-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: var(--gold-bright); font-size: 1.3rem;">
-            <i class="fas fa-car-side"></i>
+        </article>
+        <article class="home-room-card">
+          <a class="home-room-photo" href="rooms.html?roomId=15" aria-label="View The Celestial Penthouse Suite">
+            <img src="images/photo-1502672260266-1c1ef2d93688.jpg" alt="The Celestial Penthouse Suite" loading="lazy">
+            <span class="home-room-number">03</span>
+          </a>
+          <div class="home-room-info">
+            <div><p class="home-eyebrow home-eyebrow-gold">A PRIVATE RETREAT</p><h3>Celestial Penthouse</h3><p>A spacious suite with a private terrace.</p></div>
+            <a class="home-circle-arrow" href="rooms.html?roomId=15" aria-label="View The Celestial Penthouse Suite">↗</a>
           </div>
-          <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: #FFF; margin-bottom: 8px;">Airport Transfers & Guest Help</h3>
-          <p style="font-size: 0.85rem; color: var(--text-secondary);">Ask us about airport rides, luggage help, and our 24-hour concierge service.</p>
+        </article>
+      </div>
+      <a class="home-underlined-link" href="rooms.html">Explore all 20 rooms <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <section class="home-experience" id="amenities">
+      <div class="home-experience-photo">
+        <img src="images/photo-1591088398332-8a7791972843.jpg" alt="A quiet, comfortable room at Royal Haven" loading="lazy">
+      </div>
+      <div class="home-experience-content">
+        <div class="home-section-kicker">03 — THE FINER THINGS</div>
+        <p class="home-eyebrow home-eyebrow-gold">MORE THAN A ROOM</p>
+        <h2>Make room for<br><em>what matters.</em></h2>
+        <p>Enjoy fresh local dining, relaxing spa treatments, a rooftop pool, and helpful service whenever you need it.</p>
+        <div class="home-experience-list">
+          <a href="contact.html"><span>01</span> Spa &amp; Wellness <b aria-hidden="true">↗</b></a>
+          <a href="contact.html"><span>02</span> Fresh, Local Dining <b aria-hidden="true">↗</b></a>
+          <a href="contact.html"><span>03</span> Guest Services <b aria-hidden="true">↗</b></a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="home-quote home-section">
+      <div class="home-quote-mark" aria-hidden="true">“</div>
+      <blockquote>A little time away can change everything.</blockquote>
+      <p class="home-eyebrow home-eyebrow-gold">MAKE YOURSELF AT HOME</p>
+    </section>
+
+    <section class="home-cta">
+      <div class="home-cta-slides" aria-label="More Royal Haven rooms">
+        <img class="home-cta-slide is-active" src="images/photo-1590490360182-c33d57733427.jpg" alt="A serene classic guest room" data-caption="CLASSIC GUEST ROOM" aria-hidden="false" loading="lazy">
+        <img class="home-cta-slide" src="images/photo-1616486338812-3dadae4b4ace.jpg" alt="A refined boutique suite" data-caption="BOUTIQUE SUITE" aria-hidden="true" loading="lazy">
+        <img class="home-cta-slide" src="images/photo-1595526114035-0d45ed16cfbf.jpg" alt="A spacious Royal Haven room" data-caption="A SPACIOUS RETREAT" aria-hidden="true" loading="lazy">
+      </div>
+      <div class="home-cta-shade"></div>
+      <div class="home-cta-caption" aria-live="polite">
+        <span class="home-slide-count">01 / 03</span>
+        <span class="home-caption-line"></span>
+        <span class="home-slide-title">CLASSIC GUEST ROOM</span>
+      </div>
+      <div class="home-cta-inner">
+        <p class="home-eyebrow">YOUR TIME. YOUR PLACE.</p>
+        <h2>Let your next escape<br><em>begin here.</em></h2>
+        <p>We look forward to welcoming you to Royal Haven.</p>
+        <a class="home-button home-button-gold" href="rooms.html">Find your room <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="home-cta-controls" role="group" aria-label="More room slideshow controls">
+        <button class="home-slideshow-toggle" type="button" aria-label="Pause slideshow" aria-pressed="false">
+          <i class="fas fa-pause" aria-hidden="true"></i>
+        </button>
+        <button class="home-slide-button" type="button" aria-label="Show room 1 of 3: Classic guest room" aria-pressed="true" data-slide="0"></button>
+        <button class="home-slide-button" type="button" aria-label="Show room 2 of 3: Boutique suite" aria-pressed="false" data-slide="1"></button>
+        <button class="home-slide-button" type="button" aria-label="Show room 3 of 3: Spacious retreat" aria-pressed="false" data-slide="2"></button>
+      </div>
+    </section>
+  </main>
 
   <!-- Footer (Image 2 Structure) -->
   <footer class="site-footer">
@@ -290,19 +295,13 @@
           </li>
           <li class="footer-info-item">
             <i class="fas fa-phone"></i>
-            <span>+1 (800) 472-6373 / +27 11 987 6543</span>
+            <span><a href="tel:+18004726373">+1 (800) 472-6373</a> / <a href="tel:+27119876543">+27 11 987 6543</a></span>
           </li>
           <li class="footer-info-item">
             <i class="fas fa-envelope"></i>
-            <span>concierge@grandreserve.com</span>
+            <a href="mailto:concierge@grandreserve.com">concierge@grandreserve.com</a>
           </li>
         </ul>
-        <div class="footer-social-row">
-          <span class="social-circle-btn" role="img" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></span>
-          <span class="social-circle-btn" role="img" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></span>
-          <span class="social-circle-btn" role="img" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></span>
-          <span class="social-circle-btn" role="img" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></span>
-        </div>
       </div>
     </div>
 
@@ -310,10 +309,9 @@
       <div class="footer-bottom-content container">
         <p>&copy; 2026 Royal Haven Boutique & Spa. All Rights Reserved.</p>
         <div class="footer-bottom-links">
-          <span>Privacy Policy</span>
-          <span>Terms & Service</span>
-          <span>Accessibility</span>
-          <span>Security Protocol</span>
+          <a href="faq.html">FAQ &amp; Help</a>
+          <a href="contact.html">Contact</a>
+          <a href="#home">Back to top</a>
         </div>
       </div>
     </div>
@@ -324,56 +322,129 @@
   <script src="js/weather.js"></script>
   <script src="js/main.js"></script>
   <script>
-    // Ambient Starlight Gold Particle Simulation for Hero
-    (function initHeroAtmosphere() {
-      const canvas = document.getElementById('heroParticles');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let width, height;
-      let particles = [];
+    const homeCheckIn = document.getElementById('homeCheckIn');
+    const homeCheckOut = document.getElementById('homeCheckOut');
+    const homeBookingSearch = document.getElementById('homeBookingSearch');
 
-      function resize() {
-        width = canvas.width = canvas.parentElement.offsetWidth;
-        height = canvas.height = canvas.parentElement.offsetHeight;
+    function formatLocalDate(date) {
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${date.getFullYear()}-${month}-${day}`;
+    }
+
+    const today = new Date();
+    homeCheckIn.min = formatLocalDate(today);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    homeCheckOut.min = formatLocalDate(tomorrow);
+
+    homeCheckIn.addEventListener('change', () => {
+      const nextDay = new Date(`${homeCheckIn.value}T00:00:00`);
+      nextDay.setDate(nextDay.getDate() + 1);
+      homeCheckOut.min = formatLocalDate(nextDay);
+      if (homeCheckOut.value && homeCheckOut.value <= homeCheckIn.value) {
+        homeCheckOut.value = '';
       }
-      window.addEventListener('resize', resize);
-      resize();
+    });
 
-      const PARTICLE_COUNT = 38;
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 1.5 + 0.5,
-          speedY: -(Math.random() * 0.25 + 0.08),
-          speedX: (Math.random() - 0.5) * 0.15,
-          alpha: Math.random() * 0.6 + 0.2,
-          pulse: Math.random() * 0.02 + 0.005
+    homeBookingSearch.addEventListener('submit', (event) => {
+      homeCheckOut.setCustomValidity(
+        homeCheckOut.value <= homeCheckIn.value
+          ? 'Check-out must be after check-in.'
+          : ''
+      );
+      if (!homeBookingSearch.reportValidity()) event.preventDefault();
+    });
+
+    homeCheckOut.addEventListener('change', () => {
+      homeCheckOut.setCustomValidity('');
+    });
+
+    function initImageSlideshow({ root, slidesSelector, slideButtonsSelector, containerSelector }) {
+      if (!root) return;
+      const slidesContainer = root.querySelector(containerSelector);
+      const slides = Array.from(root.querySelectorAll(slidesSelector));
+      const slideButtons = Array.from(root.querySelectorAll(slideButtonsSelector));
+      const toggleButton = root.querySelector('.home-slideshow-toggle');
+      const slideCount = root.querySelector('.home-slide-count');
+      const slideTitle = root.querySelector('.home-slide-title');
+
+      if (!slidesContainer || !slides.length || slides.length !== slideButtons.length || !toggleButton || !slideCount || !slideTitle) return;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let activeIndex = 0;
+      let timerId;
+      let isPaused = reducedMotion.matches;
+
+      function showSlide(index) {
+        activeIndex = (index + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => {
+          const isActive = slideIndex === activeIndex;
+          slide.classList.toggle('is-active', isActive);
+          slide.setAttribute('aria-hidden', String(!isActive));
+          slideButtons[slideIndex].setAttribute('aria-pressed', String(isActive));
         });
+        slideCount.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+        slideTitle.textContent = slides[activeIndex].dataset.caption;
       }
 
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-        particles.forEach(p => {
-          p.y += p.speedY;
-          p.x += p.speedX;
-          p.alpha += Math.sin(Date.now() * p.pulse) * 0.008;
+      function syncToggleButton() {
+        toggleButton.setAttribute('aria-pressed', String(isPaused));
+        toggleButton.setAttribute('aria-label', isPaused ? 'Play slideshow' : 'Pause slideshow');
+        toggleButton.innerHTML = isPaused
+          ? '<i class="fas fa-play" aria-hidden="true"></i>'
+          : '<i class="fas fa-pause" aria-hidden="true"></i>';
+        slidesContainer.classList.toggle('is-paused', isPaused);
+      }
 
-          if (p.y < 0) p.y = height;
-          if (p.x < 0) p.x = width;
-          if (p.x > width) p.x = 0;
+      function stopSlideshow() {
+        window.clearInterval(timerId);
+        timerId = undefined;
+      }
 
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(212, 175, 55, ${Math.max(0.1, Math.min(0.85, p.alpha))})`;
-          ctx.shadowBlur = 6;
-          ctx.shadowColor = 'rgba(212, 175, 55, 0.4)';
-          ctx.fill();
+      function startSlideshow() {
+        stopSlideshow();
+        if (isPaused || document.hidden) return;
+        timerId = window.setInterval(() => showSlide(activeIndex + 1), 5200);
+      }
+
+      slideButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          showSlide(Number(button.dataset.slide));
+          startSlideshow();
         });
-        requestAnimationFrame(animate);
-      }
-      animate();
-    })();
+      });
+
+      toggleButton.addEventListener('click', () => {
+        isPaused = !isPaused;
+        syncToggleButton();
+        startSlideshow();
+      });
+
+      document.addEventListener('visibilitychange', startSlideshow);
+      reducedMotion.addEventListener('change', () => {
+        isPaused = reducedMotion.matches;
+        syncToggleButton();
+        startSlideshow();
+      });
+
+      syncToggleButton();
+      startSlideshow();
+    }
+
+    initImageSlideshow({
+      root: document.querySelector('.home-hero'),
+      slidesSelector: '.home-hero-image',
+      slideButtonsSelector: '.home-slide-button',
+      containerSelector: '.home-hero-slides'
+    });
+
+    initImageSlideshow({
+      root: document.querySelector('.home-cta'),
+      slidesSelector: '.home-cta-slide',
+      slideButtonsSelector: '.home-slide-button',
+      containerSelector: '.home-cta-slides'
+    });
+
   </script>
 </body>
 </html>

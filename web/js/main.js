@@ -70,9 +70,9 @@ function initPageLoadBar() {
 
 // Update the featured suite pills on the homepage with current currency
 function initHeroPillsCurrency() {
-  const pill1 = document.querySelector('a[href*="roomId=9"] span:last-child');
-  const pill2 = document.querySelector('a[href*="roomId=13"] span:last-child');
-  const pill3 = document.querySelector('a[href*="roomId=15"] span:last-child');
+  const pill1 = document.querySelector('.hero-pill-card[href*="roomId=9"] span:last-child');
+  const pill2 = document.querySelector('.hero-pill-card[href*="roomId=13"] span:last-child');
+  const pill3 = document.querySelector('.hero-pill-card[href*="roomId=15"] span:last-child');
 
   if (pill1) pill1.textContent = `The Royal Terrace Suite • ${formatCurrency(2200)}`;
   if (pill2) pill2.textContent = `Ocean Horizon Deluxe • ${formatCurrency(3000)}`;
@@ -82,7 +82,10 @@ function initHeroPillsCurrency() {
 // Staggered scroll reveal observer for cards and content sections
 function initScrollAnimations() {
   const elementsToReveal = document.querySelectorAll(
-    '.room-card, .perk-card, .experience-card, .footer-main-grid, .confirm-hero-center, .confirmation-card-main, .manage-lookup-box, .auth-card'
+    '.room-card, .perk-card, .experience-card, .footer-main-grid, .confirm-hero-center, ' +
+    '.confirmation-card-main, .manage-lookup-box, .auth-card, .home-booking, .home-story-grid, ' +
+    '.home-story-image, .home-section-heading, .home-room-card, .home-experience-photo, ' +
+    '.home-experience-content, .home-quote, .home-cta, .home-cta-inner'
   );
 
   if (!elementsToReveal.length) return;
@@ -90,6 +93,12 @@ function initScrollAnimations() {
   // Mark elements for initial hidden state
   elementsToReveal.forEach((el, index) => {
     el.classList.add('reveal-init');
+    if (el.matches('.home-story-grid, .home-section-heading, .home-experience-content, .home-quote, .home-cta-inner')) {
+      el.classList.add('home-reveal-fold');
+    } else if (el.matches('.home-booking, .home-story-image, .home-room-card, .home-experience-photo, .home-cta')) {
+      el.classList.add('home-reveal-rise');
+    }
+
     // Add staggered delay to child cards within grids
     const staggerIndex = (index % 4) + 1;
     el.classList.add(`stagger-${staggerIndex}`);
@@ -97,10 +106,7 @@ function initScrollAnimations() {
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        observer.unobserve(entry.target);
-      }
+      entry.target.classList.toggle('revealed', entry.isIntersecting);
     });
   }, {
     threshold: 0.1,
@@ -177,6 +183,26 @@ function initMobileMenu() {
   const toggleBtn = document.querySelector('.mobile-menu-btn');
   const nav = document.querySelector('.site-nav');
   if (!toggleBtn || !nav) return;
+
+  nav.querySelectorAll('.nav-link').forEach((link, linkIndex) => {
+    const label = link.textContent.trim();
+    if (!label) return;
+
+    link.setAttribute('aria-label', label);
+    const letters = document.createDocumentFragment();
+    Array.from(label).forEach((character, characterIndex) => {
+      const letter = document.createElement('span');
+      letter.className = 'nav-letter';
+      letter.setAttribute('aria-hidden', 'true');
+      letter.textContent = character === ' ' ? '\u00a0' : character;
+      letter.style.setProperty('--letter-origin-x', `${((characterIndex * 7) % 5 - 2) * 5}px`);
+      letter.style.setProperty('--letter-origin-y', `${((characterIndex * 3) % 5 - 2) * 6}px`);
+      letter.style.setProperty('--letter-origin-rotation', `${((characterIndex * 5) % 7 - 3) * 4}deg`);
+      letter.style.setProperty('--letter-delay', `${linkIndex * 45 + characterIndex * 20}ms`);
+      letters.appendChild(letter);
+    });
+    link.replaceChildren(letters);
+  });
 
   toggleBtn.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('mobile-open');
@@ -267,7 +293,7 @@ function initNewsletterForm() {
     e.preventDefault();
     const input = form.querySelector('input[type="email"]');
     if (input && input.value) {
-      showToast('Thank you for subscribing to Private Privilege updates.');
+      showToast('Thank you for your interest in Royal Haven updates.');
       input.value = '';
     }
   });
