@@ -104,3 +104,4 @@ docs/build-pdfs.js
 !certs/truststore.jks
 *.jks
 /Hotel Reservation/dist/
+/Hotel Reservation/build/
