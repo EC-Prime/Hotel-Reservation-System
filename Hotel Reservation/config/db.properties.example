@@ -1,9 +1,0 @@
-# Copy this file to db.properties and fill in the values from your Aiven MySQL project.
-db.host=your-aiven-host
-db.port=16659
-db.name=hotel_reservation_system
-db.user=avnadmin
-db.password=replace-me
-
-# Relative to the config folder. Put the downloaded Aiven CA certificate in certs/ca.pem.
-db.ssl.ca.path=../certs/ca.pem
