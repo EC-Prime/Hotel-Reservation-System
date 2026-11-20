@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiences | Royal Haven Boutique &amp; Spa</title>
+  <meta name="description" content="Explore Royal Haven rooms, hotel amenities, spa treatments, and boutique appointments.">
+  <link rel="stylesheet" href="css/fontawesome.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="top" class="inner-page experiences-page">
+  <div class="top-microbar">
+    <div class="top-microbar-container">
+      <div class="top-bar-left">
+        <span class="top-item"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> 104 Ocean View Blvd, Waterfront</span>
+        <span class="top-item"><i class="fas fa-clock" aria-hidden="true"></i> Front Desk: Open 24/7</span>
+        <span class="weather-badge" id="liveWeatherBadge">
+          <i class="fas fa-sun" id="weatherIcon" aria-hidden="true"></i>
+          <span id="weatherTemp">24°C</span>
+          <span id="weatherDesc" style="color: var(--text-secondary); margin-left: 4px;">Coastal Breeze</span>
+        </span>
+      </div>
+      <div class="top-bar-right">
+        <span class="top-item"><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> <span id="liveHotelClock">--:--</span></span>
+        <div class="top-item">
+          <label for="currencySelector" class="experiences-currency-label">Currency:</label>
+          <select id="currencySelector" class="currency-select" aria-label="Select Currency">
+            <option value="ZAR">ZAR (R)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+        <a href="confirmation.html" class="top-cta-btn"><i class="fas fa-key" aria-hidden="true"></i> Check In / Manage</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-emblem"><i class="fas fa-moon" aria-hidden="true"></i></div>
+        <div class="brand-text">
+          <span class="brand-name">ROYAL HAVEN</span>
+          <span class="brand-tagline">Boutique &amp; Spa</span>
+        </div>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="rooms.html" class="nav-link">Rooms &amp; Suites</a>
+        <a href="rooms.html?type=suite" class="nav-link">Signature Penthouses</a>
+        <a href="experiences.html" class="nav-link active" aria-current="page">Experiences</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav-cta-group">
+        <a href="confirmation.html" class="btn-nav-outline">Manage Booking</a>
+        <a href="rooms.html" class="btn-nav-gold">Book a Room</a>
+        <button class="mobile-menu-btn" type="button" aria-label="Toggle navigation" aria-expanded="false"><i class="fas fa-bars" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="experiences-main">
+    <section class="experiences-intro" aria-labelledby="experiences-title">
+      <div class="container">
+        <p class="experiences-eyebrow">ROYAL HAVEN · WATERFRONT</p>
+        <h1 id="experiences-title">Rooms &amp; Experiences</h1>
+        <p>Find your place to unwind, then shape the rest of your stay around the things you love.</p>
+      </div>
+    </section>
+
+    <section class="experiences-section container" aria-labelledby="experiences-rooms-title">
+      <div class="experiences-section-heading">
+        <div>
+          <p class="experiences-eyebrow">A PLACE TO CALL YOURS</p>
+          <h2 id="experiences-rooms-title">Stay your way</h2>
+        </div>
+        <a class="experiences-text-link" href="rooms.html">Browse all rooms <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+      <div class="experiences-room-grid" id="experiencesRoomGrid" aria-live="polite"></div>
+    </section>
+
+    <section class="experiences-amenities" aria-labelledby="amenities-title">
+      <div class="container">
+        <div class="experiences-section-heading">
+          <div>
+            <p class="experiences-eyebrow">THOUGHTFUL DETAILS</p>
+            <h2 id="amenities-title">Around the hotel</h2>
+          </div>
+        </div>
+        <div class="experiences-amenity-grid">
+          <article class="experiences-amenity-card">
+            <div class="experiences-amenity-media"><img src="images/experience-pool.avif" alt="The hotel's swimming pool" loading="lazy" width="800" height="500"></div>
+            <div class="experiences-amenity-content"><h3>Swimming Pool</h3><p>Take a refreshing dip in our luxurious swimming pool.</p></div>
+          </article>
+          <article class="experiences-amenity-card">
+            <div class="experiences-amenity-media"><img src="images/experience-spa.webp" alt="Spa and wellness facilities" loading="lazy" width="800" height="500"></div>
+            <div class="experiences-amenity-content"><h3>Spa &amp; Wellness</h3><p>Relax and rejuvenate with spa treatments and wellness services.</p></div>
+          </article>
+          <article class="experiences-amenity-card">
+            <div class="experiences-amenity-media"><img src="images/experience-fitness.webp" alt="Hotel fitness center" loading="lazy" width="800" height="500"></div>
+            <div class="experiences-amenity-content"><h3>Fitness Center</h3><p>Stay active with our fitness facilities.</p></div>
+          </article>
+          <article class="experiences-amenity-card">
+            <div class="experiences-amenity-media"><img src="images/experience-dining.webp" alt="Restaurant and bar" loading="lazy" width="800" height="500"></div>
+            <div class="experiences-amenity-content"><h3>Restaurant &amp; Bar</h3><p>Enjoy dining and drinks during your stay.</p></div>
+          </article>
+          <article class="experiences-amenity-card">
+            <div class="experiences-amenity-media"><img src="images/experience-service.webp" alt="Hotel housekeeping service" loading="lazy" width="800" height="500"></div>
+            <div class="experiences-amenity-content"><h3>24-Hour Cleaning Service</h3><p>Enjoy attentive housekeeping throughout your stay.</p></div>
+          </article>
+          <article class="experiences-amenity-card">
+            <div class="experiences-amenity-media"><img src="images/experience-champagne.jpg" alt="Welcome champagne" loading="lazy" width="800" height="500"></div>
+            <div class="experiences-amenity-content"><h3>Welcome Champagne</h3><p>Settle in with a thoughtful welcome on arrival.</p></div>
+          </article>
+          <article class="experiences-amenity-card">
+            <div class="experiences-amenity-media"><img src="images/experience-coffee.jfif" alt="In-room coffee maker" loading="lazy" width="800" height="500"></div>
+            <div class="experiences-amenity-content"><h3>In-Room Coffee</h3><p>Start your day with a freshly brewed cup in your room.</p></div>
+          </article>
+          <article class="experiences-amenity-card">
+            <div class="experiences-amenity-media"><img src="images/experience-dining-service.jpg" alt="Food served at the hotel" loading="lazy" width="800" height="500"></div>
+            <div class="experiences-amenity-content"><h3>24-Hour Dining</h3><p>Satisfy a late-night craving or enjoy a meal at your pace.</p></div>
+          </article>
+          <article class="experiences-amenity-card">
+            <div class="experiences-amenity-media"><img src="images/experience-wifi.jpg" alt="Reliable Wi-Fi throughout the hotel" loading="lazy" width="800" height="500"></div>
+            <div class="experiences-amenity-content"><h3>Reliable Wi-Fi</h3><p>Stay connected throughout the property.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="experiences-section container" aria-labelledby="book-experience-title">
+      <div class="experiences-section-heading">
+        <div>
+          <p class="experiences-eyebrow">MAKE TIME FOR YOURSELF</p>
+          <h2 id="book-experience-title">Plan an experience</h2>
+        </div>
+      </div>
+      <div class="experiences-service-grid">
+        <section class="service-bookings" id="spa-booking" aria-labelledby="spa-booking-title">
+          <div class="booking-intro">
+            <p class="booking-kicker">Relax and recharge</p>
+            <h2 id="spa-booking-title">Spa booking</h2>
+            <p>Choose a treatment and preferred appointment time. We’ll be happy to help you plan a restorative break.</p>
+          </div>
+          <form class="service-form" id="spaBookingForm">
+            <div class="field">
+              <label for="spa-service">Treatment</label>
+              <select id="spa-service" name="treatment" required>
+                <option value="" selected disabled>Choose a treatment</option>
+                <option>Relaxing massage</option>
+                <option>Deep tissue massage</option>
+                <option>Facial treatment</option>
+                <option>Wellness ritual</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="spa-date">Preferred date</label>
+              <input id="spa-date" name="date" type="date" required>
+            </div>
+            <div class="field">
+              <label for="spa-time">Preferred time</label>
+              <input id="spa-time" name="time" type="time" required>
+            </div>
+            <div class="field">
+              <label for="spa-name">Your name</label>
+              <input id="spa-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="spa-email">Email address</label>
+              <input id="spa-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <button class="btn btn-cta" type="submit">Request spa booking</button>
+            <p class="booking-status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="service-bookings" id="boutique-booking" aria-labelledby="boutique-booking-title">
+          <div class="booking-intro">
+            <p class="booking-kicker">Discover something special</p>
+            <h2 id="boutique-booking-title">Boutique appointment</h2>
+            <p>Arrange a personal shopping visit, browse local gifts, or schedule a time to collect a purchase.</p>
+          </div>
+          <form class="service-form" id="boutiqueBookingForm">
+            <div class="field">
+              <label for="boutique-service">Appointment type</label>
+              <select id="boutique-service" name="appointment" required>
+                <option value="" selected disabled>Choose an appointment</option>
+                <option>Personal shopping</option>
+                <option>Browse local gifts</option>
+                <option>Purchase collection</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="boutique-date">Preferred date</label>
+              <input id="boutique-date" name="date" type="date" required>
+            </div>
+            <div class="field">
+              <label for="boutique-time">Preferred time</label>
+              <input id="boutique-time" name="time" type="time" required>
+            </div>
+            <div class="field">
+              <label for="boutique-name">Your name</label>
+              <input id="boutique-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="boutique-email">Email address</label>
+              <input id="boutique-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <button class="btn btn-primary" type="submit">Request boutique appointment</button>
+            <p class="booking-status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main-grid container">
+      <div class="footer-brand-col">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-emblem"><i class="fas fa-moon" aria-hidden="true"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">ROYAL HAVEN</span>
+            <span class="brand-tagline">Boutique &amp; Spa</span>
+          </div>
+        </a>
+        <p>Stay by the water and enjoy comfortable rooms and thoughtful experiences.</p>
+      </div>
+      <div>
+        <h2 class="footer-col-title">Explore</h2>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="rooms.html">All rooms</a></li>
+          <li><a href="experiences.html">Experiences</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="footer-col-title">Information</h2>
+        <ul class="footer-info-list">
+          <li class="footer-info-item"><i class="fas fa-location-dot" aria-hidden="true"></i><span>104 Ocean View Blvd, Waterfront</span></li>
+          <li class="footer-info-item"><i class="fas fa-phone" aria-hidden="true"></i><a href="tel:+18004726373">+1 (800) 472-6373</a></li>
+          <li class="footer-info-item"><i class="fas fa-envelope" aria-hidden="true"></i><a href="mailto:concierge@grandreserve.com">concierge@grandreserve.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom-bar">
+      <div class="footer-bottom-content container">
+        <p>&copy; 2026 Royal Haven Boutique &amp; Spa. All Rights Reserved.</p>
+        <div class="footer-bottom-links"><a href="faq.html">FAQ &amp; Help</a><a href="#top">Back to top</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/rooms-data.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/experiences.js"></script>
+</body>
+</html>
