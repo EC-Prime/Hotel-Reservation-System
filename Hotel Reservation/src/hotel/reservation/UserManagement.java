@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import hotel.database.HotelRepository;
 /**
  *
  * @author DCS Admin
@@ -55,6 +56,8 @@ countUp(lblTotalValue, 5);
 countUp(lblStaffValue, 1);
 countUp(lblStaffValue, 4);
 countUp(lblActiveValue, 5);
+
+loadUsersFromDatabase();
 
 
 addCardHover(cardTotal);
@@ -666,6 +669,35 @@ private void countUp(final JLabel lbl, final int target) {
     });
     lbl.setText("0");
     t.start();
+}
+
+private void loadUsersFromDatabase() {
+    new SwingWorker<java.util.List<HotelRepository.UserRow>, Void>() {
+        @Override protected java.util.List<HotelRepository.UserRow> doInBackground() throws Exception {
+            return HotelRepository.users();
+        }
+        @Override protected void done() {
+            try {
+                java.util.List<HotelRepository.UserRow> users = get();
+                javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblusers.getModel();
+                model.setRowCount(0);
+                int admins = 0, staff = 0, active = 0;
+                for (HotelRepository.UserRow u : users) {
+                    if ("ADMIN".equals(u.role)) admins++; else staff++;
+                    if (u.active) active++;
+                    String initials = u.fullName.replaceAll("[^A-Za-z ]", "").trim();
+                    String[] names = initials.split("\\s+");
+                    initials = names.length > 1 ? ("" + names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase() : names[0].substring(0, Math.min(2, names[0].length())).toUpperCase();
+                    model.addRow(new Object[]{initials, u.fullName, u.username, u.role, u.active ? "Active" : "Inactive", u.createdAt, null});
+                }
+                countUp(lblTotalValue, users.size());
+                countUp(lblAdminsValue1, admins);
+                countUp(lblStaffValue1, staff);
+                countUp(lblActiveValue, active);
+                lblresult.setText(users.size() + " users loaded from database");
+            } catch (Exception ex) { logger.log(java.util.logging.Level.WARNING, "Could not load users", ex); }
+        }
+    }.execute();
 }
 
 private void slideInCard(final JComponent card, int delay) {

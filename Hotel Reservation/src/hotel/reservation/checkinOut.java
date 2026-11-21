@@ -11,6 +11,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Dimension;
 import java.awt.CardLayout;
+import hotel.database.HotelRepository;
+import javax.swing.SwingWorker;
 /**
  *
  * @author DCS Admin
@@ -26,6 +28,7 @@ import java.awt.CardLayout;
          */
         public checkinOut() {
            initComponents();
+   startWelcomeVisualCarousel();
    String placeholder = "Enter admin name...";
 txtsearchreservation.setText(placeholder);
 txtsearchreservation.setForeground(Color.GRAY);
@@ -57,25 +60,7 @@ model.setColumnIdentifiers(new String[]{
 
 model.setRowCount(0);
 
-model.addRow(new Object[]{
-    "RH001", "John Smith", "101",
-    "2026-11-05", "2026-11-08", "Confirmed"
-});
-
-model.addRow(new Object[]{
-    "RH002", "Sarah Williams", "105",
-    "2026-11-06", "2026-11-10", "Checked In"
-});
-
-model.addRow(new Object[]{
-    "RH003", "Michael Brown", "110",
-    "2026-11-07", "2026-11-09", "Pending"
-});
-
-model.addRow(new Object[]{
-    "RH004", "Emily Johnson", "115",
-    "2026-11-08", "2026-11-12", "Checked Out"
-});
+loadReservationsFromDatabase();
 
 tblreservationstatus.setIntercellSpacing(new Dimension(12,8));
 tblreservationstatus.setRowHeight(35);
@@ -99,7 +84,7 @@ tblreservationstatus.getColumnModel()
             setFont(new Font("Segoe UI", Font.BOLD, 12));
 
             if (!isSelected) {
-                String status = value.toString();
+                String status = value == null ? "" : value.toString();
 
                 switch (status) {
                     case "Confirmed":
@@ -133,6 +118,60 @@ tblreservationstatus.getColumnModel()
         }
     });
                     }
+
+        private void loadReservationsFromDatabase() {
+            new SwingWorker<java.util.List<HotelRepository.ReservationRow>, Void>() {
+                @Override protected java.util.List<HotelRepository.ReservationRow> doInBackground() throws Exception {
+                    return HotelRepository.recentReservations(100);
+                }
+                @Override protected void done() {
+                    try {
+                        DefaultTableModel table = (DefaultTableModel) tblreservationstatus.getModel();
+                        table.setRowCount(0);
+                        for (HotelRepository.ReservationRow r : get()) {
+                            table.addRow(new Object[]{"RH-" + String.format("%04d", r.id), r.guestName,
+                                r.roomNumber, r.checkIn, r.checkOut, titleCase(r.status)});
+                        }
+                    } catch (Exception ex) { logger.log(java.util.logging.Level.WARNING, "Could not load reservations", ex); }
+                }
+            }.execute();
+        }
+
+        private void startWelcomeVisualCarousel() {
+            String[] visuals = {
+                "../web/images/photo-1568495248636-6432b97bd949.jpg",
+                "../web/images/photo-1505693416388-ac5ce068fe85.jpg",
+                "../web/images/photo-1582719508461-905c673771fd.jpg"
+            };
+            javax.swing.Timer carousel = new javax.swing.Timer(3500, null);
+            carousel.addActionListener(new java.awt.event.ActionListener() {
+                private int index;
+                @Override public void actionPerformed(java.awt.event.ActionEvent event) {
+                    java.io.File imageFile = new java.io.File(visuals[index++ % visuals.length]);
+                    if (!imageFile.isFile()) {
+                        imageFile = new java.io.File(imageFile.getPath().replace("../web/", "web/"));
+                    }
+                    if (imageFile.isFile()) {
+                        try {
+                            java.awt.Image image = javax.imageio.ImageIO.read(imageFile).getScaledInstance(176, 143, java.awt.Image.SCALE_SMOOTH);
+                            jLabel27.setText("");
+                            jLabel27.setIcon(new javax.swing.ImageIcon(image));
+                        } catch (java.io.IOException ex) {
+                            logger.log(java.util.logging.Level.FINE, "Could not load welcome visual", ex);
+                        }
+                    }
+                }
+            });
+            carousel.setInitialDelay(500);
+            carousel.start();
+        }
+
+        private String titleCase(String value) {
+            String[] parts = value.toLowerCase().split("_");
+            StringBuilder result = new StringBuilder();
+            for (String part : parts) { if (result.length() > 0) result.append(' '); result.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1)); }
+            return result.toString();
+        }
 
         /**
          * This method is called from within the constructor to initialize the
