@@ -20,6 +20,7 @@ let liveRooms = [];
 let roomAvailabilityLoaded = false;
 let roomAvailabilityError = '';
 let roomAvailabilityRequestId = 0;
+const ROOM_FILTERS = new Set(['all', 'suite', 'deluxe', 'double', 'single']);
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -53,6 +54,78 @@ function calculateNights(inStr, outStr) {
 
 function isRoomBookable(room) {
   return Boolean(roomAvailabilityLoaded && room && room.available === true);
+}
+
+function getRoomType(room) {
+  return String(room.categoryTag || room.roomType || '').toLowerCase();
+}
+
+function roomMatchesFilters(room) {
+  const capacity = Number(room.capacity);
+  const matchesType = bookingState.activeFilter === 'all'
+    || getRoomType(room) === bookingState.activeFilter;
+  const matchesFloor = bookingState.floorFilter === 'all'
+    || Number(room.floorNumber) === Number(bookingState.floorFilter);
+  const matchesCapacity = Number.isFinite(capacity) && capacity >= bookingState.numGuests;
+  const matchesAvailability = !bookingState.onlyAvailable || isRoomBookable(room);
+  return matchesType && matchesFloor && matchesCapacity && matchesAvailability;
+}
+
+function getFilteredRooms() {
+  const rooms = getCatalogRooms().filter(roomMatchesFilters);
+  if (bookingState.sortBy === 'price-low') {
+    rooms.sort((a, b) => Number(a.pricePerNight) - Number(b.pricePerNight));
+  } else if (bookingState.sortBy === 'price-high') {
+    rooms.sort((a, b) => Number(b.pricePerNight) - Number(a.pricePerNight));
+  }
+  return rooms;
+}
+
+function clearSelectionIfFilteredOut() {
+  if (!bookingState.selectedRoom) return;
+
+  const room = getCatalogRooms().find(
+    candidate => Number(candidate.roomId) === Number(bookingState.selectedRoom.roomId)
+  );
+  bookingState.selectedRoom = room && roomMatchesFilters(room) ? room : null;
+}
+
+function syncRoomFilterControls() {
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    const active = (pill.getAttribute('data-filter') || 'all') === bookingState.activeFilter;
+    pill.classList.toggle('active', active);
+    pill.setAttribute('aria-pressed', String(active));
+  });
+
+  const floorSelect = document.getElementById('floorFilterSelect');
+  if (floorSelect) floorSelect.value = bookingState.floorFilter;
+
+  const sortSelect = document.getElementById('sortFilterSelect');
+  if (sortSelect) sortSelect.value = bookingState.sortBy;
+
+  const guestsSelect = document.getElementById('searchGuests');
+  if (guestsSelect) guestsSelect.value = String(bookingState.numGuests);
+
+  const availBtn = document.getElementById('availToggleBtn');
+  if (availBtn) {
+    availBtn.classList.toggle('active', bookingState.onlyAvailable);
+    availBtn.setAttribute('aria-pressed', String(bookingState.onlyAvailable));
+  }
+
+  const signatureFilterSelected = bookingState.activeFilter === 'suite';
+  document.querySelectorAll('.site-nav .nav-link').forEach(link => {
+    const url = new URL(link.href, window.location.href);
+    if (!url.pathname.endsWith('/rooms.html')) return;
+
+    const isSignatureLink = url.searchParams.get('type') === 'suite';
+    const active = isSignatureLink === signatureFilterSelected;
+    link.classList.toggle('active', active);
+    if (active) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  });
 }
 
 function getCatalogRooms() {
@@ -113,12 +186,9 @@ async function fetchLiveRooms() {
 
     if (bookingState.selectedRoom) {
       const updated = liveRooms.find(r => r.roomId === bookingState.selectedRoom.roomId);
-      if (updated) {
-        bookingState.selectedRoom = updated;
-        if (!updated.available) {
-          bookingState.selectedRoom = liveRooms.find(r => r.available) || updated;
-        }
-      }
+      bookingState.selectedRoom = updated && updated.available && roomMatchesFilters(updated)
+        ? updated
+        : null;
     }
   } catch (err) {
     if (requestId !== roomAvailabilityRequestId) return;
@@ -135,13 +205,23 @@ function loadSavedTripState() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('checkIn')) bookingState.checkIn = params.get('checkIn');
   if (params.get('checkOut')) bookingState.checkOut = params.get('checkOut');
-  if (params.get('guests')) bookingState.numGuests = parseInt(params.get('guests'), 10) || 2;
-  if (params.get('type')) bookingState.activeFilter = params.get('type').toLowerCase();
-  if (params.get('floor')) bookingState.floorFilter = params.get('floor');
+  const guests = Number(params.get('guests'));
+  if (Number.isInteger(guests) && guests >= 1 && guests <= 4) {
+    bookingState.numGuests = guests;
+  }
+
+  const type = String(params.get('type') || 'all').toLowerCase();
+  if (ROOM_FILTERS.has(type)) bookingState.activeFilter = type;
+
+  const floor = params.get('floor');
+  if (['1', '2', '3'].includes(floor)) bookingState.floorFilter = floor;
+
   if (params.get('roomId')) {
     const r = findCatalogRoom(params.get('roomId'));
     if (r) bookingState.selectedRoom = r;
   }
+
+  clearSelectionIfFilteredOut();
 }
 
 function initDateSelectors() {
@@ -177,9 +257,10 @@ function initDateSelectors() {
   }
 
   if (guestsSelect) {
-    guestsSelect.value = bookingState.numGuests;
     guestsSelect.addEventListener('change', (e) => {
-      bookingState.numGuests = parseInt(e.target.value, 10);
+      bookingState.numGuests = Number(e.target.value);
+      clearSelectionIfFilteredOut();
+      renderRoomsGrid();
       updateTripSummary();
     });
   }
@@ -188,10 +269,6 @@ function initDateSelectors() {
 function initRoomsGallery() {
   const container = document.getElementById('roomsListContainer');
   if (!container) return;
-
-  if (!bookingState.selectedRoom && typeof ROOMS_DATA !== 'undefined' && ROOMS_DATA.length > 0) {
-    bookingState.selectedRoom = ROOMS_DATA.find(r => r.roomId === 9) || ROOMS_DATA[0];
-  }
 
   renderRoomsGrid();
   updateTripSummary();
@@ -204,7 +281,11 @@ function renderRoomsGrid() {
   if (!container) return;
 
   if (!roomAvailabilityLoaded) {
-    if (countBadge) countBadge.textContent = 'Availability unavailable';
+    if (countBadge) {
+      countBadge.textContent = roomAvailabilityError
+        ? 'Availability unavailable'
+        : 'Checking availability…';
+    }
     container.innerHTML = roomAvailabilityError
       ? `<div role="alert" style="text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-card);">
           <p style="color: var(--text-secondary); margin-bottom: 20px;">${roomAvailabilityError}</p>
@@ -214,28 +295,12 @@ function renderRoomsGrid() {
     return;
   }
 
-  let rooms = [...getCatalogRooms()];
-
-  if (bookingState.activeFilter !== 'all') {
-    rooms = rooms.filter(r => r.categoryTag === bookingState.activeFilter || r.roomType.toLowerCase() === bookingState.activeFilter);
-  }
-
-  if (bookingState.floorFilter !== 'all') {
-    rooms = rooms.filter(r => r.floorNumber === parseInt(bookingState.floorFilter, 10));
-  }
-
-  if (bookingState.onlyAvailable) {
-    rooms = rooms.filter(isRoomBookable);
-  }
-
-  if (bookingState.sortBy === 'price-low') {
-    rooms.sort((a, b) => a.pricePerNight - b.pricePerNight);
-  } else if (bookingState.sortBy === 'price-high') {
-    rooms.sort((a, b) => b.pricePerNight - a.pricePerNight);
-  }
+  const rooms = getFilteredRooms();
 
   if (countBadge) {
-    countBadge.textContent = `${rooms.length} Rooms Found`;
+    const roomLabel = rooms.length === 1 ? 'room fits' : 'rooms fit';
+    const guestLabel = bookingState.numGuests === 1 ? 'guest' : 'guests';
+    countBadge.textContent = `${rooms.length} ${roomLabel} ${bookingState.numGuests} ${guestLabel}`;
   }
 
   if (rooms.length === 0) {
@@ -317,7 +382,7 @@ function renderRoomsGrid() {
 
 function selectSanctuary(roomId) {
   const room = findCatalogRoom(roomId);
-  if (!room || !isRoomBookable(room)) return;
+  if (!room || !isRoomBookable(room) || !roomMatchesFilters(room)) return;
 
   bookingState.selectedRoom = room;
   renderRoomsGrid();
@@ -425,22 +490,27 @@ function saveTripToLocalStorage() {
 }
 
 function initFilters() {
+  syncRoomFilterControls();
+
   const pills = document.querySelectorAll('.filter-pill');
   pills.forEach(pill => {
     pill.addEventListener('click', () => {
-      pills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
       bookingState.activeFilter = pill.getAttribute('data-filter') || 'all';
+      clearSelectionIfFilteredOut();
+      syncRoomFilterControls();
       renderRoomsGrid();
+      updateTripSummary();
     });
   });
 
   const floorSelect = document.getElementById('floorFilterSelect');
   if (floorSelect) {
-    if (bookingState.floorFilter !== 'all') floorSelect.value = bookingState.floorFilter;
     floorSelect.addEventListener('change', (e) => {
       bookingState.floorFilter = e.target.value;
+      clearSelectionIfFilteredOut();
+      syncRoomFilterControls();
       renderRoomsGrid();
+      updateTripSummary();
     });
   }
 
@@ -448,6 +518,7 @@ function initFilters() {
   if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
       bookingState.sortBy = e.target.value;
+      syncRoomFilterControls();
       renderRoomsGrid();
     });
   }
@@ -456,8 +527,10 @@ function initFilters() {
   if (availBtn) {
     availBtn.addEventListener('click', () => {
       bookingState.onlyAvailable = !bookingState.onlyAvailable;
-      availBtn.classList.toggle('active', bookingState.onlyAvailable);
+      clearSelectionIfFilteredOut();
+      syncRoomFilterControls();
       renderRoomsGrid();
+      updateTripSummary();
     });
   }
 }
@@ -465,19 +538,14 @@ function initFilters() {
 function resetAllFilters() {
   bookingState.activeFilter = 'all';
   bookingState.floorFilter = 'all';
+  bookingState.numGuests = 2;
   bookingState.onlyAvailable = false;
   bookingState.sortBy = 'featured';
 
-  const pills = document.querySelectorAll('.filter-pill');
-  pills.forEach(p => p.classList.toggle('active', p.getAttribute('data-filter') === 'all'));
-
-  const floorSelect = document.getElementById('floorFilterSelect');
-  if (floorSelect) floorSelect.value = 'all';
-
-  const sortSelect = document.getElementById('sortFilterSelect');
-  if (sortSelect) sortSelect.value = 'featured';
-
+  clearSelectionIfFilteredOut();
+  syncRoomFilterControls();
   renderRoomsGrid();
+  updateTripSummary();
 }
 
 function openRoomModal(roomId) {
@@ -603,12 +671,15 @@ function initBookingForm() {
   }
 
   const urlParams = new URLSearchParams(window.location.search);
-  const roomId = urlParams.get('roomId') || 9;
+  const roomId = urlParams.get('roomId');
   let checkIn = urlParams.get('checkIn') || getFutureDate(1);
   let checkOut = urlParams.get('checkOut') || getFutureDate(4);
-  const guests = parseInt(urlParams.get('guests'), 10) || 2;
+  const requestedGuests = Number(urlParams.get('guests'));
+  const guests = Number.isInteger(requestedGuests) && requestedGuests >= 1 && requestedGuests <= 4
+    ? requestedGuests
+    : 2;
 
-  let room = findCatalogRoom(roomId) || (typeof ROOMS_DATA !== 'undefined' ? ROOMS_DATA[0] : null);
+  let room = roomId ? findCatalogRoom(roomId) : null;
 
   const guestName = document.getElementById('guestName');
   const guestEmail = document.getElementById('guestEmail');
@@ -617,8 +688,35 @@ function initBookingForm() {
   const formCheckOut = document.getElementById('formCheckOut');
   const formGuests = document.getElementById('formGuests');
   const submitBtn = form.querySelector('button[type="submit"]');
+  if (!room) {
+    showBookingError('No valid room was selected. Return to the room list and choose a room to continue.');
+    if (submitBtn) submitBtn.disabled = true;
+    return;
+  }
+
   let checkoutAvailabilityVerified = false;
   let availabilityRequestId = 0;
+  const guestCountFitsRoom = () => {
+    const guestCount = Number(formGuests ? formGuests.value : guests);
+    const capacity = Number(room && room.capacity);
+    return Number.isInteger(guestCount)
+      && guestCount >= 1
+      && Number.isFinite(capacity)
+      && guestCount <= capacity;
+  };
+  const updateSubmitState = () => {
+    if (submitBtn) {
+      submitBtn.disabled = !checkoutAvailabilityVerified || !guestCountFitsRoom();
+    }
+  };
+  const validateCheckoutGuests = () => {
+    if (!guestCountFitsRoom()) {
+      showBookingError(`This room sleeps at most ${room.capacity} guest(s). Please choose a room that fits your group.`);
+    } else if (checkoutAvailabilityVerified) {
+      clearBookingError();
+    }
+    updateSubmitState();
+  };
 
   // Auto-fill form fields from logged-in user profile
   if (typeof getUser === 'function') {
@@ -633,8 +731,9 @@ function initBookingForm() {
   if (formCheckIn) formCheckIn.value = checkIn;
   if (formCheckOut) formCheckOut.value = checkOut;
   if (formGuests) formGuests.value = guests;
+  if (formGuests) formGuests.addEventListener('change', validateCheckoutGuests);
 
-  if (submitBtn) submitBtn.disabled = true;
+  updateSubmitState();
   renderCheckoutRecap(room, checkIn, checkOut);
 
   const refreshAvailability = async () => {
@@ -669,7 +768,7 @@ function initBookingForm() {
       }
 
       checkoutAvailabilityVerified = true;
-      if (submitBtn) submitBtn.disabled = false;
+      validateCheckoutGuests();
     } catch (err) {
       if (requestId !== availabilityRequestId) return;
       console.warn('Could not verify checkout room availability:', err.message);
@@ -685,6 +784,11 @@ function initBookingForm() {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearBookingError();
+
+    if (!guestCountFitsRoom()) {
+      validateCheckoutGuests();
+      return;
+    }
 
     if (!checkoutAvailabilityVerified) {
       showBookingError('Live room availability must be verified before booking. Please try again.');
@@ -740,7 +844,7 @@ function initBookingForm() {
       showBookingError('The reservation service is unavailable. Please try again.');
     } finally {
       if (submitBtn) {
-        submitBtn.disabled = !checkoutAvailabilityVerified;
+        updateSubmitState();
         submitBtn.innerHTML = `<i class="fas fa-shield-alt"></i> Confirm & Guarantee Reservation`;
       }
     }

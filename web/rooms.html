@@ -89,11 +89,11 @@
       <!-- Filter Tags Bar (Matching Image 1 & 5) -->
       <div class="filter-tags-bar">
         <div class="filter-pills-list">
-          <button class="filter-pill active" data-filter="all">All Rooms</button>
-          <button class="filter-pill" data-filter="suite">Signature Suites</button>
-          <button class="filter-pill" data-filter="deluxe">Deluxe Rooms</button>
-          <button class="filter-pill" data-filter="double">Executive Double</button>
-          <button class="filter-pill" data-filter="single">Classic Single</button>
+          <button class="filter-pill active" data-filter="all" aria-pressed="true">All Rooms</button>
+          <button class="filter-pill" data-filter="suite" aria-pressed="false">Signature Suites</button>
+          <button class="filter-pill" data-filter="deluxe" aria-pressed="false">Deluxe Rooms</button>
+          <button class="filter-pill" data-filter="double" aria-pressed="false">Executive Double</button>
+          <button class="filter-pill" data-filter="single" aria-pressed="false">Classic Single</button>
         </div>
 
         <div class="filter-controls-right">
@@ -110,7 +110,7 @@
             <option value="price-high">Price: High to Low</option>
           </select>
 
-          <button class="availability-toggle-btn" id="availToggleBtn">
+          <button class="availability-toggle-btn" id="availToggleBtn" aria-pressed="false">
             <i class="fas fa-circle-check"></i> Available Only
           </button>
         </div>
@@ -138,8 +138,8 @@
           </div>
         </div>
       </div>
-        </div>
-        <span id="roomsCountBadge" style="font-size: 0.8rem; color: var(--gold-light); font-weight: 600;">20 Rooms Found</span>
+      <div style="display: flex; justify-content: flex-end; margin: -16px 0 16px;">
+        <span id="roomsCountBadge" role="status" aria-live="polite" style="font-size: 0.8rem; color: var(--gold-light); font-weight: 600;">Checking availability…</span>
       </div>
 
       <!-- Two-Column Layout (Matching Image 1 EXACTLY) -->
