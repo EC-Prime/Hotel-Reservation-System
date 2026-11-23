@@ -1,219 +1,201 @@
-# 🏨 Hotel Reservation System
+# Hotel Reservation System
 
-> A hybrid hospitality management platform bridging an online guest booking portal with a real-time Java Swing administrative desktop application over a shared REST API and MySQL database.
+A hotel booking and front-desk management project with a guest website, a Node.js REST API, a MySQL database, and a Java Swing desktop application.
 
----
+## ✨ What the system does
 
-## 📌 1. Project Vision & Executive Summary
+- Lets guests browse rooms, create an account, sign in, make reservations, and view their bookings on the website.
+- Provides public room availability through the API and protects account and booking actions with JWT authentication.
+- Gives hotel staff a Java Swing application for room, reservation, payment, check-in/check-out, dashboard, and user-management workflows.
+- Stores room inventory, guest accounts, staff accounts, reservations, and audit events in MySQL.
 
-Our **Hotel Reservation System** is a dual-interface platform designed to streamline guest bookings while giving front-desk staff real-time administrative control over hotel operations. 
+The API uses a shared MySQL connection pool. The Java application connects to MySQL through JDBC. Both clients use the same database, but the Swing app does not currently route its database operations through the Node API.
 
-* **The Vision:** Eliminate double-bookings, reduce manual front-desk errors, and provide a seamless end-to-end guest experience from initial web browsing to physical check-out.
-* **Web Portal Focus:** Provides guests with an online reservation portal featuring instant availability checks, live local weather updates via Open-Meteo API, transparent room pricing, and automated booking confirmations.
-* **Desktop App Focus:** Equips hotel receptionists with a Java Swing management tool to manage daily check-ins/check-outs, monitor room inventory statuses, and audit active bookings in real time.
+## 🧭 How someone uses the project
 
----
+### 🌐 Guest using the deployed website
 
-## ⭐ 2. Unique Selling Points (USPs)
+1. Open the deployed website URL in a browser.
+2. Browse rooms and hotel experiences.
+3. Create an account or sign in.
+4. Choose a room and stay dates, then submit the reservation.
+5. Use the account area to review bookings; use the confirmation page/email for reservation details.
 
-* **Hybrid Multi-Client Synchronization:** Dual-interface architecture where online web bookings update the front-desk Java Swing app instantly via a shared MySQL backend.
-* **Live Weather API Integration:** Embedded Open-Meteo API widget provides real-time local weather forecasts directly within the guest booking workflow.
-* **Role-Based Operational Security:** Strict separation of privileges distinguishing public web guests from authenticated front-desk staff and system administrators.
-* **Zero-Latency Inventory Management:** Automated room status transitions (`Available` ➔ `Pending` ➔ `Occupied` ➔ `Cleaning`) to prevent overbooking[cite: 8, 9].
-* **Immersive 3D Hotel Tour:** A self-contained WebGL walkthrough at `web/tour.html` lets guests explore the lobby, restaurant, bar, pool, spa, all three levels and all 20 furnished suites before booking.
+The website calls the deployed API for account, room, and reservation data. A browser-only copy of the HTML pages is not enough for those dynamic actions.
 
----
+### 🛎️ Staff using the desktop application
 
-## 🧭 2.1 Immersive 3D Tour
+1. Install/open the `Hotel Reservation` NetBeans project on a computer with Java and the MySQL Connector/J library.
+2. Configure `config/db.properties` with the Aiven MySQL connection values and CA certificate path.
+3. Run the staff application from NetBeans and sign in with an active staff account in the database.
+4. Use the dashboard and management screens to review rooms/reservations and carry out front-desk tasks such as confirming arrivals and checking guests in or out.
 
-`web/tour.html` is a self-contained, explorable interpretation of Royal Haven Boutique & Spa. It follows the published three-level, 20-room layout and includes a porte-cochère and lobby, reception, bar, restaurant, pool courtyard, spa, level-2 gallery and fitness studio, and a level-3 Sunset Deck. Every guest room is furnished with a bed, rugs, wardrobe, bedside tables and lamps, seating, TV and an en-suite; larger suites add kitchenettes and private terraces.
+The Swing app connects directly to MySQL, so it does not require the Node API to be running. The guest website's account, availability, and booking workflows do require the API and database.
 
-**Controls**
+### 🧑‍💻 Developer running the full project locally
 
-| Action | Desktop | Touch / mobile |
-| :--- | :--- | :--- |
-| Look around | Drag the view | Drag the view |
-| Walk | `W A S D` or arrow keys; `Shift` to hurry | On-screen joystick |
-| Change level | `1` `2` `3`, floor dock, lift or stair | Floor dock, lift or stair |
-| Aerial view | `V` or **Aerial** | **Aerial** button |
-| Open a room or space | Click a door, number or brass marker | Tap a door, number or marker |
-| Close a panel | `Esc` | Close button |
+1. Set up MySQL and apply the database scripts described below.
+2. Configure `api/.env` and install API dependencies.
+3. Start the API with `npm start` from `api/`.
+4. From the repository root, serve the website locally, for example with `python -m http.server 5500 --directory web` (Windows: `py -m http.server 5500 --directory web`). Open `http://localhost:5500` in a browser. `web/js/main.js` selects `http://localhost:3000/api` for localhost; avoid opening the HTML directly as a `file://` URL for authenticated or API-backed flows.
+5. Configure and run the NetBeans desktop project separately if you need the staff interface.
 
-**Deep links**
+The API is required when running the complete website workflow. It is not required just to open static pages, and it is not a dependency of the Swing app's direct JDBC connection.
 
-- `tour.html?room=203` — open a specific suite
-- `tour.html?service=spa` — open a hotel space
-- `tour.html?floor=2` — arrive on a chosen level
-- `tour.html?service=lift` / `tour.html?service=stairs` — jump to vertical circulation
-
-**Preview locally**
-
-The tour uses ES modules and an import map, so it must be served over HTTP (opening `tour.html` via `file://` will not work). A zero-dependency static server is included:
-
-```bash
-node web/serve.mjs
-# → http://localhost:4173/tour.html
-```
-
-Set `PORT=8080` to use a different port. Any other static host for `web/` works too.
-
-**Deploy to Render**
-
-The frontend, including the 3D tour, is a static site — no server process is needed on Render. A `render.yaml` Blueprint is included:
-
-1. Commit and push your changes first. Render deploys from Git, not from your local folder.
-2. In Render, choose **New → Blueprint** and select this repository. It creates a static site called `royal-haven-web` with `web/` as the publish directory and no build step.
-3. Or create a **Static Site** manually with: **Root Directory** `.`, **Build Command** empty, **Publish Directory** `web`.
-
-Do **not** set the start command to `node web/serve.mjs` — that server exists only for local preview. Render's CDN serves the files directly with correct MIME types, so ES modules and import maps work as-is.
-
-The 3D tour makes **no backend calls at all**. It loads only the static `js/rooms-data.js` array and the vendored Three.js modules, so deploying `web/` by itself is enough — no API Web Service, environment variables or database needed for the tour.
-
-The booking/auth pages are a separate concern. `web/js/main.js` points them at `https://hotel-reservation-system-720g.onrender.com/api` for non-local hosts, so if you host those pages they will use your existing API. A "Book this room" link in a tour panel simply navigates to `booking.html`; the tour itself never contacts the API.
-
-If you also need to deploy the API from scratch, create a **Web Service** with root directory `api`, build command `npm install`, start command `npm start`, and environment variables `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `EMAIL_USER` and `EMAIL_APP_PASSWORD`. Note that `api/certs/ca.pem` is gitignored, so a fresh deploy will not contain the Aiven CA certificate — either force-add it or change `api/config/db.js` to read it from an environment variable.
-
-**Implementation notes**
-
-- Three.js r160 and its addons are vendored in `web/vendor/three/`; there is no runtime CDN dependency.
-- Geometry and textures are generated procedurally at runtime; photography comes from the existing `web/images/` library.
-- Static meshes are batched by material to keep draw calls low. Walk collision uses floor zones plus furniture/stair colliders.
-- Prices respect the shared `grand_reserve_currency` preference and each room panel links to the existing booking flow.
-- The tour is a **conceptual visualisation** built from the published room list and photography. It is illustrative and not a survey of the built property.
-
----
-
-## 🛠 3. Tech Stack
-
-| Domain | Technology / Tool | Usage & Purpose |
-| :--- | :--- | :--- |
-| **Frontend Web** | HTML5, CSS3, JavaScript (ES6+) | Public guest portal, live weather widget, and reservation forms[cite: 8, 9]. |
-| **3D Tour** | Three.js r160 (vendored), WebGL2, procedural textures | Immersive walkthrough of the hotel, rooms and services. |
-| **Desktop App** | Java Swing (JDK 17+) | Admin desktop interface for front-desk operations & check-ins[cite: 8, 9]. |
-| **Backend API** | Node.js / Express.js | Asynchronous REST API routing client requests to the database[cite: 7, 8]. |
-| **Database** | MySQL (XAMPP Server / Workbench) | Relational database hosting room, user, and reservation tables. |
-| **External APIs** | Open-Meteo REST API | Live weather data integration for the web booking portal. |
-| **IDE & Tooling** | VS Code, Git, Postman | Primary development workspace, version control, and API testing. |
-
----
-
-## 🏗 4. System Architecture
+## Repository layout
 
 ```text
-[ PUBLIC WEB PORTAL ]             [ API / BACKEND LAYER ]              [ DATA STORAGE LAYER ]
-  • Web Portal (HTML5/CSS3)  ──Fetch──>  Emmanuel's REST API Router  ──JDBC──>  MySQL Database Server
-  • Desktop App (Java Swing) ──JDBC───>   (ApiController.js / Express)             (XAMPP / Workbench)
-hotel-reservation-system/
-├── database/                   # Database Schemas & Seed Data (Emmanuel, Grace, Themba)
-│   ├── hotel_db.sql            # Relational database schema & tables
-│   └── seed_data.sql           # Initial test records (rooms, admin accounts)
-│
-├── web/                        # Public Guest Web Portal (Mission, Stacy, Blessing, Terrence, Khethokuhle)
-│   ├── css/
-│   │   ├── style.css           # Global design system & shared components
-│   │   ├── home.css            # Landing-page styling
-│   │   └── tour.css            # Immersive 3D tour overlays & responsive UI
-│   ├── js/
-│   │   ├── main.js             # Common navigation logic
-│   │   ├── weather.js          # Open-Meteo API fetch logic[cite: 7, 8]
-│   │   ├── booking.js          # Reservation validation & API dispatch[cite: 7, 8]
-│   │   ├── rooms-data.js       # Canonical room list, prices, photos & amenities
-│   │   └── tour/               # Three.js tour modules (data, geometry, detail pass, controls, UI)
-│   ├── vendor/three/           # Locally vendored Three.js r160 + addons
-│   ├── images/                 # Room, experience and service photography
-│   ├── index.html              # Home landing page[cite: 8, 9]
-│   ├── serve.mjs               # Zero-dependency static server for local preview
-│   ├── rooms.html              # Room catalog grid[cite: 8, 9]
-│   ├── tour.html               # Immersive 3D walkthrough
-│   ├── booking.html            # Reservation portal with weather widget
-│   ├── faq.html                # FAQ & guest policies page
-│   └── confirmation.html       # Success receipt & booking summary[cite: 8, 9]
-│
-├── api/                        # Backend REST API Service (Emmanuel)
-│   ├── config/
-│   │   └── db.js               # MySQL database connection pool[cite: 7]
-│   ├── controllers/
-│   │   └── reservationController.js # Handles booking & room status endpoints[cite: 7]
-│   ├── routes/
-│   │   └── apiRoutes.js        # API endpoint definitions (/api/reservations)[cite: 7]
-│   ├── server.js               # Express application entry point[cite: 7]
-│   └── package.json            # Node.js dependencies
-│
-├── swing/                      # Java Desktop Application (Vanessa, Thanyani, Themba, Grace)
-│   ├── src/
-│   │   ├── config/
-│   │   │   └── DatabaseConnection.java # Shared JDBC connection driver[cite: 4, 7]
-│   │   ├── models/
-│   │   │   ├── Room.java       # Room data model
-│   │   │   └── Reservation.java# Reservation data model
-│   │   └── views/
-│   │       ├── AdminLoginView.java       # Receptionist login window[cite: 8, 9]
-│   │       ├── AdminDashboardView.java   # Operations dashboard UI
-│   │       ├── RoomManagementView.java   # Room inventory grid[cite: 8, 9]
-│   │       ├── ReservationListView.java  # Booking ledger JTable UI[cite: 8, 9]
-│   │       └── UserManagementView.java   # Admin & security setup[cite: 8, 9]
-│   └── lib/                    # MySQL Connector JAR files (.jar)
-│
-├── .gitignore                  # Git rules for build outputs & node_modules
-└── README.md                   # Full system documentation & setup guide
+Hotel-Reservation-System/
+├── api/                         # Express API, controllers, services, middleware
+│   ├── config/db.js             # MySQL connection pool
+│   ├── controllers/             # Auth, room, reservation handlers
+│   ├── routes/apiRoutes.js      # /api route definitions
+│   ├── services/                # Database and email workflows
+│   ├── server.js                # API entry point
+│   └── package.json
+├── database/
+│   ├── hotel_db.sql             # Main schema and booking procedure
+│   ├── seed_data.sql            # Sample room inventory and records
+│   └── auth_migration.sql       # Guest account tables and reservation link
+├── docs/                        # Project style, validation, and team briefs
+├── Hotel Reservation/           # NetBeans Java Swing project
+│   ├── src/hotel/reservation/   # Swing screens and UI components
+│   ├── src/hotel/database/      # JDBC connection and repository
+│   ├── config/                  # Local database properties (not committed)
+│   └── lib/                     # MySQL Connector/J dependency
+├── web/                         # Guest website pages, CSS, JavaScript, images
+└── README.md
 ```
 
-## 👥5. Team Roles & Deliverables Matrix
-```text
-This document outlines the assigned roles, primary technical responsibilities, and key deliverable files for all members of Group 1 (Topic 8: Hotel Reservation System).
+## Technology
 
----
+| Area | Technology |
+| --- | --- |
+| Guest website | HTML, CSS, JavaScript |
+| REST API | Node.js, Express 5 |
+| Database | MySQL, `mysql2` connection pool |
+| Staff desktop application | Java Swing, JDBC, NetBeans project |
+| Authentication | bcrypt password hashes and JWT |
+| Email | Nodemailer; confirmation emails require SMTP environment settings |
 
-## 🛠 Tech Lead & Core Backend
-* **Emmanuel** — *Technical Lead & Backend/Database Developer*
-  * **Responsibilities:** Designs core database architecture, manages shared MySQL database, creates JDBC connection handlers, and builds backend REST API integration routes.
-  * **Deliverable Files:**
-    * `database/hotel_db.sql`
-    * `swing/src/config/DatabaseConnection.java`
-    * `api/controllers/reservationController.js`
-    * `api/server.js`
+## Database setup
 
----
+1. Create or select a MySQL database server and make sure the account used by both clients can connect to it.
+2. Run [`database/hotel_db.sql`](database/hotel_db.sql) against MySQL. It creates `hotel_reservation_system`, the staff `users`, `rooms`, `reservations`, and `audit_log` tables, indexes, and the `book_room` procedure.
+3. If guest website accounts are required, run [`database/auth_migration.sql`](database/auth_migration.sql) against the same database. It creates `guest_users` and links guest accounts to reservations.
+4. To load demonstration inventory, review [`database/seed_data.sql`](database/seed_data.sql) and run it against the database. Avoid rerunning seed inserts if duplicate sample records are not wanted.
 
-## 🌐 Public Web Portal Sub-Team
+Keep database passwords, JWT secrets, email credentials, and certificates out of source control. The SQL seed data is demonstration data, not production inventory.
 
-* **Mission & Stacy** — *Web Frontend Developers (Design & Structure)*
-  * **Responsibilities:** Design and build visual layouts, CSS styling, room preview grids, hero banners, and static landing components for guest-facing pages.
-  * **Deliverable Files:**
-    * `web/index.html`
-    * `web/rooms.html`
-    * `web/css/style.css`
+## Run the API
 
-* **Blessing & Terrence** — *Web JavaScript & API Developers (Logic & Fetch)*
-  * **Responsibilities:** Implement client-side form logic, write asynchronous JavaScript `fetch()` calls to route data to the Node.js API, and integrate live weather updates via Open-Meteo API.
-  * **Deliverable Files:**
-    * `web/booking.html`
-    * `web/confirmation.html`
-    * `web/js/weather.js`
-    * `web/js/booking.js`
+Requirements: Node.js and npm.
 
-* **Khethokuhle** — *Static Content & Quality Assurance Developer*
-  * **Responsibilities:** Build guest policy sections, construct FAQ page structures, ensure site navigation links work seamlessly, and assist with web portal QA testing.
-  * **Deliverable Files:**
-    * `web/faq.html`
-    * `web/js/main.js`
+1. Create `api/.env` locally. Configure these values for your MySQL instance:
 
----
+   ```dotenv
+   PORT=3000
+   DB_HOST=your-mysql-host
+   DB_PORT=3306
+   DB_NAME=hotel_reservation_system
+   DB_USER=your-database-user
+   DB_PASSWORD=your-database-password
+   DB_SSL_CERT_PATH=certs/ca.pem
+   JWT_SECRET=replace-with-a-long-random-secret
+   JWT_EXPIRES_IN=24h
+   ```
 
-## 🖥 Front-Desk Desktop Application Sub-Team
+   `DB_SSL_CERT_PATH` is optional when the default `api/certs/ca.pem` is used. For a local MySQL server without TLS, update `api/config/db.js` for that environment rather than committing database credentials or weakening a hosted database connection.
 
-* **Vanessa & Thanyani** — *Java Swing Desktop Developers (GUI & Operations)*
-  * **Responsibilities:** Develop desktop GUI views for receptionists, construct `JTable` components to render live room inventory and reservations, and wire up check-in/check-out operational actions.
-  * **Deliverable Files:**
-    * `swing/src/views/AdminDashboardView.java`
-    * `swing/src/views/RoomManagementView.java`
-    * `swing/src/views/ReservationListView.java`
-    * `swing/src/models/Room.java`
-    * `swing/src/models/Reservation.java`
+2. From the `api` directory, install dependencies and start the server:
 
-* **Themba & Grace** — *Security & Database Administration*
-  * **Responsibilities:** Design front-desk authentication interfaces, manage MySQL database user access roles visually via XAMPP / MySQL Workbench, and conduct validation/security testing across system login forms.
-  * **Deliverable Files:**
-    * `swing/src/views/AdminLoginView.java`
-    * `swing/src/views/UserManagementView.java`
-    * `database/seed_data.sql`
+   ```sh
+   npm install
+   npm start
+   ```
+
+3. Open `http://localhost:3000/`. A successful response says the API is running. The API also logs whether its MySQL connection succeeded.
+
+For confirmation email delivery, configure `EMAIL_USER` and `EMAIL_APP_PASSWORD` in `api/.env`. If they are absent, the email service skips sending.
+
+## Deployment: Render and Aiven
+
+The public website is deployed so guests can open it in a browser. The Node.js API is deployed on Render at `https://hotel-reservation-system-720g.onrender.com`; the website's `web/js/main.js` points production requests to that API. The deployed API connects to the remote Aiven MySQL service rather than a database running on a developer's computer.
+
+For a Render deployment, configure the API service to run `npm start` from the `api` directory and provide the database, JWT, and optional email settings as Render environment variables. Provide the Aiven CA certificate to the running service through a secure file/secret mechanism and set `DB_SSL_CERT_PATH` to its path. Do not put database credentials or certificates in the repository. If the website is deployed as a separate Render Static Site, its publish directory is `web`; redeploy it after changing the production API URL in `web/js/main.js`.
+
+### Aiven connection security
+
+- The API client supplies the Aiven CA certificate for its TLS connection. The Swing JDBC connection uses `sslMode=VERIFY_CA` and the configured Aiven CA certificate.
+- Aiven documents TLS for connections and encryption at rest, including encrypted MySQL backups. These managed-service controls complement application safeguards such as hashed passwords, JWT authorization, and keeping credentials in deployment secrets; they do not replace them.
+- Check the Aiven service's IP allowlist and database users in the Aiven Console. Aiven documents that the default IP filter permits all addresses (`0.0.0.0/0`), so do not assume inbound access is restricted unless you have changed and verified the allowlist. Allow the actual Render egress addresses or use a supported private networking setup where available.
+- Aiven MySQL can accept unencrypted connections unless TLS is required for the database user. The deployed API and Swing clients are configured for TLS, but the service-side `REQUIRE SSL` setting should also be reviewed if you need the server to reject non-TLS clients.
+- Backups, encryption, IP filtering, and certificate rotation are service/platform features. Review the actual Aiven service plan and settings; this README does not claim that every optional control is enabled for this project.
+
+See Aiven's documentation for [TLS certificates](https://aiven.io/docs/platform/concepts/tls-ssl-certificates), [cloud security](https://aiven.io/docs/platform/concepts/cloud-security), [MySQL backups](https://aiven.io/docs/products/mysql/concepts/mysql-backups), and [restricting network access](https://aiven.io/docs/platform/howto/restrict-access).
+
+## API routes
+
+The API mounts its routes under `/api`.
+
+| Method | Route | Access | Purpose |
+| --- | --- | --- | --- |
+| `POST` | `/api/auth/signup` | Public | Create a guest account |
+| `POST` | `/api/auth/login` | Public | Sign in and receive an auth token |
+| `POST` | `/api/auth/logout` | Public | Sign-out endpoint |
+| `POST` | `/api/auth/forgot-password` | Public | Start account recovery |
+| `GET` | `/api/auth/me` | JWT required | Read the signed-in guest account |
+| `GET` | `/api/rooms` | Public | Read room inventory and availability data |
+| `POST` | `/api/reservations` | JWT required | Create a reservation |
+| `GET` | `/api/reservations/my-bookings` | JWT required | List the signed-in guest's reservations |
+| `GET` | `/api/reservations/:id` | Optional auth | Read a reservation using the supported ownership/access checks |
+| `POST` | `/api/reservations/:id/resend-email` | Route-specific | Resend a reservation confirmation email |
+
+Availability is calculated from database room and reservation data when the API is queried. This is request/response behavior, not a push-based live update stream.
+
+## Run the Java Swing application
+
+1. Open the `Hotel Reservation` directory as a NetBeans project.
+2. Copy `Hotel Reservation/config/db.properties.example` to `Hotel Reservation/config/db.properties`.
+3. Set `db.host`, `db.port`, `db.name`, `db.user`, and `db.password` to the same MySQL database used by the API. Place the database CA certificate at the configured `db.ssl.ca.path` when TLS is required.
+4. Confirm the MySQL Connector/J library listed in the NetBeans project is available under `Hotel Reservation/lib`.
+5. Build and run the project from NetBeans. The current NetBeans configuration names `hotel.reservation.Payments` as its main class; use the project configuration if launching a different screen during development.
+
+Do not commit `db.properties`, private NetBeans configuration files, or database certificates.
+
+## Booking and account notes
+
+- Staff accounts are stored in `users`; guest website accounts are stored separately in `guest_users`.
+- Passwords are stored as bcrypt hashes.
+- Reservation statuses include `PENDING`, `CONFIRMED`, `CHECKED_IN`, `CHECKED_OUT`, and `CANCELLED`.
+- Room operational statuses include `AVAILABLE`, `OCCUPIED`, and `MAINTENANCE`.
+- `book_room` is the database booking procedure intended to protect against overlapping confirmed or checked-in bookings. The active application paths should be checked against the deployed database procedure before relying on it for production booking integrity.
+- The payment form is a project/demo flow. A payment reference is simulated; no real payment gateway is configured.
+
+## Website pages
+
+The guest-facing pages are in `web/`, including the home page, room list, booking and confirmation pages, account pages, experiences, contact, FAQ, and login/signup flows. Shared browser logic and page behavior are in `web/js/`; global and page-specific styles are in `web/css/`; local imagery is in `web/images/`.
+
+The 3D hotel environment is currently a separate Planner 5D concept project. It is not yet exported or integrated into the guest website, and its room layout is approximate because no verified hotel floor plan was provided.
+
+## Development checks
+
+- API package: `cd api && npm start`
+- The `api/package.json` test script is currently a placeholder and does not run an automated test suite.
+- Database schema and migration scripts should be applied to a development database before exercising booking or account flows.
+
+## Project documents
+
+- [`docs/style-guide.md`](docs/style-guide.md) — website design conventions
+- [`docs/validation-spec.md`](docs/validation-spec.md) — form and input validation expectations
+- [`security/Readme.md`](security/Readme.md) — security deliverable notes
+
+## Team roles
+
+| Team member(s) | Role | Main responsibilities |
+| --- | --- | --- |
+| Emmanuel | Technical lead, backend, and database | Owns the system architecture, MySQL schema, JDBC connection, and Node API integration. |
+| Mission and Stacy | Web frontend and visual design | Build the guest website layouts, room listings, and shared page styling. |
+| Blessing and Terrence | Web behavior and API integration | Implement booking and confirmation flows, browser-side validation, and API requests. |
+| Vanessa and Thanyani | Java Swing front-desk application | Build staff-facing screens for the dashboard, rooms, reservations, and check-in/check-out workflows. |
+| Themba and Grace | Security and database administration | Support staff authentication, database access setup, and security validation. |
