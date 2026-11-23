@@ -50,10 +50,6 @@ The Swing app connects directly to MySQL, so it does not require the Node API to
 
 The API is required when running the complete website workflow. It is not required just to open static pages, and it is not a dependency of the Swing app's direct JDBC connection.
 
-## 📘 What the README is for
-
-This README is the project's starting guide: it explains what the system contains, how its pieces connect, what is needed to install and run them, how to deploy/configure the services, and where to find the main project files. It is documentation for people using or developing the repository; it is not itself part of the running application.
-
 ## Repository layout
 
 ```text
