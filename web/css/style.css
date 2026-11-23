@@ -2934,6 +2934,267 @@ body::after {
   }
 }
 
+/* ==========================================================================\n+   ROYAL HAVEN GLASS SURFACES\n+   A restrained translucent layer for interactive content, while preserving\n+   solid contrast behind long-form copy and primary navigation.\n+   ========================================================================== */
+:root {
+  --glass-fill: linear-gradient(135deg, rgba(190, 204, 222, 0.25), rgba(71, 86, 108, 0.18) 44%, rgba(9, 14, 24, 0.42));
+  --glass-fill-soft: rgba(128, 143, 164, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.27);
+  --glass-highlight: rgba(255, 255, 255, 0.2);
+  --glass-blur: 22px;
+}
+
+.booking-search-bar,
+.hero-pill-card,
+.about-float-card,
+.room-card,
+.contact-info-card,
+.contact-form-card,
+.confirmation-card-main,
+.perk-card,
+.manage-lookup-box,
+.modal-box,
+.profile-card,
+.home-booking-panel,
+.home-image-stamp,
+.service-bookings,
+.experiences-room-card {
+  background: var(--glass-fill);
+  border-color: var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 18px 45px rgba(0, 0, 0, 0.28);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(125%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(125%);
+}
+
+.glass-surface {
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 18px 45px rgba(0, 0, 0, 0.28);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(135%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(135%);
+}
+
+.btn-secondary,
+.btn-nav-outline,
+.btn-nav-signout,
+.btn-view-details,
+.btn-edit-search,
+.availability-toggle-btn,
+.currency-select,
+.filter-select,
+.nav-user-pill,
+.home-button:not(.home-button-gold),
+.social-circle-btn,
+.mobile-menu-btn {
+  background: linear-gradient(135deg, rgba(190, 204, 222, 0.2), rgba(42, 54, 74, 0.26));
+  border: 1px solid rgba(255, 255, 255, 0.23);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 8px 24px rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  backdrop-filter: blur(16px) saturate(130%);
+}
+
+.btn-primary,
+.btn-nav-gold,
+.btn-search-submit,
+.btn-select-room,
+.btn-complete-booking,
+.home-button-gold,
+.top-cta-btn {
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 10px 28px rgba(212, 175, 55, 0.2);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
+  backdrop-filter: blur(12px) saturate(130%);
+}
+
+.currency-select,
+.filter-select,
+.search-input-wrap select,
+.home-booking-panel select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--gold-light) 50%), linear-gradient(135deg, var(--gold-light) 50%, transparent 50%);
+  background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 5px 5px, 5px 5px;
+  padding-right: 28px;
+}
+
+.currency-select option,
+.filter-select option,
+.search-input-wrap select option,
+.home-booking-panel select option {
+  background: #253044;
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover,
+.btn-nav-outline:hover,
+.btn-view-details:hover,
+.btn-edit-search:hover,
+.availability-toggle-btn:hover,
+.nav-user-pill:hover,
+.social-circle-btn[href]:hover {
+  background: linear-gradient(135deg, rgba(224, 233, 244, 0.3), rgba(85, 100, 124, 0.3));
+  border-color: rgba(255, 255, 255, 0.46);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26), 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+.room-card::before,
+.contact-info-card::before,
+.contact-form-card::before,
+.confirmation-card-main::before,
+.perk-card::before,
+.home-booking-panel::before {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.09), transparent 28%);
+  content: '';
+  pointer-events: none;
+}
+
+.room-card,
+.contact-info-card,
+.contact-form-card,
+.confirmation-card-main,
+.perk-card,
+.home-booking-panel {
+  position: relative;
+  isolation: isolate;
+}
+
+.room-card-body,
+.contact-info-card > *,
+.contact-form-card > *,
+.confirmation-card-main > *,
+.perk-card > *,
+.home-booking-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.search-input-wrap input,
+.search-input-wrap select,
+.form-input-lux,
+.auth-form input,
+.auth-form select,
+.auth-form textarea,
+.home-booking-panel input,
+.home-booking-panel select {
+  background: rgba(7, 11, 18, 0.38);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.14);
+}
+
+.search-input-wrap input:focus,
+.search-input-wrap select:focus,
+.form-input-lux:focus,
+.auth-form input:focus,
+.auth-form select:focus,
+.auth-form textarea:focus,
+.home-booking-panel input:focus,
+.home-booking-panel select:focus {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.11), inset 0 1px 8px rgba(0, 0, 0, 0.14);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .booking-search-bar,
+  .hero-pill-card,
+  .about-float-card,
+  .room-card,
+  .contact-info-card,
+  .contact-form-card,
+  .confirmation-card-main,
+  .perk-card,
+  .manage-lookup-box,
+  .modal-box,
+  .profile-card,
+  .home-booking-panel,
+  .service-bookings,
+  .experiences-room-card {
+    background: var(--bg-card);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Native dropdowns stay intentionally simple and predictable. */
+.currency-select,
+.filter-select,
+.search-input-wrap select,
+.home-booking-panel select {
+  appearance: auto;
+  background-image: none;
+  padding-right: revert;
+}
+
+.currency-select {
+  background: transparent;
+  border-color: var(--border-subtle);
+  padding: 2px 8px;
+}
+
+.filter-select {
+  background: var(--bg-card);
+  border-color: var(--border-card);
+}
+
+.search-input-wrap select {
+  background: rgba(11, 14, 20, 0.75);
+}
+
+.home-booking-panel select {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(197, 168, 105, 0.3);
+  border-radius: 0;
+  padding-left: 0;
+}
+
+/* Strong floating glass surfaces */
+.room-card,
+.contact-info-card,
+.contact-form-card,
+.confirmation-card-main,
+.perk-card,
+.manage-lookup-box,
+.modal-box,
+.profile-card,
+.service-bookings,
+.experiences-room-card,
+.booking-search-bar,
+.home-booking-panel {
+  background: linear-gradient(135deg, rgba(255,255,255,.28), rgba(255,255,255,.08) 42%, rgba(255,255,255,.03)), linear-gradient(135deg, rgba(109,132,158,.28), rgba(12,18,30,.5));
+  border: 1px solid rgba(255,255,255,.36);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.38), inset 0 -18px 35px rgba(3,8,16,.16), 0 26px 55px rgba(0,0,0,.48), 0 5px 16px rgba(0,0,0,.22);
+  -webkit-backdrop-filter: blur(26px) saturate(145%);
+  backdrop-filter: blur(26px) saturate(145%);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.room-card:hover,
+.contact-info-card:hover,
+.contact-form-card:hover,
+.perk-card:hover,
+.experiences-room-card:hover {
+  border-color: rgba(255,255,255,.52);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.48), 0 32px 65px rgba(0,0,0,.56), 0 0 32px rgba(164,197,226,.12);
+  transform: translateY(-8px) scale(1.006);
+}
+
+.btn-secondary,
+.btn-nav-outline,
+.btn-view-details,
+.btn-edit-search,
+.availability-toggle-btn,
+.social-circle-btn {
+  background: linear-gradient(135deg, rgba(255,255,255,.25), rgba(255,255,255,.06)), rgba(82,101,125,.28);
+  border-color: rgba(255,255,255,.34);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.32), 0 12px 28px rgba(0,0,0,.3);
+}
+
 /* 6. Gold Accent Line Pulse */
 .brand-emblem {
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;

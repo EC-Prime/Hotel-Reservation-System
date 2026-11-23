@@ -28,6 +28,10 @@ public class Dashboard extends javax.swing.JFrame {
      */
     public Dashboard() {
         initComponents();
+        jButton2.addActionListener(e -> {
+            setVisible(false);
+            new RoomManagement(this).setVisible(true);
+        });
         LocalDate today = LocalDate.now();
 
         lblday.setText(today.format(
