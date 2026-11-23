@@ -20,6 +20,66 @@ Our **Hotel Reservation System** is a dual-interface platform designed to stream
 * **Live Weather API Integration:** Embedded Open-Meteo API widget provides real-time local weather forecasts directly within the guest booking workflow.
 * **Role-Based Operational Security:** Strict separation of privileges distinguishing public web guests from authenticated front-desk staff and system administrators.
 * **Zero-Latency Inventory Management:** Automated room status transitions (`Available` ➔ `Pending` ➔ `Occupied` ➔ `Cleaning`) to prevent overbooking[cite: 8, 9].
+* **Immersive 3D Hotel Tour:** A self-contained WebGL walkthrough at `web/tour.html` lets guests explore the lobby, restaurant, bar, pool, spa, all three levels and all 20 furnished suites before booking.
+
+---
+
+## 🧭 2.1 Immersive 3D Tour
+
+`web/tour.html` is a self-contained, explorable interpretation of Royal Haven Boutique & Spa. It follows the published three-level, 20-room layout and includes a porte-cochère and lobby, reception, bar, restaurant, pool courtyard, spa, level-2 gallery and fitness studio, and a level-3 Sunset Deck. Every guest room is furnished with a bed, rugs, wardrobe, bedside tables and lamps, seating, TV and an en-suite; larger suites add kitchenettes and private terraces.
+
+**Controls**
+
+| Action | Desktop | Touch / mobile |
+| :--- | :--- | :--- |
+| Look around | Drag the view | Drag the view |
+| Walk | `W A S D` or arrow keys; `Shift` to hurry | On-screen joystick |
+| Change level | `1` `2` `3`, floor dock, lift or stair | Floor dock, lift or stair |
+| Aerial view | `V` or **Aerial** | **Aerial** button |
+| Open a room or space | Click a door, number or brass marker | Tap a door, number or marker |
+| Close a panel | `Esc` | Close button |
+
+**Deep links**
+
+- `tour.html?room=203` — open a specific suite
+- `tour.html?service=spa` — open a hotel space
+- `tour.html?floor=2` — arrive on a chosen level
+- `tour.html?service=lift` / `tour.html?service=stairs` — jump to vertical circulation
+
+**Preview locally**
+
+The tour uses ES modules and an import map, so it must be served over HTTP (opening `tour.html` via `file://` will not work). A zero-dependency static server is included:
+
+```bash
+node web/serve.mjs
+# → http://localhost:4173/tour.html
+```
+
+Set `PORT=8080` to use a different port. Any other static host for `web/` works too.
+
+**Deploy to Render**
+
+The frontend, including the 3D tour, is a static site — no server process is needed on Render. A `render.yaml` Blueprint is included:
+
+1. Commit and push your changes first. Render deploys from Git, not from your local folder.
+2. In Render, choose **New → Blueprint** and select this repository. It creates a static site called `royal-haven-web` with `web/` as the publish directory and no build step.
+3. Or create a **Static Site** manually with: **Root Directory** `.`, **Build Command** empty, **Publish Directory** `web`.
+
+Do **not** set the start command to `node web/serve.mjs` — that server exists only for local preview. Render's CDN serves the files directly with correct MIME types, so ES modules and import maps work as-is.
+
+The 3D tour makes **no backend calls at all**. It loads only the static `js/rooms-data.js` array and the vendored Three.js modules, so deploying `web/` by itself is enough — no API Web Service, environment variables or database needed for the tour.
+
+The booking/auth pages are a separate concern. `web/js/main.js` points them at `https://hotel-reservation-system-720g.onrender.com/api` for non-local hosts, so if you host those pages they will use your existing API. A "Book this room" link in a tour panel simply navigates to `booking.html`; the tour itself never contacts the API.
+
+If you also need to deploy the API from scratch, create a **Web Service** with root directory `api`, build command `npm install`, start command `npm start`, and environment variables `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `EMAIL_USER` and `EMAIL_APP_PASSWORD`. Note that `api/certs/ca.pem` is gitignored, so a fresh deploy will not contain the Aiven CA certificate — either force-add it or change `api/config/db.js` to read it from an environment variable.
+
+**Implementation notes**
+
+- Three.js r160 and its addons are vendored in `web/vendor/three/`; there is no runtime CDN dependency.
+- Geometry and textures are generated procedurally at runtime; photography comes from the existing `web/images/` library.
+- Static meshes are batched by material to keep draw calls low. Walk collision uses floor zones plus furniture/stair colliders.
+- Prices respect the shared `grand_reserve_currency` preference and each room panel links to the existing booking flow.
+- The tour is a **conceptual visualisation** built from the published room list and photography. It is illustrative and not a survey of the built property.
 
 ---
 
@@ -28,6 +88,7 @@ Our **Hotel Reservation System** is a dual-interface platform designed to stream
 | Domain | Technology / Tool | Usage & Purpose |
 | :--- | :--- | :--- |
 | **Frontend Web** | HTML5, CSS3, JavaScript (ES6+) | Public guest portal, live weather widget, and reservation forms[cite: 8, 9]. |
+| **3D Tour** | Three.js r160 (vendored), WebGL2, procedural textures | Immersive walkthrough of the hotel, rooms and services. |
 | **Desktop App** | Java Swing (JDK 17+) | Admin desktop interface for front-desk operations & check-ins[cite: 8, 9]. |
 | **Backend API** | Node.js / Express.js | Asynchronous REST API routing client requests to the database[cite: 7, 8]. |
 | **Database** | MySQL (XAMPP Server / Workbench) | Relational database hosting room, user, and reservation tables. |
@@ -49,14 +110,21 @@ hotel-reservation-system/
 │
 ├── web/                        # Public Guest Web Portal (Mission, Stacy, Blessing, Terrence, Khethokuhle)
 │   ├── css/
-│   │   └── style.css           # Global layout & component styling
+│   │   ├── style.css           # Global design system & shared components
+│   │   ├── home.css            # Landing-page styling
+│   │   └── tour.css            # Immersive 3D tour overlays & responsive UI
 │   ├── js/
 │   │   ├── main.js             # Common navigation logic
 │   │   ├── weather.js          # Open-Meteo API fetch logic[cite: 7, 8]
-│   │   └── booking.js          # Reservation validation & API dispatch[cite: 7, 8]
-│   ├── assets/                 # Images, room media & icons
+│   │   ├── booking.js          # Reservation validation & API dispatch[cite: 7, 8]
+│   │   ├── rooms-data.js       # Canonical room list, prices, photos & amenities
+│   │   └── tour/               # Three.js tour modules (data, geometry, detail pass, controls, UI)
+│   ├── vendor/three/           # Locally vendored Three.js r160 + addons
+│   ├── images/                 # Room, experience and service photography
 │   ├── index.html              # Home landing page[cite: 8, 9]
+│   ├── serve.mjs               # Zero-dependency static server for local preview
 │   ├── rooms.html              # Room catalog grid[cite: 8, 9]
+│   ├── tour.html               # Immersive 3D walkthrough
 │   ├── booking.html            # Reservation portal with weather widget
 │   ├── faq.html                # FAQ & guest policies page
 │   └── confirmation.html       # Success receipt & booking summary[cite: 8, 9]
