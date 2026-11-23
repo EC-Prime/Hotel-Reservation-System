@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Explore Royal Haven in 3D | Boutique & Spa</title>
+  <meta name="description" content="Walk through Royal Haven Boutique & Spa in an immersive 3D tour — the lobby, restaurant, pool terrace, spa, and all twenty guest rooms across three floors.">
+  <meta name="theme-color" content="#0b0e14">
+  <link rel="stylesheet" href="css/fontawesome.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/tour.css">
+  <link rel="preload" as="image" href="images/photo-1578683010236-d716f9a3f461.jpg">
+</head>
+<body class="tour-page tour-intro">
+  <canvas id="tour-canvas" aria-label="Interactive 3D model of Royal Haven Boutique & Spa"></canvas>
+
+  <!-- ============================ Top bar ============================ -->
+  <header class="tour-header">
+    <a class="tour-brand" href="index.html" aria-label="Royal Haven Boutique &amp; Spa — home">
+      <span class="tour-emblem"><i class="fas fa-moon" aria-hidden="true"></i></span>
+      <span class="tour-brand-text">
+        <strong>ROYAL HAVEN</strong>
+        <em>Boutique &amp; Spa</em>
+      </span>
+    </a>
+
+    <div class="tour-location" aria-live="polite">
+      <span class="tour-location-label" id="tour-floor-label">Level 1 · Lobby &amp; Garden</span>
+      <span class="tour-location-sub"><i class="fas fa-person-walking" aria-hidden="true"></i> <span id="tour-mode-label">On foot</span></span>
+    </div>
+
+    <nav class="tour-actions" aria-label="Tour controls">
+      <button class="tour-action" type="button" data-action="overview" title="Aerial view (V)">
+        <i class="fas fa-globe" aria-hidden="true"></i><span>Aerial</span>
+      </button>
+      <button class="tour-action" type="button" data-action="rooms" title="All rooms">
+        <i class="fas fa-bed" aria-hidden="true"></i><span>Rooms</span>
+      </button>
+      <button class="tour-action" type="button" data-action="places" title="Restaurant, pool, spa and more">
+        <i class="fas fa-compass" aria-hidden="true"></i><span>Places</span>
+      </button>
+      <button class="tour-action tour-action--quiet" type="button" data-action="help" title="How to move">
+        <i class="fas fa-circle-question" aria-hidden="true"></i><span>Help</span>
+      </button>
+      <label class="tour-currency-wrap">
+        <span class="sr-only">Display currency</span>
+        <select id="tour-currency" class="tour-currency" aria-label="Display currency">
+          <option value="ZAR">ZAR</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </select>
+      </label>
+      <a class="tour-book" href="booking.html" aria-label="Book a room"><i class="fas fa-key" aria-hidden="true"></i><span>Book</span></a>
+    </nav>
+  </header>
+
+  <!-- ====================== Quick places rail ======================= -->
+  <div class="tour-rail" role="group" aria-label="Hotel spaces">
+    <button class="rail-btn" type="button" data-quick="pool" title="The Horizon Pool"><i class="fas fa-water-ladder" aria-hidden="true"></i><span>Pool</span></button>
+    <button class="rail-btn" type="button" data-quick="spa" title="Haven Spa"><i class="fas fa-spa" aria-hidden="true"></i><span>Spa</span></button>
+    <button class="rail-btn" type="button" data-quick="restaurant" title="Salt &amp; Cedar"><i class="fas fa-utensils" aria-hidden="true"></i><span>Dining</span></button>
+    <button class="rail-btn" type="button" data-quick="bar" title="The Lantern Bar"><i class="fas fa-martini-glass" aria-hidden="true"></i><span>Bar</span></button>
+    <button class="rail-btn" type="button" data-quick="lounge" title="The Reading Lounge"><i class="fas fa-book-open" aria-hidden="true"></i><span>Lounge</span></button>
+    <button class="rail-btn" type="button" data-quick="sunset" title="Sunset Deck"><i class="fas fa-sun" aria-hidden="true"></i><span>Sunset</span></button>
+  </div>
+
+  <!-- ============================ Minimap ============================ -->
+  <aside class="tour-map" id="tour-minimap" aria-label="Floor map">
+    <div class="tour-map-head">
+      <span>Floor plan</span>
+      <em>conceptual</em>
+    </div>
+    <canvas id="tour-map-canvas" width="188" height="150" aria-hidden="true"></canvas>
+    <p class="tour-map-foot"><i class="fas fa-location-arrow" aria-hidden="true"></i> You are here</p>
+  </aside>
+
+  <!-- ========================= Floor dock =========================== -->
+  <nav class="tour-dock" aria-label="Choose a floor">
+    <div class="dock-levels">
+      <button class="dock-level" type="button" data-floor="1" aria-pressed="true">
+        <span class="dock-num">01</span><span class="dock-name">Lobby<em>Garden · Pool · Spa</em></span>
+      </button>
+      <button class="dock-level" type="button" data-floor="2" aria-pressed="false">
+        <span class="dock-num">02</span><span class="dock-name">Rooms<em>201–206 · Gallery</em></span>
+      </button>
+      <button class="dock-level" type="button" data-floor="3" aria-pressed="false">
+        <span class="dock-num">03</span><span class="dock-name">Rooms<em>301–308 · Sunset</em></span>
+      </button>
+    </div>
+    <span class="dock-sep" aria-hidden="true"></span>
+    <div class="dock-tools">
+      <button class="dock-tool" type="button" data-action="lift" title="Call the glass lift"><i class="fas fa-elevator" aria-hidden="true"></i><span>Lift</span></button>
+      <button class="dock-tool" type="button" data-action="stairs" title="Take the feature stair"><i class="fas fa-stairs" aria-hidden="true"></i><span>Stairs</span></button>
+      <button class="dock-tool dock-tool--reset" type="button" data-action="reset" title="Return to the lobby"><i class="fas fa-rotate-left" aria-hidden="true"></i><span>Reset</span></button>
+    </div>
+  </nav>
+
+  <!-- =========================== Hint =============================== -->
+  <div class="tour-hint" id="tour-hint">
+    <p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> walk · drag to look · <kbd>V</kbd> aerial</p>
+    <p class="tour-hint-mobile">Drag to look · joystick to walk · tap a door</p>
+  </div>
+
+  <!-- ========================== Joystick =========================== -->
+  <div class="tour-joystick" id="tour-joystick" role="group" aria-label="Walk control">
+    <div class="tour-joystick-ring"></div>
+    <div class="tour-joystick-knob" id="tour-joystick-knob"><i class="fas fa-up-down-left-right" aria-hidden="true"></i></div>
+  </div>
+
+  <!-- ========================== Info panel ========================= -->
+  <aside class="tour-panel" id="tour-panel" aria-label="Room or space details">
+    <button class="tour-panel-close" id="tour-panel-close" type="button" aria-label="Close details"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+    <div class="tour-panel-scroll" id="tour-panel-body"></div>
+  </aside>
+
+  <!-- ========================= Rooms drawer ======================== -->
+  <aside class="tour-drawer" id="tour-rooms" aria-label="All guest rooms">
+    <div class="drawer-head">
+      <div>
+        <p class="drawer-eyebrow">Twenty rooms · three levels</p>
+        <h2 class="drawer-title">Rooms &amp; Suites</h2>
+      </div>
+      <button class="tour-panel-close tour-panel-close--static" type="button" data-close aria-label="Close rooms"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <div class="drawer-scroll" id="tour-rooms-list"></div>
+    <div class="drawer-foot">
+      <p>Rates are per night, before taxes. Choose a room to see photographs and step inside.</p>
+      <a class="btn btn--gold" href="rooms.html">See the room collection</a>
+    </div>
+  </aside>
+
+  <!-- ========================= Places drawer ======================= -->
+  <aside class="tour-drawer tour-drawer--wide" id="tour-places" aria-label="Hotel spaces">
+    <div class="drawer-head">
+      <div>
+        <p class="drawer-eyebrow">The house, room by room</p>
+        <h2 class="drawer-title">Places to be</h2>
+      </div>
+      <button class="tour-panel-close tour-panel-close--static" type="button" data-close aria-label="Close places"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <div class="drawer-scroll" id="tour-places-list"></div>
+  </aside>
+
+  <!-- ========================== Lift dialog ======================== -->
+  <aside class="tour-lift" id="tour-lift" aria-label="Choose a floor">
+    <div class="lift-head">
+      <p class="drawer-eyebrow">The glass lift</p>
+      <h2 class="drawer-title">Where to?</h2>
+      <button class="tour-panel-close tour-panel-close--static" type="button" data-close aria-label="Close lift"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <div class="lift-list" id="tour-lift-list"></div>
+    <div class="lift-foot">
+      <button class="btn btn--ghost" type="button" data-action="stairs"><i class="fas fa-stairs" aria-hidden="true"></i> Take the stair instead</button>
+    </div>
+  </aside>
+
+  <!-- ============================ Welcome ========================== -->
+  <section class="tour-welcome" id="tour-welcome" aria-labelledby="welcome-title">
+    <div class="welcome-card">
+      <div class="welcome-copy">
+        <p class="welcome-eyebrow"><span></span> An immersive walkthrough <span></span></p>
+        <h1 id="welcome-title">Step inside<br><em>Royal Haven.</em></h1>
+        <p class="welcome-lede">Twenty rooms, three levels, and a golden-hour coastline. Wander the lobby, find the pool courtyard, ride the glass lift and open any door — every suite is furnished and ready to explore.</p>
+
+        <div class="welcome-actions">
+          <button class="btn btn--gold btn--large" type="button" data-action="start"><i class="fas fa-door-open" aria-hidden="true"></i> Begin in the lobby</button>
+          <button class="btn btn--ghost btn--large" type="button" data-action="aerial"><i class="fas fa-globe" aria-hidden="true"></i> Aerial view</button>
+        </div>
+
+        <ul class="welcome-facts">
+          <li><span>104</span> Ocean View Blvd</li>
+          <li><span>3</span> levels to explore</li>
+          <li><span>20</span> rooms &amp; suites</li>
+        </ul>
+
+        <p class="welcome-note">Conceptual 3D interpretation based on our published room list and photography. Not a survey of the built property. Best explored with sound off, at your own pace.</p>
+      </div>
+      <div class="welcome-visual" aria-hidden="true">
+        <figure class="welcome-shot welcome-shot--hero"><img src="images/photo-1578683010236-d716f9a3f461.jpg" alt=""></figure>
+        <figure class="welcome-shot welcome-shot--one"><img src="images/experience-dining.webp" alt=""></figure>
+        <figure class="welcome-shot welcome-shot--two"><img src="images/experience-pool.avif" alt=""></figure>
+        <div class="welcome-visual-shade"></div>
+        <p class="welcome-visual-caption">The waterfront · late afternoon</p>
+      </div>
+      <button class="welcome-skip" type="button" data-action="start">Skip the introduction <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+    </div>
+  </section>
+
+  <!-- =========================== Feedback ========================== -->
+  <div class="tour-toast" id="tour-toast" role="status" aria-live="polite"></div>
+  <div class="tour-tooltip" id="tour-tooltip"></div>
+  <div class="tour-fade" id="tour-fade" aria-hidden="true"></div>
+
+  <div class="tour-legal">Conceptual 3D tour · Not to scale</div>
+
+  <!-- ============================ Loader =========================== -->
+  <div class="tour-loader" id="tour-loader">
+    <div class="loader-mark"><span>RH</span></div>
+    <p class="loader-title">Preparing the house</p>
+    <div class="loader-line"><span></span></div>
+    <p class="loader-note" id="tour-loader-note">Furnishing the rooms, lighting the terrace…</p>
+  </div>
+
+  <noscript>
+    <div class="noscript-note">
+      <h1>Royal Haven — 3D tour</h1>
+      <p>This walkthrough needs JavaScript and WebGL. You can still browse the hotel in photographs.</p>
+      <p><a href="rooms.html">View rooms &amp; suites</a> · <a href="index.html">Return home</a></p>
+    </div>
+  </noscript>
+
+  <script src="js/rooms-data.js"></script>
+  <script>window.ROOMS_DATA = ROOMS_DATA;</script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+  <script type="module" src="js/tour/main.js"></script>
+</body>
+</html>
