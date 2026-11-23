@@ -1,0 +1,47 @@
+# Render Blueprint for the Royal Haven guest portal and 3D tour.
+#
+# The 3D tour is fully static: it loads only js/rooms-data.js and the vendored
+# Three.js modules. No API, environment variables or database are required for
+# the tour itself. The booking pages (separate from the tour) call the API at
+# https://hotel-reservation-system-720g.onrender.com/api via web/js/main.js.
+
+services:
+  - type: web
+    name: royal-haven-web
+    runtime: static
+    buildCommand: "echo No build step - web/ is already production-ready"
+    staticPublishPath: ./web
+
+# ---------------------------------------------------------------------------
+# If you ever need to (re)deploy the API from this same Blueprint, add:
+#
+#   - type: web
+#     name: hotel-reservation-system-720g
+#     runtime: node
+#     rootDir: api
+#     buildCommand: npm install
+#     startCommand: npm start
+#     envVars:
+#       - key: DB_HOST
+#         sync: false
+#       - key: DB_PORT
+#         sync: false
+#       - key: DB_USER
+#         sync: false
+#       - key: DB_PASSWORD
+#         sync: false
+#       - key: DB_NAME
+#         sync: false
+#       - key: JWT_SECRET
+#         generateValue: true
+#       - key: JWT_EXPIRES_IN
+#         value: 24h
+#       - key: EMAIL_USER
+#         sync: false
+#       - key: EMAIL_APP_PASSWORD
+#         sync: false
+#
+# Note: api/certs/ca.pem is gitignored, so a fresh deploy will not have the
+# Aiven CA cert. Either force-add that file or change api/config/db.js to read
+# the certificate from a DB_SSL_CERT environment variable instead.
+# ---------------------------------------------------------------------------
