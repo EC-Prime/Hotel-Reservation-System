@@ -11,14 +11,6 @@ A hotel booking and front-desk management project with a guest website, a Node.j
 
 The API uses a shared MySQL connection pool. The Java application connects to MySQL through JDBC. Both clients use the same database, but the Swing app does not currently route its database operations through the Node API.
 
-## 🎬 Main project walkthrough
-
-Use this single featured slot for the end-to-end video walkthrough. Replace the placeholder link when the video is uploaded.
-
-> **▶ Watch the Hotel Reservation System walkthrough:** [Add the video URL here](VIDEO_WALKTHROUGH_URL)
-
-Suggested walkthrough: guest room search and booking → staff reservation and check-in workflow → how the website, API, Render, and Aiven database fit together.
-
 ## 🧭 How someone uses the project
 
 ### 🌐 Guest using the deployed website
