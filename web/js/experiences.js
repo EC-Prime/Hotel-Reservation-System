@@ -5,16 +5,46 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const favoriteRoomIds = loadFavoriteRoomIds();
+let experienceSort = 'featured';
+let showFavoritesOnly = false;
 
 function renderExperienceRooms() {
   const roomGrid = document.getElementById('experiencesRoomGrid');
   if (!roomGrid || typeof ROOMS_DATA === 'undefined') return;
 
+  const rooms = ROOMS_DATA
+    .map((room, index) => ({ room, index }))
+    .filter(({ room }) => !showFavoritesOnly || favoriteRoomIds.has(room.roomId))
+    .sort((a, b) => {
+      if (experienceSort === 'favorites') {
+        return Number(favoriteRoomIds.has(b.room.roomId)) - Number(favoriteRoomIds.has(a.room.roomId))
+          || a.index - b.index;
+      }
+      if (experienceSort === 'price-low') {
+        return Number(a.room.pricePerNight) - Number(b.room.pricePerNight) || a.index - b.index;
+      }
+      const badgeRank = { FEATURED: 3, RECOMMENDED: 2, POPULAR: 1 };
+      return (badgeRank[b.room.badge] || 0) - (badgeRank[a.room.badge] || 0) || a.index - b.index;
+    })
+    .map(({ room }) => room);
+
+  if (!rooms.length) {
+    roomGrid.innerHTML = `
+      <div class="experiences-empty-state">
+        <i class="fas fa-heart" aria-hidden="true"></i>
+        <p>No saved stays yet. Tap a heart to add a room to your favourites on this device.</p>
+      </div>
+    `;
+    return;
+  }
+
   const fragment = document.createDocumentFragment();
 
-  ROOMS_DATA.forEach((room) => {
+  rooms.forEach((room) => {
+    const isFavorite = favoriteRoomIds.has(room.roomId);
     const card = document.createElement('article');
     card.className = 'experiences-room-card';
+    card.classList.toggle('is-favorite', isFavorite);
 
     const image = document.createElement('img');
     image.className = 'experiences-room-image';
@@ -28,8 +58,8 @@ function renderExperienceRooms() {
     favoriteButton.className = 'experiences-favorite-button';
     favoriteButton.type = 'button';
     favoriteButton.dataset.roomId = String(room.roomId);
-    favoriteButton.setAttribute('aria-pressed', String(favoriteRoomIds.has(room.roomId)));
-    favoriteButton.setAttribute('aria-label', `${favoriteRoomIds.has(room.roomId) ? 'Remove' : 'Save'} ${room.title} ${favoriteRoomIds.has(room.roomId) ? 'from' : 'to'} favorites`);
+    favoriteButton.setAttribute('aria-pressed', String(isFavorite));
+    favoriteButton.setAttribute('aria-label', `${isFavorite ? 'Remove' : 'Save'} ${room.title} ${isFavorite ? 'from' : 'to'} your favourites on this device`);
 
     const favoriteIcon = document.createElement('i');
     favoriteIcon.className = 'fas fa-heart';
@@ -43,6 +73,15 @@ function renderExperienceRooms() {
     category.className = 'experiences-room-category';
     category.textContent = `${room.roomType} · ROOM ${room.roomNumber}`;
 
+    if (room.badge) {
+      const badge = document.createElement('span');
+      badge.className = `badge-tag experiences-room-badge badge-${String(room.badge).toLowerCase()}`;
+      badge.textContent = room.badge;
+      content.append(category, badge);
+    } else {
+      content.append(category);
+    }
+
     const title = document.createElement('h3');
     title.textContent = room.title;
 
@@ -54,13 +93,17 @@ function renderExperienceRooms() {
     details.className = 'experiences-room-details';
     details.textContent = `${room.sizeSqm} m² · ${room.bedType} · ${room.view}`;
 
+    const savedState = document.createElement('p');
+    savedState.className = 'experiences-room-saved-state';
+    savedState.textContent = isFavorite ? 'Saved to your favourites' : 'Save this stay for later';
+
     const link = document.createElement('a');
-    link.className = 'experiences-room-link';
+    link.className = 'experiences-room-link btn-view-details';
     link.href = `rooms.html?roomId=${encodeURIComponent(room.roomId)}`;
-    link.textContent = 'View room';
+    link.textContent = 'View details';
     link.setAttribute('aria-label', `View ${room.title}`);
 
-    content.append(category, title, description, details, link);
+    content.append(title, description, details, savedState, link);
     card.append(image, favoriteButton, content);
     fragment.append(card);
   });
@@ -81,6 +124,23 @@ function bindExperienceFavorites() {
   const roomGrid = document.getElementById('experiencesRoomGrid');
   if (!roomGrid) return;
 
+  const sortSelect = document.getElementById('experienceSort');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', () => {
+      experienceSort = sortSelect.value;
+      renderExperienceRooms();
+    });
+  }
+
+  const favoritesFilter = document.getElementById('experienceFavoritesOnly');
+  if (favoritesFilter) {
+    favoritesFilter.addEventListener('click', () => {
+      showFavoritesOnly = !showFavoritesOnly;
+      favoritesFilter.setAttribute('aria-pressed', String(showFavoritesOnly));
+      renderExperienceRooms();
+    });
+  }
+
   roomGrid.addEventListener('click', (event) => {
     const button = event.target.closest('.experiences-favorite-button');
     if (!button) return;
@@ -93,21 +153,13 @@ function bindExperienceFavorites() {
       favoriteRoomIds.add(roomId);
     }
 
-    button.setAttribute('aria-pressed', String(!isFavorite));
-    const room = ROOMS_DATA.find((item) => item.roomId === roomId);
-    if (room) {
-      button.setAttribute('aria-label', `${isFavorite ? 'Save' : 'Remove'} ${room.title} ${isFavorite ? 'to' : 'from'} favorites`);
-    }
-
-    button.classList.remove('is-animating');
-    void button.offsetWidth;
-    button.classList.add('is-animating');
-
     try {
       localStorage.setItem('royalHavenFavoriteRoomIds', JSON.stringify([...favoriteRoomIds]));
     } catch {
-      // Keep the favorite active for this page session when storage is unavailable.
+      showToast('Favourite saved for this page only; browser storage is unavailable.', 'urgent');
     }
+
+    renderExperienceRooms();
   });
 }
 

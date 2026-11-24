@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Experiences | Royal Haven Boutique &amp; Spa</title>
   <meta name="description" content="Explore Royal Haven rooms, hotel amenities, spa treatments, and boutique appointments.">
+  <script src="js/ui-bootstrap.js"></script>
   <link rel="stylesheet" href="css/fontawesome.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/ux-refresh.css">
 </head>
 <body id="top" class="inner-page experiences-page">
   <div class="top-microbar">
@@ -77,6 +79,20 @@
           <h2 id="experiences-rooms-title">Stay your way</h2>
         </div>
         <a class="experiences-text-link" href="rooms.html">Browse all rooms <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+      <div class="experiences-feed-tools">
+        <p>Save stays with the heart. Your favourites are stored on this device.</p>
+        <div class="experiences-feed-actions">
+          <label for="experienceSort">Sort stays</label>
+          <select id="experienceSort">
+            <option value="featured">Curated highlights</option>
+            <option value="favorites">Your favourites first</option>
+            <option value="price-low">Price: low to high</option>
+          </select>
+          <button class="experiences-favorites-filter" id="experienceFavoritesOnly" type="button" aria-pressed="false">
+            <i class="fas fa-heart" aria-hidden="true"></i> Saved by you
+          </button>
+        </div>
       </div>
       <div class="experiences-room-grid" id="experiencesRoomGrid" aria-live="polite"></div>
     </section>

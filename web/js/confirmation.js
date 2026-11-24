@@ -304,12 +304,12 @@ function openReceiptModal(booking) {
   const formattedOut = formatDateDisplay(booking.checkOut);
 
   backdrop.innerHTML = `
-    <div class="modal-box" style="max-width: 650px; background: #0D111A; border: 1px solid var(--border-gold);">
+    <div class="modal-box receipt-modal-box">
       <button class="modal-close-btn" onclick="closeReceiptModal()"><i class="fas fa-times"></i></button>
-      <div id="printableReceiptArea" style="padding: 36px 32px; color: #FFF;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-subtle);">
+      <div id="printableReceiptArea" class="receipt-content">
+        <div class="receipt-header">
           <div>
-            <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; letter-spacing: 1px;">ROYAL HAVEN</h2>
+            <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: var(--text-white); letter-spacing: 1px;">ROYAL HAVEN</h2>
             <p style="font-size: 0.72rem; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 2px;">Boutique & Spa</p>
             <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">104 Ocean View Blvd, Waterfront<br>Tel: +1 (800) 472-6373</p>
           </div>
@@ -320,22 +320,22 @@ function openReceiptModal(booking) {
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; font-size: 0.85rem;">
+        <div class="receipt-parties">
           <div>
             <p style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Billed To:</p>
-            <p style="font-weight: 600; color: #FFF;">${booking.guestName}</p>
+            <p style="font-weight: 600; color: var(--text-white);">${booking.guestName}</p>
             <p style="color: var(--text-secondary);">${booking.guestEmail}</p>
             ${booking.guestPhone ? `<p style="color: var(--text-secondary);">${booking.guestPhone}</p>` : ''}
           </div>
           <div>
             <p style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Your Stay:</p>
-            <p style="font-weight: 600; color: #FFF;">${formattedIn} — ${formattedOut}</p>
+            <p style="font-weight: 600; color: var(--text-white);">${formattedIn} — ${formattedOut}</p>
             <p style="color: var(--text-secondary);">${booking.nights} Nights • ${booking.numGuests} Guests</p>
             <p style="color: var(--gold-primary);">Room ${booking.room.roomNumber}${booking.room.floorNumber ? ` (Floor ${booking.room.floorNumber})` : ''}</p>
           </div>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 0.85rem;">
+        <table class="receipt-table">
           <thead>
             <tr style="border-bottom: 1px solid var(--border-gold); text-align: left; color: var(--gold-primary);">
               <th style="padding: 8px 0;">Description</th>
@@ -352,7 +352,7 @@ function openReceiptModal(booking) {
               <td style="padding: 12px 0; text-align: center;">${booking.nights}</td>
               <td style="padding: 12px 0; text-align: right;">${formatCurrency(booking.totalPrice)}</td>
             </tr>
-            <tr style="font-size: 1.15rem; font-weight: 700; color: #FFF;">
+            <tr style="font-size: 1.15rem; font-weight: 700; color: var(--text-white);">
               <td style="padding: 16px 0;" colspan="2">Total Paid</td>
               <td style="padding: 16px 0; text-align: right; color: var(--gold-bright); font-family: var(--font-display); font-size: 1.4rem;">
                 ${formatCurrency(booking.totalPrice)}
@@ -365,7 +365,7 @@ function openReceiptModal(booking) {
           <p><i class="fas fa-lock" style="color: var(--gold-primary);"></i> Payment Verified • Electronic Confirmation Valid for Check-in</p>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+        <div class="receipt-actions">
           <button class="btn-secondary" onclick="closeReceiptModal()">Close</button>
           <button class="btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Print Receipt</button>
         </div>

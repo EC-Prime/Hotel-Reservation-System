@@ -320,14 +320,22 @@ function renderRoomsGrid() {
     const isAvailable = isRoomBookable(room);
     const convertedLivePrice = formatCurrency(room.pricePerNight);
     const convertedComparePrice = formatCurrency(room.comparePrice);
+    const badgeClass = room.badge ? `badge-${String(room.badge).toLowerCase()}` : 'badge-gold';
+    const availabilityBadge = !roomAvailabilityLoaded
+      ? `<span class="badge-tag badge-checking">${roomAvailabilityError ? 'Availability unverified' : 'Checking availability'}</span>`
+      : !isAvailable
+        ? '<span class="badge-tag badge-unavailable"><i class="fas fa-circle" aria-hidden="true"></i> Unavailable</span>'
+        : room.urgencyText
+          ? `<span class="badge-tag badge-demand"><i class="fas fa-circle" aria-hidden="true"></i> ${room.urgencyText}</span>`
+          : '';
 
     return `
       <div class="room-card ${isSelected ? 'selected' : ''}" id="room-card-${room.roomId}">
         <div class="room-card-media">
           <img src="${room.image}" alt="${room.title}" class="room-card-img" loading="lazy">
           <div class="room-badges-top">
-            ${room.badge ? `<span class="badge-tag badge-gold"><i class="fas fa-crown"></i> ${room.badge}</span>` : '<span></span>'}
-            ${!isAvailable ? `<span class="badge-tag badge-urgent"><i class="fas fa-circle" style="font-size: 0.45rem;"></i> Unavailable</span>` : (room.urgencyText ? `<span class="badge-tag badge-urgent"><i class="fas fa-circle" style="font-size: 0.45rem;"></i> ${room.urgencyText}</span>` : '')}
+            ${room.badge ? `<span class="badge-tag ${badgeClass}"><i class="fas fa-crown" aria-hidden="true"></i> ${room.badge}</span>` : '<span></span>'}
+            ${availabilityBadge}
           </div>
           <div class="room-floor-pill">
             <i class="fas fa-layer-group" style="color: var(--gold-primary);"></i> Floor ${room.floorNumber} • Room ${room.roomNumber}
@@ -364,13 +372,13 @@ function renderRoomsGrid() {
             </div>
 
             <div class="room-actions-group">
-              <button class="btn-view-details" onclick="openRoomModal(${room.roomId})">View Details</button>
+              <button class="btn-view-details" type="button" onclick="openRoomModal(${room.roomId})">View details</button>
               <button
                 class="btn-select-room ${isSelected ? 'selected' : ''}"
                 onclick="selectSanctuary(${room.roomId})"
                 ${!isAvailable ? 'disabled' : ''}
               >
-                ${!isAvailable ? 'Unavailable' : isSelected ? '<i class="fas fa-check"></i> Selected' : 'Select Room'}
+                ${!roomAvailabilityLoaded ? 'Checking…' : !isAvailable ? 'Unavailable' : isSelected ? '<i class="fas fa-check"></i> Selected' : 'Select Room'}
               </button>
             </div>
           </div>

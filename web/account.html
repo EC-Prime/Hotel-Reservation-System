@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Account | Royal Haven Boutique & Spa</title>
   <meta name="description" content="View and manage your bookings and account details at Royal Haven.">
+  <script src="js/ui-bootstrap.js"></script>
   <link rel="stylesheet" href="css/fontawesome.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/ux-refresh.css">
   <style>
     .account-section {
       padding: 120px 20px 80px;
@@ -49,6 +51,7 @@
       font-size: 2rem;
       color: var(--gold-bright);
       margin: 0 auto 16px;
+      font-weight: 700;
     }
     .profile-name {
       font-family: var(--font-display);
@@ -212,7 +215,7 @@
         <!-- Left: Profile Card -->
         <aside class="profile-card">
           <div class="profile-avatar">
-            <i class="fas fa-user"></i>
+            <span id="profileAvatarInitial" aria-hidden="true">G</span>
           </div>
           <h2 class="profile-name" id="profileCardName">—</h2>
           <span class="profile-badge">Honorary Member</span>
@@ -281,9 +284,11 @@
       const cardEmail = document.getElementById('profileCardEmail');
       const cardPhone = document.getElementById('profileCardPhone');
 
-      const firstName = (user.name || 'Guest').split(' ')[0];
-      if (welcomeName) welcomeName.textContent = firstName;
-      if (cardName) cardName.textContent = user.name || 'Guest';
+      const initial = String(user.name || 'Guest').trim().charAt(0).toUpperCase() || 'G';
+      if (welcomeName) welcomeName.textContent = initial;
+      if (cardName) cardName.textContent = initial;
+      const avatarInitial = document.getElementById('profileAvatarInitial');
+      if (avatarInitial) avatarInitial.textContent = initial;
       if (cardEmail) cardEmail.textContent = user.email || '—';
       if (cardPhone) cardPhone.textContent = user.phone || 'Not provided';
 

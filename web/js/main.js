@@ -128,12 +128,10 @@ function initNavAuthUI() {
   const reserveHref = reserveBtn ? reserveBtn.getAttribute('href') : 'rooms.html';
 
   if (user) {
-    // Logged in: show guest name pill + discrete logout + primary Reserve button
-    const firstName = (user.name || 'Guest').split(' ')[0];
+    const initial = String(user.name || 'G').trim().charAt(0).toUpperCase() || 'G';
     navCtaGroup.innerHTML = `
-      <a href="account.html" class="nav-user-pill" title="My Account & Stays">
-        <i class="fas fa-crown"></i>
-        <span>${escapeHtml(firstName)}</span>
+      <a href="account.html" class="nav-user-pill" title="My Account & Stays" aria-label="My account">
+        <span class="nav-user-initial" aria-hidden="true">${escapeHtml(initial)}</span>
       </a>
       <button onclick="logout('index.html')" class="btn-nav-signout" title="Sign Out">
         <i class="fas fa-sign-out-alt"></i>
@@ -144,7 +142,7 @@ function initNavAuthUI() {
   } else {
     // Logged out: show Sign In link + Book a Room button
     navCtaGroup.innerHTML = `
-      <a href="login.html" class="nav-auth-link">
+      <a href="login.html" class="nav-auth-link" aria-label="Sign in" title="Sign in">
         <i class="fas fa-user-circle"></i>
         <span>Sign In</span>
       </a>
