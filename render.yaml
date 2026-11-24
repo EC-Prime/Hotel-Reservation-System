@@ -36,9 +36,9 @@ services:
 #         generateValue: true
 #       - key: JWT_EXPIRES_IN
 #         value: 24h
-#       - key: EMAIL_USER
+#       - key: BREVO_API_KEY
 #         sync: false
-#       - key: EMAIL_APP_PASSWORD
+#       - key: SENDER_EMAIL
 #         sync: false
 #
 # Note: api/certs/ca.pem is gitignored, so a fresh deploy will not have the

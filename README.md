@@ -116,13 +116,13 @@ Requirements: Node.js and npm.
 
 3. Open `http://localhost:3000/`. A successful response says the API is running. The API also logs whether its MySQL connection succeeded.
 
-For confirmation email delivery, configure `EMAIL_USER` and `EMAIL_APP_PASSWORD` in `api/.env`. If they are absent, the email service skips sending.
+For confirmation email delivery, configure `BREVO_API_KEY` and `SENDER_EMAIL` in `api/.env` using a Brevo API key and a verified sender address. If either is absent, the email service skips sending.
 
 ## Deployment: Render and Aiven
 
 The public website is deployed so guests can open it in a browser. The Node.js API is deployed on Render at `https://hotel-reservation-system-720g.onrender.com`; the website's `web/js/main.js` points production requests to that API. The deployed API connects to the remote Aiven MySQL service rather than a database running on a developer's computer.
 
-For a Render deployment, configure the API service to run `npm start` from the `api` directory and provide the database, JWT, and optional email settings as Render environment variables. Provide the Aiven CA certificate to the running service through a secure file/secret mechanism and set `DB_SSL_CERT_PATH` to its path. Do not put database credentials or certificates in the repository. If the website is deployed as a separate Render Static Site, its publish directory is `web`; redeploy it after changing the production API URL in `web/js/main.js`.
+For a Render deployment, configure the API service to run `npm start` from the `api` directory and provide the database, JWT, and optional `BREVO_API_KEY` and `SENDER_EMAIL` settings as Render environment variables. Provide the Aiven CA certificate to the running service through a secure file/secret mechanism and set `DB_SSL_CERT_PATH` to its path. Do not put database credentials or certificates in the repository. If the website is deployed as a separate Render Static Site, its publish directory is `web`; redeploy it after changing the production API URL in `web/js/main.js`.
 
 ### Aiven connection security
 

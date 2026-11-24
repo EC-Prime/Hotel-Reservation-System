@@ -4,25 +4,19 @@
 // Rule: an email problem must NEVER fail or undo a booking. Every error is
 // caught and logged here, and the function returns true/false instead of throwing.
 //
-// Setup (see .env.example): a Gmail account with 2-Step Verification on and a
-// 16-character "App password". Your normal Gmail password will not work.
+// Setup (see .env.example): configure a Brevo API key and verified sender email.
 
 require('dotenv').config();
-const nodemailer = require('nodemailer');
 
-const EMAIL_USER = process.env.EMAIL_USER;
-const EMAIL_APP_PASSWORD = process.env.EMAIL_APP_PASSWORD;
+const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
+const SENDER_EMAIL = process.env.SENDER_EMAIL;
 const RESEND_COOLDOWN_MS = 30 * 1000;
 const resendTimestamps = new Map();
 
 // If the credentials aren't set (e.g. a teammate running the API locally),
 // skip emailing quietly instead of crashing.
-const transporter = EMAIL_USER && EMAIL_APP_PASSWORD
-  ? nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: EMAIL_USER, pass: EMAIL_APP_PASSWORD }
-    })
-  : null;
+const emailConfigured = BREVO_API_KEY && SENDER_EMAIL;
 
 // Guest-supplied text (like their name) goes into an HTML email, so escape it.
 function escapeHtml(text) {
@@ -65,12 +59,13 @@ function getResendStatus(booking) {
  * @returns {Promise<boolean>} true if sent, false if skipped or failed
  */
 async function sendConfirmationEmail(booking) {
-  if (!transporter) {
-    console.log('emailService: EMAIL_USER / EMAIL_APP_PASSWORD not set, skipping email.');
+  if (!emailConfigured) {
+    console.log('emailService: BREVO_API_KEY / SENDER_EMAIL not set, skipping email.');
     return false;
   }
 
   const name = escapeHtml(booking.guestName);
+  const subject = `Booking confirmed, ref ${booking.paymentReference}`;
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 480px;">
@@ -88,13 +83,38 @@ async function sendConfirmationEmail(booking) {
       </p>
     </div>`;
 
+  const text = [
+    `Booking confirmed`,
+    `Hi ${booking.guestName}, your reservation is confirmed.`,
+    `Reference: ${booking.paymentReference}`,
+    `Room: ${booking.roomNumber} (${booking.roomType})`,
+    `Check-in: ${booking.checkIn}`,
+    `Check-out: ${booking.checkOut}`,
+    `Total: R${Number(booking.totalPrice).toFixed(2)}`,
+    `This is a demo booking from a student project. No payment was taken.`
+  ].join('\n');
+
   try {
-    await transporter.sendMail({
-      from: `"Hotel Reservations" <${EMAIL_USER}>`,
-      to: booking.guestEmail,
-      subject: `Booking confirmed, ref ${booking.paymentReference}`,
-      html
+    const response = await fetch(BREVO_API_URL, {
+      method: 'POST',
+      headers: {
+        'api-key': BREVO_API_KEY,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender: { name: 'The Royal Haven', email: SENDER_EMAIL },
+        to: [{ email: booking.guestEmail, name: booking.guestName }],
+        subject,
+        htmlContent: html,
+        textContent: text
+      })
     });
+
+    if (!response.ok) {
+      const responseBody = await response.text();
+      throw new Error(`Brevo API request failed with status ${response.status}: ${responseBody}`);
+    }
+
     resendTimestamps.set(resendKey(booking), Date.now());
     console.log(`emailService: confirmation sent for reservation ${booking.reservationId}`);
     return true;
