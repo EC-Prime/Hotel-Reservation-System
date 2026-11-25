@@ -842,6 +842,9 @@ function initBookingForm() {
           id: String(data.reservationId),
           email: payload.guestEmail
         });
+        if (typeof data.emailSent === 'boolean') {
+          next.set('emailSent', String(data.emailSent));
+        }
         window.location.href = `confirmation.html?${next.toString()}`;
         return;
       }

@@ -116,6 +116,9 @@ async function loadConfirmedBooking() {
     const booking = await fetchReservation(targetId, email);
     setConfirmedStayVisible(true);
     renderConfirmationUI(booking);
+    if (urlParams.get('emailSent') === 'false') {
+      showToast('Your booking is confirmed, but the confirmation email could not be sent. Please use the resend button below.', 'urgent');
+    }
   } catch (err) {
     setConfirmedStayVisible(false);
     showToast(err.message, 'urgent');
@@ -127,6 +130,7 @@ async function loadConfirmedBooking() {
 }
 
 let resendCooldownUntil = 0;
+let resendCooldownTimer = null;
 
 function updateResendButtonState() {
   const btn = document.getElementById('btnResendConfirmationEmail');
@@ -143,7 +147,15 @@ function updateResendButtonState() {
       status.textContent = `Confirmation email can be resent in ${remainingSeconds}s`;
       status.style.display = 'block';
     }
+    if (!resendCooldownTimer) {
+      resendCooldownTimer = setInterval(updateResendButtonState, 1000);
+    }
     return;
+  }
+
+  if (resendCooldownTimer) {
+    clearInterval(resendCooldownTimer);
+    resendCooldownTimer = null;
   }
 
   btn.disabled = false;

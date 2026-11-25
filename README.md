@@ -76,7 +76,7 @@ Hotel-Reservation-System/
 | Database | MySQL, `mysql2` connection pool |
 | Staff desktop application | Java Swing, JDBC, NetBeans project |
 | Authentication | bcrypt password hashes and JWT |
-| Email | Nodemailer; confirmation emails require SMTP environment settings |
+| Email | Brevo transactional email API |
 
 ## Database setup
 
@@ -116,7 +116,7 @@ Requirements: Node.js and npm.
 
 3. Open `http://localhost:3000/`. A successful response says the API is running. The API also logs whether its MySQL connection succeeded.
 
-For confirmation email delivery, configure `BREVO_API_KEY` and `SENDER_EMAIL` in `api/.env` using a Brevo API key and a verified sender address. If either is absent, the email service skips sending.
+For confirmation email delivery, configure `BREVO_API_KEY` and `SENDER_EMAIL` in `api/.env` using a Brevo API key and a verified sender address. If either is absent, the email service skips sending. If a booking succeeds but email delivery fails, the confirmation page will show a resend prompt; check the API service logs for Brevo's rejection reason.
 
 ## Deployment: Render and Aiven
 

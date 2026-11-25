@@ -99,7 +99,7 @@ async function createReservation(req, res) {
     if (result.status === 'CONFIRMED') {
       // Wait for the confirmation email result before responding so booking
       // success and email delivery status are both tracked consistently.
-      await emailService.sendConfirmationEmail({
+      const emailSent = await emailService.sendConfirmationEmail({
         guestName,
         guestEmail,
         reservationId: result.reservationId,
@@ -115,7 +115,8 @@ async function createReservation(req, res) {
         reservationId: result.reservationId,
         status: result.status,
         totalPrice,
-        paymentReference
+        paymentReference,
+        emailSent
       });
     }
 
