@@ -44,6 +44,18 @@ function getFutureDate(daysAhead) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
+function addDaysToDate(dateString, days) {
+  const date = new Date(`${dateString}T00:00:00`);
+  date.setDate(date.getDate() + days);
+  const pad = n => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+function isValidStay(checkIn, checkOut) {
+  if (!checkIn || !checkOut || checkIn < getFutureDate(0) || checkOut <= checkIn) return false;
+  return calculateNights(checkIn, checkOut) <= 30;
+}
+
 function calculateNights(inStr, outStr) {
   const d1 = new Date(inStr);
   const d2 = new Date(outStr);
@@ -162,6 +174,14 @@ async function fetchLiveRooms() {
   if (!gallery) return;
   if (!bookingState.checkIn || !bookingState.checkOut) return;
 
+  if (!isValidStay(bookingState.checkIn, bookingState.checkOut)) {
+    roomAvailabilityLoaded = false;
+    roomAvailabilityError = 'Choose a valid stay of 1 to 30 nights, starting today or later.';
+    renderRoomsGrid();
+    updateTripSummary();
+    return;
+  }
+
   const requestId = ++roomAvailabilityRequestId;
   roomAvailabilityLoaded = false;
   roomAvailabilityError = '';
@@ -235,24 +255,24 @@ function initDateSelectors() {
     inInput.addEventListener('change', (e) => {
       bookingState.checkIn = e.target.value;
       if (outInput && outInput.value <= bookingState.checkIn) {
-        const next = new Date(bookingState.checkIn);
-        next.setDate(next.getDate() + 1);
-        const pad = n => String(n).padStart(2, '0');
-        outInput.value = `${next.getFullYear()}-${pad(next.getMonth() + 1)}-${pad(next.getDate())}`;
+        outInput.value = addDaysToDate(bookingState.checkIn, 1);
         bookingState.checkOut = outInput.value;
       }
+      if (outInput) outInput.min = addDaysToDate(bookingState.checkIn, 1);
+      if (outInput) outInput.max = addDaysToDate(bookingState.checkIn, 30);
       updateTripSummary();
-      fetchLiveRooms();
+      if (isValidStay(bookingState.checkIn, bookingState.checkOut)) fetchLiveRooms();
     });
   }
 
   if (outInput) {
     outInput.value = bookingState.checkOut;
     outInput.min = getFutureDate(1);
+    outInput.max = addDaysToDate(bookingState.checkIn, 30);
     outInput.addEventListener('change', (e) => {
       bookingState.checkOut = e.target.value;
       updateTripSummary();
-      fetchLiveRooms();
+      if (isValidStay(bookingState.checkIn, bookingState.checkOut)) fetchLiveRooms();
     });
   }
 
@@ -307,7 +327,7 @@ function renderRoomsGrid() {
     container.innerHTML = `
       <div style="text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-card);">
         <i class="fas fa-bed" style="font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 16px;"></i>
-        <h3 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; margin-bottom: 8px;">No Rooms Match Your Search</h3>
+        <h3 style="font-family: var(--font-display); font-size: 1.4rem; color: var(--text-white); margin-bottom: 8px;">No Rooms Match Your Search</h3>
         <p style="color: var(--text-secondary); margin-bottom: 20px;">Try adjusting your filters or dates to discover available rooms.</p>
         <button class="btn-primary" onclick="resetAllFilters()">Reset All Filters</button>
       </div>
@@ -579,7 +599,7 @@ function openRoomModal(roomId) {
       </div>
       <div style="padding: 30px;">
         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
-          <h2 style="font-family: var(--font-display); font-size: 1.8rem; color: #FFF;">${room.title}</h2>
+          <h2 style="font-family: var(--font-display); font-size: 1.8rem; color: var(--text-white);">${room.title}</h2>
           <div style="font-size: 1.6rem; font-family: var(--font-display); font-weight: 700; color: var(--gold-bright);">
             ${formatCurrency(room.pricePerNight)} <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-secondary);">/ night</span>
           </div>
@@ -650,18 +670,18 @@ function renderCheckoutRecap(room, checkIn, checkOut) {
         <img src="${room.image}" alt="${room.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-sm);">
         <div>
           <span class="badge-tag badge-gold">Floor ${room.floorNumber} • Room ${room.roomNumber}</span>
-          <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: #FFF; margin-top: 4px;">${room.title}</h3>
+          <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: var(--text-white); margin-top: 4px;">${room.title}</h3>
           <p style="font-size: 0.8rem; color: var(--gold-light);">${room.bedType} • Max ${room.capacity} Guests</p>
         </div>
       </div>
       <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.875rem;">
         <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
-          <span>Dates:</span> <strong style="color: #FFF;">${formatDateDisplay(checkIn)} — ${formatDateDisplay(checkOut)} (${nights} Nights)</strong>
+          <span>Dates:</span> <strong style="color: var(--text-white);">${formatDateDisplay(checkIn)} — ${formatDateDisplay(checkOut)} (${nights} Nights)</strong>
         </div>
         <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
           <span>Rate (${nights} nights × ${formatCurrency(room.pricePerNight)}):</span> <span>${formatCurrency(total)}</span>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 1.15rem; color: #FFF; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 1.15rem; color: var(--text-white); padding-top: 10px; border-top: 1px solid var(--border-subtle);">
           <span>Total Payable:</span> <strong id="checkoutTotalAmount" class="price-highlight-glow" style="color: var(--gold-bright); font-size: 1.6rem; font-family: var(--font-display);">${formatCurrency(total)}</strong>
         </div>
       </div>
@@ -747,6 +767,13 @@ function initBookingForm() {
   const refreshAvailability = async () => {
     checkIn = formCheckIn ? formCheckIn.value : checkIn;
     checkOut = formCheckOut ? formCheckOut.value : checkOut;
+    if (!isValidStay(checkIn, checkOut)) {
+      checkoutAvailabilityVerified = false;
+      showBookingError('Choose valid dates: check-in cannot be in the past and stays may be 1 to 30 nights.');
+      renderCheckoutRecap(room, checkIn, checkOut);
+      updateSubmitState();
+      return;
+    }
     const requestId = ++availabilityRequestId;
     checkoutAvailabilityVerified = false;
     if (submitBtn) submitBtn.disabled = true;

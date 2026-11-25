@@ -29,6 +29,7 @@ router.get('/auth/me', verifyToken, authController.me);
 // Room availability — public
 // ------------------------------------------------------------------
 router.get('/rooms', roomController.getRooms);
+router.post('/contact', reservationController.sendContactInquiry);
 
 // ------------------------------------------------------------------
 // Reservations

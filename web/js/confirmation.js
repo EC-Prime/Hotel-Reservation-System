@@ -314,6 +314,10 @@ function openReceiptModal(booking) {
 
   const formattedIn = formatDateDisplay(booking.checkIn);
   const formattedOut = formatDateDisplay(booking.checkOut);
+  const manageUrl = new URL('confirmation.html', window.location.href);
+  manageUrl.searchParams.set('id', String(booking.reservationId));
+  manageUrl.searchParams.set('email', String(booking.guestEmail || ''));
+  const qrImageUrl = `https://quickchart.io/qr?size=180&margin=1&text=${encodeURIComponent(manageUrl.toString())}`;
 
   backdrop.innerHTML = `
     <div class="modal-box receipt-modal-box">
@@ -372,6 +376,11 @@ function openReceiptModal(booking) {
             </tr>
           </tbody>
         </table>
+
+        <div class="receipt-qr-block">
+          <img class="receipt-qr" src="${qrImageUrl}" width="150" height="150" alt="QR code to view this reservation online">
+          <p>Scan to view this reservation online</p>
+        </div>
 
         <div style="padding: 12px; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-sm); font-size: 0.75rem; color: var(--text-muted); text-align: center;">
           <p><i class="fas fa-lock" style="color: var(--gold-primary);"></i> Payment Verified • Electronic Confirmation Valid for Check-in</p>

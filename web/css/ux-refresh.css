@@ -43,6 +43,20 @@ html[data-theme="light"] body {
   background-color: var(--bg-primary);
 }
 
+/* Interior pages use a shared glass token declared in style.css. Keep that
+   token light as well; otherwise the light theme leaves dark translucent
+   cards behind dark-theme text on pages such as contact, account and booking. */
+html[data-theme="light"] .inner-page {
+  --inner-glass: rgba(255, 255, 255, 0.92);
+  --inner-glass-border: rgba(57, 72, 92, 0.16);
+}
+
+html[data-theme="light"] .inner-page .room-floor-pill {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text-secondary);
+  border-color: var(--border-card);
+}
+
 html[data-theme="light"] .top-microbar,
 html[data-theme="light"] .site-header,
 html[data-theme="light"] .site-header.scrolled,
@@ -142,6 +156,10 @@ html[data-theme="light"] .mobile-menu-btn {
   border-color: var(--border-card);
   color: var(--text-primary);
   box-shadow: none;
+}
+
+html[data-theme="light"] .inner-page .room-card.selected {
+  background: var(--gold-subtle);
 }
 
 .theme-toggle {
@@ -373,11 +391,20 @@ html[data-theme="light"] .badge-occupied {
 .receipt-modal-box {
   max-width: 650px;
   background: var(--bg-card);
+  max-height: min(90vh, 760px);
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .receipt-content {
   padding: clamp(16px, 5vw, 36px);
   color: var(--text-primary);
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .receipt-header,
@@ -393,6 +420,7 @@ html[data-theme="light"] .badge-occupied {
   margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--border-subtle);
+  overflow-wrap: anywhere;
 }
 
 .receipt-parties {
@@ -430,6 +458,26 @@ html[data-theme="light"] .badge-occupied {
   margin-top: 24px;
   padding-top: 16px;
   border-top: 1px solid var(--border-subtle);
+}
+
+.receipt-qr-block {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin: 22px 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.receipt-qr {
+  display: block;
+  width: clamp(112px, 24vw, 150px);
+  height: auto;
+  aspect-ratio: 1;
+  padding: 6px;
+  background: #ffffff;
+  border-radius: var(--radius-sm);
 }
 
 .experiences-feed-tools,
@@ -769,6 +817,19 @@ html[data-moon-loader] body::after {
 
   .room-card-media {
     height: clamp(180px, 55vw, 260px);
+  }
+
+  .room-badges-top {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .room-badges-top .badge-tag {
+    max-width: calc(50% - 3px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .room-card-body {

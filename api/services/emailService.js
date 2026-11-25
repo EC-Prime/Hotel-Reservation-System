@@ -6,17 +6,24 @@
 //
 // Setup (see .env.example): configure a Brevo API key and verified sender email.
 
-require('dotenv').config();
+const path = require('path');
+
+// Resolve the local dotenv file from this source file, not from the process
+// working directory. Render can start the service with a different cwd than
+// the API folder; platform environment variables still take precedence.
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
-const BREVO_API_KEY = process.env.BREVO_API_KEY;
-const SENDER_EMAIL = process.env.SENDER_EMAIL;
+const BREVO_API_KEY = String(process.env.BREVO_API_KEY || '').trim();
+const SENDER_EMAIL = String(process.env.SENDER_EMAIL || '').trim();
+const configuredWebUrl = String(process.env.PUBLIC_WEB_URL || '').trim().replace(/\/$/, '');
+const PUBLIC_WEB_URL = configuredWebUrl || 'https://royal-haven-web.onrender.com';
 const RESEND_COOLDOWN_MS = 30 * 1000;
 const resendTimestamps = new Map();
 
 // If the credentials aren't set (e.g. a teammate running the API locally),
 // skip emailing quietly instead of crashing.
-const emailConfigured = BREVO_API_KEY && SENDER_EMAIL;
+const emailConfigured = Boolean(BREVO_API_KEY && SENDER_EMAIL);
 
 // Guest-supplied text (like their name) goes into an HTML email, so escape it.
 function escapeHtml(text) {
@@ -45,6 +52,13 @@ function getResendStatus(booking) {
   return { allowed: retryAfterMs <= 0, retryAfterMs };
 }
 
+function getManageBookingUrl(reservationId, guestEmail) {
+  const url = new URL(`${PUBLIC_WEB_URL}/confirmation.html`);
+  url.searchParams.set('id', String(reservationId));
+  url.searchParams.set('email', String(guestEmail || '').trim());
+  return url.toString();
+}
+
 /**
  * @param {Object} booking
  * @param {string} booking.guestName
@@ -60,12 +74,18 @@ function getResendStatus(booking) {
  */
 async function sendConfirmationEmail(booking) {
   if (!emailConfigured) {
-    console.log('emailService: BREVO_API_KEY / SENDER_EMAIL not set, skipping email.');
+    const missing = [
+      !BREVO_API_KEY && 'BREVO_API_KEY',
+      !SENDER_EMAIL && 'SENDER_EMAIL'
+    ].filter(Boolean).join(', ');
+    console.log(`emailService: missing ${missing}, skipping email.`);
     return false;
   }
 
   const name = escapeHtml(booking.guestName);
   const subject = `Booking confirmed, ref ${booking.paymentReference}`;
+  const manageUrl = getManageBookingUrl(booking.reservationId, booking.guestEmail);
+  const qrImageUrl = `https://quickchart.io/qr?size=180&margin=1&text=${encodeURIComponent(manageUrl)}`;
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 480px;">
@@ -78,6 +98,10 @@ async function sendConfirmationEmail(booking) {
         <tr><td><b>Check-out</b></td><td>${escapeHtml(booking.checkOut)}</td></tr>
         <tr><td><b>Total</b></td><td>R${Number(booking.totalPrice).toFixed(2)}</td></tr>
       </table>
+      <div style="margin-top: 20px; text-align: center;">
+        <img src="${escapeHtml(qrImageUrl)}" width="140" height="140" alt="QR code to view your reservation online" style="display: inline-block;">
+        <p style="color: #777; font-size: 12px; margin: 6px 0 0;">Scan to view your reservation online</p>
+      </div>
       <p style="color: #777; font-size: 12px;">
         This is a demo booking from a student project. No payment was taken.
       </p>
@@ -124,6 +148,57 @@ async function sendConfirmationEmail(booking) {
   }
 }
 
+/**
+ * Send a guest inquiry to the configured hotel sender address.
+ * Returns false on configuration/provider failure so a mail outage never
+ * turns into a server error for the guest.
+ */
+async function sendContactInquiry({ name, email, subject, message }) {
+  if (!emailConfigured) {
+    console.log('emailService: missing contact mail configuration, skipping inquiry.');
+    return false;
+  }
+
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeSubject = escapeHtml(subject);
+  const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+
+  try {
+    const response = await fetch(BREVO_API_URL, {
+      method: 'POST',
+      headers: {
+        'api-key': BREVO_API_KEY,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender: { name: 'Royal Haven Website', email: SENDER_EMAIL },
+        to: [{ email: SENDER_EMAIL, name: 'Royal Haven Concierge' }],
+        replyTo: { email, name },
+        subject: `Website inquiry: ${subject}`,
+        htmlContent: `<div style="font-family: Arial, sans-serif; max-width: 600px;">
+          <h2>New website inquiry</h2>
+          <p><b>From:</b> ${safeName} &lt;${safeEmail}&gt;</p>
+          <p><b>Subject:</b> ${safeSubject}</p>
+          <p>${safeMessage}</p>
+        </div>`,
+        textContent: `New website inquiry\n\nFrom: ${name} <${email}>\nSubject: ${subject}\n\n${message}`
+      })
+    });
+
+    if (!response.ok) {
+      const responseBody = await response.text();
+      throw new Error(`Brevo API request failed with status ${response.status}: ${responseBody}`);
+    }
+
+    console.log(`emailService: contact inquiry sent from ${email}`);
+    return true;
+  } catch (err) {
+    console.error('emailService: failed to send contact inquiry:', err.message);
+    return false;
+  }
+}
+
 async function resendConfirmationEmail(booking) {
   const status = getResendStatus(booking);
   if (!status.allowed) {
@@ -142,4 +217,4 @@ async function resendConfirmationEmail(booking) {
   };
 }
 
-module.exports = { sendConfirmationEmail, resendConfirmationEmail, RESEND_COOLDOWN_MS };
+module.exports = { sendConfirmationEmail, sendContactInquiry, resendConfirmationEmail, RESEND_COOLDOWN_MS };

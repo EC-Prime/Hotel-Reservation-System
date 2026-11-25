@@ -17,6 +17,26 @@ function parseEmailInput(value) {
   return String(value || '').trim();
 }
 
+async function sendContactInquiry(req, res) {
+  const name = String(req.body?.name || '').trim();
+  const email = parseEmailInput(req.body?.email);
+  const subject = String(req.body?.subject || '').trim();
+  const message = String(req.body?.message || '').trim();
+
+  if (!name || !subject || !message || !EMAIL_RE.test(email)) {
+    return res.status(400).json({ error: 'Please provide a valid name, email, subject, and message.' });
+  }
+  if (name.length > 120 || subject.length > 180 || message.length > 5000) {
+    return res.status(400).json({ error: 'Your inquiry is too long.' });
+  }
+
+  const sent = await emailService.sendContactInquiry({ name, email, subject, message });
+  if (!sent) {
+    return res.status(503).json({ error: 'We could not send your message right now. Please try again shortly.' });
+  }
+  return res.status(200).json({ message: 'Your message has been sent.' });
+}
+
 function isRealDate(str) {
   if (!DATE_RE.test(str)) return false;
   const d = new Date(str + 'T00:00:00Z');
@@ -241,4 +261,4 @@ async function getMyReservations(req, res) {
   }
 }
 
-module.exports = { createReservation, getReservation, resendConfirmationEmail, getMyReservations };
+module.exports = { createReservation, getReservation, resendConfirmationEmail, getMyReservations, sendContactInquiry };
