@@ -28,6 +28,7 @@ import javax.swing.SwingWorker;
          */
         public checkinOut() {
            initComponents();
+   UiTheme.compactTable(tblreservationstatus);
    startWelcomeVisualCarousel();
    String placeholder = "Enter admin name...";
 txtsearchreservation.setText(placeholder);
@@ -132,6 +133,7 @@ tblreservationstatus.getColumnModel()
                             table.addRow(new Object[]{"RH-" + String.format("%04d", r.id), r.guestName,
                                 r.roomNumber, r.checkIn, r.checkOut, titleCase(r.status)});
                         }
+                        UiTheme.compactScrollPaneToRows(jScrollPane2, tblreservationstatus, 760);
                     } catch (Exception ex) { logger.log(java.util.logging.Level.WARNING, "Could not load reservations", ex); }
                 }
             }.execute();

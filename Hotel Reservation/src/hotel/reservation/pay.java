@@ -41,6 +41,7 @@ public class pay extends javax.swing.JFrame {
      */
     public pay() {
         initComponents();
+        UiTheme.compactTable(tblPayments);
 
       lblSearchMessage.setText(" ");
 lblSearchMessage.setFont(new Font("Serif", Font.ITALIC, 12));
@@ -1968,13 +1969,11 @@ lblSearchMessage.setForeground(new Color(0xF0A0A0));   // soft red
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
         // TODO add your handling code here:
-        Dashboard dashboard = new Dashboard();
-        dashboard.setVisible(true);
-        this.dispose();
+        Navigation.dashboard(this);
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnRoomManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRoomManagementActionPerformed
-        // TODO add your handling code here:
+        Navigation.rooms(this);
     }//GEN-LAST:event_btnRoomManagementActionPerformed
 
     private void btnPaymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentsActionPerformed
@@ -2013,7 +2012,7 @@ lblSearchMessage.setForeground(new Color(0xF0A0A0));   // soft red
     }//GEN-LAST:event_btnSettingsActionPerformed
 
     private void btnReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservationActionPerformed
-        // TODO add your handling code here:
+        Navigation.reservations(this);
     }//GEN-LAST:event_btnReservationActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed

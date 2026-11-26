@@ -4,6 +4,19 @@
  */
 package hotel.reservation;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.RenderingHints;
+import javax.swing.JComboBox;
+import javax.swing.JPasswordField;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author DCS Admin
@@ -17,6 +30,9 @@ public class Payments extends javax.swing.JFrame {
      */
     public Payments() {
         initComponents();
+        UiTheme.compactTable(tblusers);
+        tblusers.setRowSorter(new TableRowSorter<DefaultTableModel>(
+                (DefaultTableModel) tblusers.getModel()));
     }
 
     /**
@@ -916,6 +932,15 @@ public class Payments extends javax.swing.JFrame {
         applyFilter();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void applyFilter() {
+        String query = txtsearch.getText().trim().toLowerCase();
+        if (query.equals("search by name, username, or role...")) {
+            query = "";
+        }
+        TableRowSorter<?> sorter = (TableRowSorter<?>) tblusers.getRowSorter();
+        sorter.setRowFilter(query.isEmpty() ? null : RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(query)));
+    }
+
     private void btnAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserActionPerformed
         // TODO add your handling code here:
         JTextField name = new JTextField();
@@ -957,39 +982,39 @@ public class Payments extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddUserActionPerformed
 
     private void lblResTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblResTextActionPerformed
-        // TODO add your handling code here:
+        Navigation.reservations(this);
     }//GEN-LAST:event_lblResTextActionPerformed
 
     private void lblSettingsTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblSettingsTextActionPerformed
-        // TODO add your handling code here:
+        Navigation.settings(this);
     }//GEN-LAST:event_lblSettingsTextActionPerformed
 
     private void lblUserTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblUserTextActionPerformed
-        // TODO add your handling code here:
+        Navigation.users(this);
     }//GEN-LAST:event_lblUserTextActionPerformed
 
     private void lblLogoutTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblLogoutTextActionPerformed
-        // TODO add your handling code here:
+        new Logout().setVisible(true); dispose();
     }//GEN-LAST:event_lblLogoutTextActionPerformed
 
     private void lblGuestTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblGuestTextActionPerformed
-        // TODO add your handling code here:
+        Navigation.users(this);
     }//GEN-LAST:event_lblGuestTextActionPerformed
 
     private void lblCheckTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblCheckTextActionPerformed
-        // TODO add your handling code here:
+        Navigation.checkin(this);
     }//GEN-LAST:event_lblCheckTextActionPerformed
 
     private void lblPayTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblPayTextActionPerformed
-        // TODO add your handling code here:
+        Navigation.payments(this);
     }//GEN-LAST:event_lblPayTextActionPerformed
 
     private void lblRoomTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblRoomTextActionPerformed
-        // TODO add your handling code here:
+        Navigation.rooms(this);
     }//GEN-LAST:event_lblRoomTextActionPerformed
 
     private void lblDashTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblDashTextActionPerformed
-        // TODO add your handling code here:
+        Navigation.dashboard(this);
     }//GEN-LAST:event_lblDashTextActionPerformed
 
     /**

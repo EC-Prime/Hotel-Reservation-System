@@ -33,15 +33,17 @@ public final class DatabaseConnection {
         connectionProperties.setProperty("password", required(dbProps, "db.password"));
 
         String trustStore = dbProps.getProperty("db.truststore.path", "").trim();
-            if (!trustStore.isEmpty()) {
-             connectionProperties.setProperty("sslMode", "VERIFY_CA");
-              connectionProperties.setProperty("trustCertificateKeyStoreUrl",
-               resolvePath(trustStore).toUri().toString());
-               connectionProperties.setProperty("trustCertificateKeyStorePassword",
-            required(dbProps, "db.truststore.password"));
-} else {
-    connectionProperties.setProperty("sslMode", "REQUIRED");
-}
+        String caPath = dbProps.getProperty("db.ssl.ca.path", "").trim();
+        if (!trustStore.isEmpty()) {
+            connectionProperties.setProperty("sslMode", "VERIFY_CA");
+            connectionProperties.setProperty("trustCertificateKeyStoreUrl", resolvePath(trustStore).toUri().toString());
+            connectionProperties.setProperty("trustCertificateKeyStorePassword", required(dbProps, "db.truststore.password"));
+        } else if (!caPath.isEmpty()) {
+            connectionProperties.setProperty("sslMode", "VERIFY_CA");
+            connectionProperties.setProperty("sslCA", resolvePath(caPath).toString());
+        } else {
+            connectionProperties.setProperty("sslMode", "REQUIRED");
+        }
 
         return DriverManager.getConnection(url, connectionProperties);
     }

@@ -38,6 +38,7 @@ private int currentPage = 6;
      */
     public UserManagement() {
         initComponents();
+        UiTheme.compactTable(tblusers);
         
         
         
@@ -690,6 +691,7 @@ private void loadUsersFromDatabase() {
                     initials = names.length > 1 ? ("" + names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase() : names[0].substring(0, Math.min(2, names[0].length())).toUpperCase();
                     model.addRow(new Object[]{initials, u.fullName, u.username, u.role, u.active ? "Active" : "Inactive", u.createdAt, null});
                 }
+                UiTheme.compactScrollPaneToRows(jScrollPane5, tblusers, 860);
                 countUp(lblTotalValue, users.size());
                 countUp(lblAdminsValue1, admins);
                 countUp(lblStaffValue1, staff);

@@ -28,10 +28,11 @@ public class Dashboard extends javax.swing.JFrame {
      */
     public Dashboard() {
         initComponents();
+        UiTheme.compactTable(tbllatestbookings);
         jButton2.addActionListener(e -> {
-            setVisible(false);
-            new RoomManagement(this).setVisible(true);
+            Navigation.rooms(this);
         });
+        jButton6.addActionListener(e -> Navigation.users(this));
         LocalDate today = LocalDate.now();
 
         lblday.setText(today.format(
@@ -176,6 +177,7 @@ public class Dashboard extends javax.swing.JFrame {
                     for (HotelRepository.ReservationRow r : get()) {
                         model.addRow(new Object[]{r.guestName, r.roomNumber, r.checkIn, r.checkOut, r.status});
                     }
+                    UiTheme.compactScrollPaneToRows(jScrollPane2, tbllatestbookings, 650);
                 } catch (Exception ex) { logger.log(java.util.logging.Level.WARNING, "Reservation refresh failed", ex); }
             }
         }.execute();
@@ -796,31 +798,28 @@ public class Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        Navigation.reservations(this);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        Navigation.payments(this);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        CardLayout cl = (CardLayout) mainpanel.getLayout();
-        cl.show(mainpanel, "checkin");
-        JOptionPane.showMessageDialog(this, "button clicked");
+        Navigation.checkin(this);
 
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        Navigation.settings(this);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+        Navigation.reports(this);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
