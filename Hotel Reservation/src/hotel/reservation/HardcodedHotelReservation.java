@@ -5,6 +5,10 @@ public final class HardcodedHotelReservation {
     private HardcodedHotelReservation() { }
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(() -> new HardcodedUi.Dashboard().setVisible(true));
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            HardcodedUi.Dashboard dashboard = new HardcodedUi.Dashboard();
+            dashboard.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+            dashboard.setVisible(true);
+        });
     }
 }

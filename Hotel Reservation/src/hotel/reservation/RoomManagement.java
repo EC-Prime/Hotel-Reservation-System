@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.swing.UIManager;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
+import hotel.database.HotelRepository;
 
 /**
  * Room inventory screen prototype. Data is intentionally local sample data;
@@ -75,6 +77,7 @@ public final class RoomManagement extends JFrame {
         add(buildMain(), BorderLayout.CENTER);
         configureTable();
         bindFilters();
+        loadRoomsFromDatabase();
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override public void windowClosed(java.awt.event.WindowEvent e) {
                 if (RoomManagement.this.parent != null) RoomManagement.this.parent.setVisible(true);
@@ -317,11 +320,11 @@ public final class RoomManagement extends JFrame {
     private void showRoomDialog(RoomRecord record) {
         boolean editing = record != null;
         JTextField number = new JTextField(editing ? record.number : "");
-        JComboBox<String> type = new JComboBox<>(new String[]{"Standard", "Deluxe", "Suite", "Single", "Double"});
+        JComboBox<String> type = new JComboBox<>(new String[]{"SINGLE", "DOUBLE", "SUITE", "DELUXE"});
         if (editing) type.setSelectedItem(record.type);
         JTextField price = new JTextField(editing ? String.valueOf(record.price) : "850");
         JTextField floor = new JTextField(editing ? String.valueOf(record.floor) : "1");
-        JComboBox<String> status = new JComboBox<>(new String[]{"Available", "Reserved", "Occupied", "Maintenance"});
+        JComboBox<String> status = new JComboBox<>(new String[]{"AVAILABLE", "OCCUPIED", "MAINTENANCE"});
         if (editing) status.setSelectedItem(record.status);
         JPanel form = new JPanel(new GridLayout(0, 2, 9, 9));
         form.add(new JLabel("Room number")); form.add(number);
@@ -336,12 +339,25 @@ public final class RoomManagement extends JFrame {
             double p = Double.parseDouble(price.getText().trim());
             int f = Integer.parseInt(floor.getText().trim());
             if (n.isEmpty() || p < 0 || f < 1) throw new IllegalArgumentException();
-            if (editing) model.update(record, String.valueOf(type.getSelectedItem()), p, f, String.valueOf(status.getSelectedItem()));
-            else model.add(new RoomRecord(n, String.valueOf(type.getSelectedItem()), p, f, String.valueOf(status.getSelectedItem())));
-            updateSummary();
-        } catch (RuntimeException ex) {
-            JOptionPane.showMessageDialog(this, "Enter a room number, a non-negative price, and a floor number greater than zero.", "Check room details", JOptionPane.WARNING_MESSAGE);
+            String selectedType = String.valueOf(type.getSelectedItem());
+            String selectedStatus = String.valueOf(status.getSelectedItem());
+            int capacity = selectedType.equals("SUITE") ? 4 : selectedType.equals("SINGLE") ? 1 : 2;
+            if (editing) HotelRepository.updateRoom(record.id, n, f, selectedType, BigDecimal.valueOf(p), capacity, selectedStatus, record.description);
+            else HotelRepository.createRoom(n, f, selectedType, BigDecimal.valueOf(p), capacity, selectedStatus, "");
+            loadRoomsFromDatabase();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Could not save room: " + ex.getMessage(), "Room error", JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+    private void loadRoomsFromDatabase() {
+        new javax.swing.SwingWorker<List<HotelRepository.RoomRow>, Void>() {
+            @Override protected List<HotelRepository.RoomRow> doInBackground() throws Exception { return HotelRepository.rooms(); }
+            @Override protected void done() {
+                try { model.replace(get()); updateSummary(); applyFilters(); }
+                catch (Exception ex) { JOptionPane.showMessageDialog(RoomManagement.this, "Could not load rooms: " + ex.getMessage(), "Database error", JOptionPane.ERROR_MESSAGE); }
+            }
+        }.execute();
     }
 
     private void updateSummary() {
@@ -442,30 +458,13 @@ public final class RoomManagement extends JFrame {
     }
 
     private static final class RoomRecord {
-        final String number; String type; double price; int floor; String status;
-        RoomRecord(String number, String type, double price, int floor, String status) { this.number=number; this.type=type; this.price=price; this.floor=floor; this.status=status; }
+        final int id, capacity; final String number, description; String type; double price; int floor; String status;
+        RoomRecord(int id, String number, String type, double price, int floor, int capacity, String status, String description) { this.id=id; this.number=number; this.type=type; this.price=price; this.floor=floor; this.capacity=capacity; this.status=status; this.description=description; }
     }
     private static final class RoomTableModel extends AbstractTableModel {
         private final String[] columns = {"Room Number", "Room Type", "Price / Night", "Floor", "Status", "Actions"};
         private final List<RoomRecord> rooms = new ArrayList<>();
-        RoomTableModel() {
-            rooms.add(new RoomRecord("101","Standard",850,1,"Available")); rooms.add(new RoomRecord("102","Deluxe",1200,1,"Reserved"));
-            rooms.add(new RoomRecord("103","Suite",2000,1,"Occupied")); rooms.add(new RoomRecord("104","Standard",850,1,"Maintenance"));
-            rooms.add(new RoomRecord("105","Deluxe",1200,2,"Available")); rooms.add(new RoomRecord("106","Double",1100,2,"Occupied"));
-            rooms.add(new RoomRecord("107","Suite",2000,2,"Available")); rooms.add(new RoomRecord("108","Single",750,2,"Available"));
-            rooms.add(new RoomRecord("109","Deluxe",1200,2,"Occupied"));
-            rooms.add(new RoomRecord("110","Standard",850,2,"Occupied"));
-            rooms.add(new RoomRecord("111","Suite",2000,2,"Occupied"));
-            rooms.add(new RoomRecord("112","Standard",850,2,"Occupied"));
-            rooms.add(new RoomRecord("113","Deluxe",1200,2,"Occupied"));
-            rooms.add(new RoomRecord("114","Standard",850,2,"Maintenance"));
-            rooms.add(new RoomRecord("115","Suite",2000,3,"Reserved"));
-            rooms.add(new RoomRecord("116","Deluxe",1200,3,"Reserved"));
-            rooms.add(new RoomRecord("117","Standard",850,3,"Available"));
-            rooms.add(new RoomRecord("118","Double",1100,3,"Available"));
-            rooms.add(new RoomRecord("119","Single",750,3,"Available"));
-            rooms.add(new RoomRecord("120","Suite",2000,3,"Available"));
-        }
+        RoomTableModel() { }
         @Override public int getRowCount(){return rooms.size();}
         @Override public int getColumnCount(){return columns.length;}
         @Override public String getColumnName(int c){return columns[c];}
@@ -474,6 +473,8 @@ public final class RoomManagement extends JFrame {
         RoomRecord getRoom(int r){return rooms.get(r);}
         void add(RoomRecord r){rooms.add(r);fireTableRowsInserted(rooms.size()-1,rooms.size()-1);}
         void update(RoomRecord r,String type,double price,int floor,String status){r.type=type;r.price=price;r.floor=floor;r.status=status;fireTableDataChanged();}
+        void replace(List<HotelRepository.RoomRow> rows) { rooms.clear(); for (HotelRepository.RoomRow r : rows) rooms.add(new RoomRecord(r.id, r.number, r.type, r.price.doubleValue(), r.floor, r.capacity, titleCase(r.status), r.description)); fireTableDataChanged(); }
+        private static String titleCase(String value) { return value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase(); }
         int count(String status){return (int)rooms.stream().filter(r->r.status.equals(status)).count();}
     }
 

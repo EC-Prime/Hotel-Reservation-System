@@ -14,7 +14,11 @@ public class HotelReservation {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> new Dashboard().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+            Dashboard dashboard = new Dashboard();
+            Navigation.maximize(dashboard);
+            dashboard.setVisible(true);
+        });
     }
     
 }

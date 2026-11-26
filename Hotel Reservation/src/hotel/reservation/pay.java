@@ -42,6 +42,7 @@ public class pay extends javax.swing.JFrame {
     public pay() {
         initComponents();
         UiTheme.compactTable(tblPayments);
+        loadPaymentsFromDatabase();
 
       lblSearchMessage.setText(" ");
 lblSearchMessage.setFont(new Font("Serif", Font.ITALIC, 12));
@@ -232,6 +233,19 @@ lblSearchMessage.setForeground(new Color(0xF0A0A0));   // soft red
         btnSettings.setIcon(PIcons.of(PIcons.Type.GEAR, 22));
         btnLogout.setIcon(PIcons.of(PIcons.Type.LOGOUT, 22));
 
+    }
+
+    private void loadPaymentsFromDatabase() {
+        new javax.swing.SwingWorker<java.util.List<hotel.database.HotelRepository.PaymentRow>, Void>() {
+            @Override protected java.util.List<hotel.database.HotelRepository.PaymentRow> doInBackground() throws Exception { return hotel.database.HotelRepository.payments(); }
+            @Override protected void done() {
+                try {
+                    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblPayments.getModel();
+                    model.setRowCount(0);
+                    for (hotel.database.HotelRepository.PaymentRow p : get()) model.addRow(new Object[]{"PAY-" + p.reservationId, p.guestName, "R" + p.amount, "Recorded", p.createdAt, p.status});
+                } catch (Exception ex) { logger.log(java.util.logging.Level.WARNING, "Could not load payments", ex); }
+            }
+        }.execute();
     }
 
     private void stylePaymentsTable() {

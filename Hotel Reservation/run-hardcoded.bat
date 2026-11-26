@@ -7,5 +7,5 @@ if not exist "dist\Hotel_Reservation_Hardcoded.jar" (
     exit /b 1
 )
 
-java -cp "dist\Hotel_Reservation_Hardcoded.jar;lib\mysql-connector-j-26.7.0.jar" hotel.reservation.HardcodedHotelReservation
+java -cp "dist\Hotel_Reservation_Hardcoded.jar;lib\mysql-connector-j-26.7.0.jar;lib\jbcrypt-0.4.jar" hotel.reservation.HardcodedHotelReservation
 endlocal

@@ -28,6 +28,7 @@ public final class Login extends JFrame {
         setMinimumSize(new Dimension(980, 620));
         setSize(1100, 680);
         setLocationRelativeTo(null);
+        setExtendedState(MAXIMIZED_BOTH);
         setLayout(new BorderLayout());
         add(new LoginArtPanel(), BorderLayout.WEST);
         add(formPanel(), BorderLayout.CENTER);
@@ -49,6 +50,12 @@ public final class Login extends JFrame {
 
     private JLabel label(String text) { JLabel l = new JLabel(text); l.setForeground(new Color(220, 226, 238)); l.setFont(new Font("SansSerif", Font.BOLD, 12)); return l; }
     private void styleField(javax.swing.JComponent field) { field.setPreferredSize(new Dimension(0, 44)); field.setBackground(new Color(28, 48, 76)); field.setForeground(Color.WHITE); if (field instanceof javax.swing.text.JTextComponent text) text.setCaretColor(UiTheme.GOLD); field.setFont(new Font("SansSerif", Font.PLAIN, 14)); field.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(70, 91, 122)), BorderFactory.createEmptyBorder(0, 12, 0, 12))); }
-    private void signIn() { if (username.getText().trim().isEmpty() || password.getPassword().length == 0) { error.setText("Enter your username and password to continue."); return; } Navigation.open(this, new Dashboard()); }
+    private void signIn() {
+        if (username.getText().trim().isEmpty() || password.getPassword().length == 0) { error.setText("Enter your username and password to continue."); return; }
+        try {
+            if (hotel.database.HotelRepository.authenticate(username.getText().trim(), new String(password.getPassword())) != null) Navigation.open(this, new Dashboard());
+            else { error.setText("Incorrect username or password."); password.setText(""); }
+        } catch (java.sql.SQLException ex) { error.setText("Database login unavailable."); }
+    }
     public static void main(String[] args) { javax.swing.SwingUtilities.invokeLater(() -> new Login().setVisible(true)); }
 }

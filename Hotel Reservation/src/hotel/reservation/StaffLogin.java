@@ -4,6 +4,7 @@
  */
 package hotel.reservation;
 
+import hotel.database.HotelRepository;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -28,6 +29,7 @@ public class StaffLogin extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1000, 700);
         setLocationRelativeTo(null);
+        setExtendedState(MAXIMIZED_BOTH);
 
         pnlBackground = new BackgroundPanel();
         setContentPane(pnlBackground);
@@ -151,9 +153,13 @@ public class StaffLogin extends JFrame {
         }
     }
 
-    /** TEMPORARY - replace with a database check against your users table. */
     private boolean authenticate(String user, String pass) {
-        return user.equals("admin") && pass.equals("admin123");
+        try {
+            return HotelRepository.authenticate(user, pass) != null;
+        } catch (java.sql.SQLException ex) {
+            lblError.setText("Database login unavailable.");
+            return false;
+        }
     }
 
     // ================= LAYOUT HELPERS =================

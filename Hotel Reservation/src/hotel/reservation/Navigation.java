@@ -13,6 +13,7 @@ public final class Navigation {
     public static void open(JFrame current, JFrame next) {
         next.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         next.setLocationRelativeTo(current);
+        next.setExtendedState(JFrame.MAXIMIZED_BOTH);
         if (current != null) {
             current.setVisible(false);
             next.addWindowListener(new WindowAdapter() {
@@ -23,6 +24,10 @@ public final class Navigation {
             });
         }
         next.setVisible(true);
+    }
+
+    public static void maximize(JFrame frame) {
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     public static void dashboard(JFrame current) { open(current, new Dashboard()); }

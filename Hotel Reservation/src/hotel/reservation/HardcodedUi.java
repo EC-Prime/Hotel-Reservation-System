@@ -51,6 +51,7 @@ public final class HardcodedUi {
             setMinimumSize(new Dimension(1120, 720));
             setSize(1400, 860);
             setLocationRelativeTo(null);
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
             getContentPane().setBackground(NAVY);
             setLayout(new BorderLayout());
             add(sidebar(active), BorderLayout.WEST);

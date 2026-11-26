@@ -1034,9 +1034,14 @@ if (dayText.equals("Select day")
     if(guestname.isEmpty() || bookingref.isEmpty() || roomnumber.isEmpty() || !validDate){
               return;
           }
-          javax.swing.JOptionPane.showMessageDialog(null, "All check-in fields are complete!",
-                  "Validation Successful",
-                  javax.swing.JOptionPane.INFORMATION_MESSAGE);
+          try {
+              int reservationId = parseReservationId(bookingref);
+              hotel.database.HotelRepository.updateReservationStatus(reservationId, "CHECKED_IN");
+              loadReservationsFromDatabase();
+              javax.swing.JOptionPane.showMessageDialog(this, "Guest checked in successfully.", "Check-in complete", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+          } catch (Exception ex) {
+              javax.swing.JOptionPane.showMessageDialog(this, "Could not check in reservation: " + ex.getMessage(), "Database error", javax.swing.JOptionPane.ERROR_MESSAGE);
+          }
         
     }//GEN-LAST:event_btncheckinActionPerformed
 
@@ -1104,13 +1109,24 @@ if (dayText.equals("Select day")
     if(guestname.isEmpty() || bookingref.isEmpty() || roomnumber.isEmpty() || !validDate){
               return;
           }
-          javax.swing.JOptionPane.showMessageDialog(null, "All check-in fields are complete!",
-                  "Validation Successful",
-                  javax.swing.JOptionPane.INFORMATION_MESSAGE);
+          try {
+              int reservationId = parseReservationId(bookingref);
+              hotel.database.HotelRepository.updateReservationStatus(reservationId, "CHECKED_OUT");
+              loadReservationsFromDatabase();
+              javax.swing.JOptionPane.showMessageDialog(this, "Guest checked out successfully.", "Check-out complete", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+          } catch (Exception ex) {
+              javax.swing.JOptionPane.showMessageDialog(this, "Could not check out reservation: " + ex.getMessage(), "Database error", javax.swing.JOptionPane.ERROR_MESSAGE);
+          }
         
                                             
 
     }//GEN-LAST:event_btncheckoutActionPerformed
+
+    private int parseReservationId(String reference) {
+        String value = reference.trim().toUpperCase();
+        if (value.startsWith("RH-")) value = value.substring(3);
+        return Integer.parseInt(value);
+    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
