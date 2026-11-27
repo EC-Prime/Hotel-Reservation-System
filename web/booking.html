@@ -167,7 +167,30 @@
               <h2 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; margin-bottom: 6px;">2. Payment</h2>
               <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Your card will not be charged until you arrive. Cancel for free up to 48 hours before check-in.</p>
 
-              <div class="payment-fields-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+              <fieldset class="payment-method-picker" style="border: 0; padding: 0; margin: 0 0 18px;">
+                <legend style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 10px;">Choose a simulated payment method</legend>
+                <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+                  <label class="payment-method-option" style="display: flex; align-items: center; gap: 9px; padding: 12px; border: 1px solid var(--border-gold); border-radius: 10px; cursor: pointer; color: var(--text-primary);">
+                    <input type="radio" name="paymentMethod" value="card" checked>
+                    <span><i class="fas fa-credit-card" style="color: var(--gold-primary);"></i> Card</span>
+                  </label>
+                  <label class="payment-method-option" style="display: flex; align-items: center; gap: 9px; padding: 12px; border: 1px solid var(--border-gold); border-radius: 10px; cursor: pointer; color: var(--text-primary);">
+                    <input type="radio" name="paymentMethod" value="paypal">
+                    <span><i class="fab fa-paypal" style="color: var(--gold-primary);"></i> PayPal</span>
+                  </label>
+                  <label class="payment-method-option" style="display: flex; align-items: center; gap: 9px; padding: 12px; border: 1px solid var(--border-gold); border-radius: 10px; cursor: pointer; color: var(--text-primary);">
+                    <input type="radio" name="paymentMethod" value="apple-pay">
+                    <span><i class="fab fa-apple" style="color: var(--gold-primary);"></i> Apple Pay</span>
+                  </label>
+                  <label class="payment-method-option" style="display: flex; align-items: center; gap: 9px; padding: 12px; border: 1px solid var(--border-gold); border-radius: 10px; cursor: pointer; color: var(--text-primary);">
+                    <input type="radio" name="paymentMethod" value="bank-transfer">
+                    <span><i class="fas fa-building-columns" style="color: var(--gold-primary);"></i> Bank transfer</span>
+                  </label>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin: 10px 0 0;">Payments are simulated for this presentation; no money is charged.</p>
+              </fieldset>
+
+              <div id="cardPaymentFields" class="payment-fields-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
                 <div class="form-group-with-icon">
                   <i class="fas fa-credit-card"></i>
                   <input type="text" class="form-input-lux" placeholder="Card Number •••• •••• •••• 4242" value="4532 •••• •••• 8892">

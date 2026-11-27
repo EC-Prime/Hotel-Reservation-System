@@ -284,9 +284,10 @@
       const cardEmail = document.getElementById('profileCardEmail');
       const cardPhone = document.getElementById('profileCardPhone');
 
-      const initial = String(user.name || 'Guest').trim().charAt(0).toUpperCase() || 'G';
-      if (welcomeName) welcomeName.textContent = initial;
-      if (cardName) cardName.textContent = initial;
+      const fullName = String(user.name || 'Guest').trim() || 'Guest';
+      const initial = fullName.charAt(0).toUpperCase() || 'G';
+      if (welcomeName) welcomeName.textContent = fullName;
+      if (cardName) cardName.textContent = fullName;
       const avatarInitial = document.getElementById('profileAvatarInitial');
       if (avatarInitial) avatarInitial.textContent = initial;
       if (cardEmail) cardEmail.textContent = user.email || '—';

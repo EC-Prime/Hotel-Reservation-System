@@ -715,6 +715,8 @@ function initBookingForm() {
   const formCheckIn = document.getElementById('formCheckIn');
   const formCheckOut = document.getElementById('formCheckOut');
   const formGuests = document.getElementById('formGuests');
+  const paymentMethodInputs = form.querySelectorAll('input[name="paymentMethod"]');
+  const cardPaymentFields = document.getElementById('cardPaymentFields');
   const submitBtn = form.querySelector('button[type="submit"]');
   if (!room) {
     showBookingError('No valid room was selected. Return to the room list and choose a room to continue.');
@@ -760,6 +762,15 @@ function initBookingForm() {
   if (formCheckOut) formCheckOut.value = checkOut;
   if (formGuests) formGuests.value = guests;
   if (formGuests) formGuests.addEventListener('change', validateCheckoutGuests);
+
+  const updatePaymentMethodFields = () => {
+    const selected = form.querySelector('input[name="paymentMethod"]:checked')?.value || 'card';
+    const showCardFields = selected === 'card';
+    if (cardPaymentFields) cardPaymentFields.hidden = !showCardFields;
+    cardPaymentFields?.querySelectorAll('input').forEach(input => { input.required = showCardFields; });
+  };
+  paymentMethodInputs.forEach(input => input.addEventListener('change', updatePaymentMethodFields));
+  updatePaymentMethodFields();
 
   updateSubmitState();
   renderCheckoutRecap(room, checkIn, checkOut);
@@ -842,7 +853,8 @@ function initBookingForm() {
       guestPhone: guestPhone ? guestPhone.value.trim() : '',
       checkIn: formCheckIn ? formCheckIn.value : checkIn,
       checkOut: formCheckOut ? formCheckOut.value : checkOut,
-      numGuests: formGuests ? parseInt(formGuests.value, 10) : guests
+      numGuests: formGuests ? parseInt(formGuests.value, 10) : guests,
+      paymentMethod: form.querySelector('input[name="paymentMethod"]:checked')?.value || 'card'
     };
 
     try {
